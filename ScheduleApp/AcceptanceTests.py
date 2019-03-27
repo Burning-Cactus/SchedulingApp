@@ -1,5 +1,5 @@
 from django.test import TestCase
-from ScheduleApp import Commands, User
+from ScheduleApp import Commands, User, Course
 from myApp.models import LAB_SECTION, COURSE, A_LIST, USER, I_LIST
 
 
@@ -25,5 +25,11 @@ class AcceptanceTests(TestCase):
         self.assertEquals(Commands.CreatCourse("CourseName, CourseNumber", "Course created."))
         self.assertEquals(Commands.Email("This is the email"), "Email sent.")
         self.assertEquals(Commands.AccessData("table name"), "data") #ALLL THE DAtA
+        course1 = Course
+        course1.courseNumber = 401
+        self.assertEquals(Commands.AssignInstructorToCourse("401, AKelly"), "Instructor successfully added to course.")
+        self.assertEquals(Commands.AssignAssistantToCourse("user, course1"), "TA successfully added to course.")
+        self.assertEquals(Commands.ViewCourseAssignments(user), "Some Table")
+        self.assertEquals(Commands.ViewAssistantAssignments(user), "Some Table")
 
     def test_create_course(self):

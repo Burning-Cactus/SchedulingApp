@@ -14,3 +14,13 @@ class Commands:
         return""
     def AccessData(self):
         return""
+    def AssignInstructorToCourse(self):
+        return""
+    def AssignAssistantToCourse(self):
+        return""
+    def ViewCourseAssignments(self):
+        return""
+    def ViewAssistantAssignments(self):
+        return""
+    def ViewContactInfo(self):
+        return""
