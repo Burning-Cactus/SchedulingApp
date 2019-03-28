@@ -1,15 +1,15 @@
 from django.shortcuts import render
 from django.views import View
-from main.models import Terminal
+from myApp.models import Terminal
 # Create your views here.
 class Driver(View):
   def get(self,request):
     return render(request, 'main/index.html')
   def post(self,request):
-    yourInstance = YourClass()
+    yourInstance = Terminal()
     commandInput = request.POST["command"]
     if commandInput:
-      response = yourInstance.command(commandInput)
+      response = Terminal.command(commandInput)
     else:
       response = ""
     return render(request, 'main/index.html',{"message":response})
