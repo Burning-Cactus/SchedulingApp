@@ -60,12 +60,6 @@ class User:
             intermediate += i + " "
         return intermediate+"),"+self.username+","+self.password+","+self.databaseID+","+self.email+","+self.firstName+","+self.lastName+","+self.contactPhone+","+self.officePhone+","+self.extension
 
-    #TODO
-    # Update all of User's fields within the database.
-    def updateDataBase(self):
-        # code
-        return 0
-
     #Setters
     def setPermisson(self, permissionList):
         self.permission=permissionList
