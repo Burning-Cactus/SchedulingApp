@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from myApp.models import Terminal
 # Create your views here.
-class interface(View):
+class Interface(View):
   def get(self,request):
     return render(request, 'main/index.html')
   def post(self,request):

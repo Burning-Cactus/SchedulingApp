@@ -15,24 +15,15 @@ def main(self):
     # start a login loop
     while(user == none):
 
-        #############################
-        # Get the user input from the webpage
-        #############################
-        userInput = "command string"
-    
-        response = Interface.post(userInput)
+        response = Interface.post()
+        
         if(response.isinstance(User)):
                 user = response
 
     # create login 'session' persay
     while(user != None):
-        
-        #############################
-        # Get the user input from the webpage
-        #############################
-        userInput = "command string"
 
-        response = Interface.post(userInput)
+        response = Interface.post()
 
         # maybe do something with the response ex. set user to None if logout was called
 
