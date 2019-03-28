@@ -40,28 +40,24 @@ class Course:
         self.location = params[5]
         return
 
-    def updateDataBase(self):
-        # code
-        return 0
-
     def setClassNumber(self, value):
         self.classNumber = value
         return
 
-    def get_class_number(self):
+    def getClassNumber(self):
         return self.classNumber
 
-    def set_time(self, value):
-         self.time = value
-         return
+    def setTime(self, value):
+        self.time = value
+        return
 
-    def get_time(self):
+    def getTime(self):
         return self.time
 
-    def set_location(self, value):
+    def setLocation(self, value):
         self.location = value
         return
 
-    def get_location(self):
+    def getLocation(self):
         return self.location
     #end
