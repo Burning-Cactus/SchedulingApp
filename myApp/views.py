@@ -3,8 +3,13 @@ from django.views import View
 from myApp.models import Terminal
 # Create your views here.
 class Shell(View):
-  def get(self,request):
-    return render(request, 'myApp/html/index.html')
+  # Rocks way
+  #def get(self,request):
+    #return render(request, 'shell/index.html')
+
+  def get(self):
+    request = None
+    return render(request, 'shell/index.html')
   def post(self,request):
     yourInstance = Terminal()
     commandInput = request.POST["command"]
