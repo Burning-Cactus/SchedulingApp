@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.views import View
 from myApp.models import Terminal
 # Create your views here.
-class Interface(View):
+class Shell(View):
   def get(self,request):
-    return render(request, 'main/index.html')
+    return render(request, 'myApp/html/index.html')
   def post(self,request):
     yourInstance = Terminal()
     commandInput = request.POST["command"]

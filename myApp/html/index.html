@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  <form method="post" action="/">
+  {% csrf_token %}
+    Command: <input type="text" name="command"><br/>
+    <input type="submit">
+  </form>
+  <p>{{message}}</p>
+{% endblock content %}
