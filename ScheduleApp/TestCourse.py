@@ -1,9 +1,9 @@
-import unittest
+from django.test import TestCase
 
-from SchedulingApp import Course
+from ScheduleApp import Course
 
 
-class TestCourse(unittest.TestCase):
+class TestCourse(TestCase):
 
 
     def testSomething(self):
@@ -55,7 +55,7 @@ class TestCourse(unittest.TestCase):
         self.assertEqual("Phy 209", c.get_name())
     def test_set_name(self):
         c = Course()
-        c.setName(Phy 210)
+        c.setName("Phy 210")
         self.assertEqual("Phy 210", c.name)
     def  test_set_courseNumber(self):
         c = Course()
