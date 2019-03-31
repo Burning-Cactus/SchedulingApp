@@ -16,7 +16,7 @@ class TestCourse(TestCase):
     def test_get_class_number(self):
         c = Course()
         c.classNumber = 235
-        self.assertEqual((235,c.getClassNumber))
+        self.assertEqual((235, c.getClassNumber))
     def test_set_class_number(self):
         c = Course()
         c.setClassNumber(55)
