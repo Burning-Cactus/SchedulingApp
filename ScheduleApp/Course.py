@@ -28,6 +28,13 @@ class Course:
     def getDataBaseID(self):
         return self.databaseID
 
+    def setName(self, value):
+        self.name = value
+        return
+
+    def getName(self):
+        return self.name
+
     def fromString(self, formatedString):
         params = formatedString.split(",")
         params[0] = params[0][1:-1]
@@ -60,4 +67,8 @@ class Course:
 
     def getLocation(self):
         return self.location
+
+    def addLab(self, value):
+        self.labList = self.labList+value
+
     #end
