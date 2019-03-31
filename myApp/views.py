@@ -3,6 +3,7 @@ from django.views import View
 from myApp.models import Terminal
 from django.http import HttpRequest, HttpResponse
 from .forms import InputForm, LoginForm
+from .models import USER
 # Create your views here.
 class Shell(View):
   # Rocks way
@@ -40,6 +41,14 @@ class Shell(View):
 
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
+
+        user = USER.objects.get(username=username)
+
+        if(user.password == password):
+          return HttpResponse("logged in")
+
+        else:
+          pass
 
     form = LoginForm()
 
