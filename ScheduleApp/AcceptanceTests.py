@@ -1,9 +1,9 @@
-from django.test import TestCase
+#from django.test import TestCase
 from ScheduleApp import Commands, User, Course
 from myApp.models import LAB_SECTION, COURSE, A_LIST, USER, I_LIST
 
 
-class AcceptanceTests(TestCase):
+class AcceptanceTests():
     def setUp(self):
         LAB_SECTION.objects.create(databaseID = 1, name = "Physics", courseNumber =500, classNumber = 270, time= "9-10am", location = "Physics 270")
         USER.objects.create(permission = [2], username = "IPO", password = "pret212", databaseID = 69, email = "IPO@DEZN.com", firstName = "Bo", lastName = "fa", contactPhone = "2625874132", officePhone = "2625478669", extension = "148")
@@ -22,7 +22,7 @@ class AcceptanceTests(TestCase):
                                                                                                     "been deleted.")
         user3 = User
         self.assertEquals(Commands.EditAccount(user.permission, user3), "Account has been edited.")
-        self.assertEquals(Commands.CreatCourse("CourseName, CourseNumber", "Course created."))
+        self.assertEquals(Commands.CreatCourse("name, 406, 801, 301 301, 9-10am, room B506"), "Course created.")
         self.assertEquals(Commands.Email("This is the email"), "Email sent.")
         self.assertEquals(Commands.AccessData("table name"), "data") #ALLL THE DAtA
         course1 = Course
@@ -33,3 +33,5 @@ class AcceptanceTests(TestCase):
         self.assertEquals(Commands.ViewAssistantAssignments(user), "Some Table")
 
     def test_create_course(self):
+        pass
+
