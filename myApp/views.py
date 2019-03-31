@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from myApp.models import Terminal
 from django.http import HttpRequest
+from .forms import InputForm
 # Create your views here.
 class Shell(View):
   # Rocks way
@@ -20,6 +21,16 @@ class Shell(View):
       response = ""
     return render(request, 'shell/index.html',{"message":response})
 
-  # prints message to the webpage
-  def echo(self, request, message):
-    return render(request,'shell/index.html', {"":message})
+  def shellForm(request):
+    if request.method == 'POST':
+      form = InputCommand(request.POST)
+      if form.is_valid():
+
+        command = form.clean_data['command']
+
+    form =InputForm
+
+    return render(request, 'shell/index.html', {'form': form})
+
+
+
