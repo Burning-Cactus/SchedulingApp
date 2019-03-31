@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 from myApp.models import Terminal
 from django.http import HttpRequest, HttpResponse
@@ -42,13 +42,16 @@ class Shell(View):
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
 
-        user = USER.objects.get(username=username)
+        user = None
+        try:
+          user = USER.objects.get(username=username)
+        except:
+          return HttpResponse("NOT LOGGED IN!!!!!! <a href=http://127.0.0.1:8000>Try Again</a>")
+
 
         if(user.password == password):
-          return HttpResponse("logged in")
+          return redirect('')
 
-        else:
-          pass
 
     form = LoginForm()
 

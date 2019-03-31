@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path("", views.Shell.login, name='login'),
-    path('shell/', views.Shell.shellForm, name='shell')
+    path('shell/', views.Shell.shellForm, name='shell'),
 ]
