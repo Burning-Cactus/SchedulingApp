@@ -8,8 +8,11 @@ class USER(models.Model):
     username = models.CharField(max_length = 60)
     password = models.CharField(max_length = 60)
     permission = models.CharField(max_length = 5)
-
-    pass
+    email = models.CharField(max_length = 60)
+    firstname = models.CharField(max_length = 60)
+    lastname = models.CharField(max_length = 60)
+    contactphone = models.CharField(max_length = 12)
+    extension = models.CharField(max_length = 5)
 
 
 class LAB_SECTION(models.Model):
