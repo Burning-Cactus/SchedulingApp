@@ -22,7 +22,7 @@ class AcceptanceTests(TestCase):
                                                                                                     "been deleted.")
         user3 = User
         self.assertEquals(Commands.EditAccount(user.permission, user3), "Account has been edited.")
-        self.assertEquals(Commands.CreatCourse("CourseName, CourseNumber", "Course created."))
+        self.assertEquals(Commands.CreatCourse("name, 406, 801, 301 301, 9-10am, room B506"), "Course created.")
         self.assertEquals(Commands.Email("This is the email"), "Email sent.")
         self.assertEquals(Commands.AccessData("table name"), "data") #ALLL THE DAtA
         course1 = Course
@@ -33,3 +33,4 @@ class AcceptanceTests(TestCase):
         self.assertEquals(Commands.ViewAssistantAssignments(user), "Some Table")
 
     def test_create_course(self):
+
