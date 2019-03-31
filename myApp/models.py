@@ -5,6 +5,10 @@ from ScheduleApp import User
 
 
 class USER(models.Model):
+    username = models.CharField(max_length = 60)
+    password = models.CharField(max_length = 60)
+    permission = models.CharField(max_length = 5)
+
     pass
 
 
