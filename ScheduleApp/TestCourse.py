@@ -72,4 +72,4 @@ class TestCourse(TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    django.test.main()
