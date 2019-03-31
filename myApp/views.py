@@ -23,12 +23,12 @@ class Shell(View):
 
   def shellForm(request):
     if request.method == 'POST':
-      form = InputCommand(request.POST)
+      form = InputForm(request.POST)
       if form.is_valid():
 
         command = form.clean_data['command']
 
-    form =InputForm
+    form = InputForm()
 
     return render(request, 'shell/index.html', {'form': form})
 
