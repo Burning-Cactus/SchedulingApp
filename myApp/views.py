@@ -26,7 +26,7 @@ class Shell(View):
       form = InputForm(request.POST)
       if form.is_valid():
 
-        command = form.clean_data['command']
+        command = form.cleaned_data['command']
 
     form = InputForm()
 
