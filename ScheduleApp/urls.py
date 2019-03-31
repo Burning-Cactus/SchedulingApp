@@ -1,4 +1,5 @@
 from django.conf.urls import include, url
+from myApp import views
 
 """SchedulingApp URL Configuration
 
@@ -20,6 +21,6 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('shell/', include('myApp.urls')),
-    path("", include('myApp.urls'))
+    path('shell/', views.Shell.shellForm, name='shell'),
+    path("", views.Shell.login, name='login')
 ]

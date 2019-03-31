@@ -29,6 +29,7 @@ class Shell(View):
 
         command = form.cleaned_data['command']
         Terminal.command(command)
+        return redirect('shell/')
 
     form = InputForm()
 
@@ -50,7 +51,7 @@ class Shell(View):
 
 
         if(user.password == password):
-          return redirect('')
+          return redirect('shell/')
 
 
     form = LoginForm()
