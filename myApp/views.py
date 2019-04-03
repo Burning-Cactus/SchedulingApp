@@ -6,34 +6,23 @@ from .forms import InputForm, LoginForm
 from .models import USER
 # Create your views here.
 class Shell(View):
-  # Rocks way
-  #def get(self,request):
-    #return render(request, 'shell/index.html')
 
-  def get(self):
-    request = HttpRequest()
-    return render(request, 'shell/index.html')
-  def post(self,request):
-    yourInstance = Terminal()
-    commandInput = request.POST["command"]
-    if commandInput:
-      response = commandInput #Terminal.command(commandInput)
-    else:
-      response = ""
-    return render(request, 'shell/index.html', {"message": response})
+  def get(self, request):
+    form = InputForm()
+    return render(request, 'shell/index.html', {"form": form})
 
-  def shellForm(request):
+  def post(self, request):
     if request.method == 'POST':
       form = InputForm(request.POST)
       if form.is_valid():
 
-        command = form.cleaned_data['command']
+        userInput = form.cleaned_data['command']
         terminalInstance = Terminal()
-        terminalInstance.command(command)
+        response = terminalInstance.command(userInput)
 
     form = InputForm()
 
-    return render(request, 'shell/index.html', {'form': form})
+    return render(request, 'shell/index.html', {'form': form, "message": response})
 
 
 

@@ -69,111 +69,137 @@ class Terminal:
 
         # function at end of this file
         # self contains the user variable
-        self.callCommand(argumentList, commandIntegerCode)
+        return self.callCommand(argumentList, commandIntegerCode)
 
 
 
     def login(self, xName, xPassword):
         # Create and return a user object from the database after checking the username and password
-        person = User()
-        return person
+        #person = User()
+
+        # return value for testing, will change when function is implemented
+        return '0'
 
     def logout(self, xUser):
         # Destroy the user object currently being used
-        return
+
+        # return value for testing, will change when function is implemented
+        return '1'
 
     def createAccount(self, first, last, username, password, email):
         # Create a new user in the database with all of the parameters provided and a generated ID.
-        person = User()
-        person.toString()
-        return""
+        #person = User()
+        #person.toString()
+
+        # return value for testing, will change when function is implemented
+        return '2'
 
     def editAccount(self, userid):
         # Change the values of a user in the database.
-        return""
+
+        # return value for testing, will change when function is implemented
+        return '3'
 
     def deleteAccount(self, userid):
         # Delete a user model in the database.
-        return""
+
+        # return value for testing, will change when function is implemented
+        return '4'
 
     def createCourse(self, name, coursenumber, classnumber, time, location):
         # Create a course in the database with a generated ID.
-        return""
+
+        # return value for testing, will change when function is implemented
+        return '5'
 
     def email(self, message):
         # Send out an email to notify all recipients.
-        return""
+
+        # return value for testing, will change when function is implemented
+        return '6'
 
     def accessData(self):
         # Access all data in the system and print it in tables
-        return""
+
+        # return value for testing, will change when function is implemented
+        return '7'
 
     def assignInstructorToCourse(self, courseid, instructorid):
         # Assign an instructor to a course in the database
-        return""
+
+        # return value for testing, will change when function is implemented
+        return '8'
+
 
     def assignAssistantToCourse(self, courseid, instructorid):
         # Assign a TA to a course in the database
-        return""
+
+        # return value for testing, will change when function is implemented
+        return '9'
 
     def viewCourseAssignments(self, userid):
         # Return data on instructor assignments in the database.
-        return""
+
+        # return value for testing, will change when function is implemented
+        return '10'
 
     def viewAssistantAssignments(self, userid):
         # Return data on TA assignments in the database
-        return""
+
+        # return value for testing, will change when function is implemented
+        return '11'
 
     def viewContactInfo(self, userid):
         # Return the contact info of the user.
-        return""
-    # pass
+
+        # return value for testing, will change when function is implemented
+        return '12'
 
     # calls the command matching the integer code, using argumentList
     # from user input
     #
-    # IMPORTANT: self contains the user variable, which contains user.permission.
+    # IMPORTANT: self contains the user variable, ie: self.user.permission
     # Therefore we do not need an argument for permission in any of the commands.
     # I will remove them now.
     def callCommand(self, argumentList, commandIntegerCode):
 
         if commandIntegerCode == 0:
-            self.login(argumentList[0], argumentList[1])
+            return self.login(argumentList[0], argumentList[1])
 
         if commandIntegerCode == 1:
-            self.logout(argumentList[0])
+            return self.logout(argumentList[0])
 
         if commandIntegerCode == 2:
-            self.createAccount(argumentList[0], argumentList[1], argumentList[2],
+            return self.createAccount(argumentList[0], argumentList[1], argumentList[2],
                                argumentList[3], argumentList[4])
 
         if commandIntegerCode == 3:
-            self.editAccount(argumentList[0])
+            return self.editAccount(argumentList[0])
 
         if commandIntegerCode == 4:
-            self.deleteAccount(argumentList[0])
+            return self.deleteAccount(argumentList[0])
 
         if commandIntegerCode == 5:
-            self.createCourse(argumentList[0], argumentList[1], argumentList[2],
+            return self.createCourse(argumentList[0], argumentList[1], argumentList[2],
                               argumentList[3], argumentList[4])
 
         if commandIntegerCode == 6:
-            self.email(argumentList[0])
+            return self.email(argumentList[0])
 
         if commandIntegerCode == 7:
-            self.accessData()
+            return self.accessData()
 
         if commandIntegerCode == 8:
-            self.assignInstructorToCourse(argumentList[0], argumentList[1])
+            return self.assignInstructorToCourse(argumentList[0], argumentList[1])
 
         if commandIntegerCode == 9:
-            self.assignAssistantToCourse(argumentList[0], argumentList[1])
+            return self.assignAssistantToCourse(argumentList[0], argumentList[1])
 
         if commandIntegerCode == 10:
-            self.viewCourseAssignments(argumentList[0])
+            return self.viewCourseAssignments(argumentList[0])
 
         if commandIntegerCode == 11:
-            self.viewAssistantAssignments(argumentList[0])
+            return self.viewAssistantAssignments(argumentList[0])
 
         if commandIntegerCode == 12:
-            self.viewContactInfo(argumentList[0])
+            return self.viewContactInfo(argumentList[0])

@@ -3,5 +3,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.Shell.shellForm, name='shell'),
+    path("", views.Shell.as_view()),
 ]
