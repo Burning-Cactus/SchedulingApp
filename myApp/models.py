@@ -62,6 +62,11 @@ class Terminal:
 
     def createCourse(self, name, coursenumber, classnumber, time, location):
         # Create a course in the database with a generated ID.
+
+        return""
+
+    def deleteCourse(self, coursenumber, classnumber):
+        # Delete a course from the database
         return""
 
     def email(self, message):
