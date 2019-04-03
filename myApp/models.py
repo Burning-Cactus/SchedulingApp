@@ -36,10 +36,6 @@ class Terminal:
     user = None
     def command(self, inStr):
 
-        # Checks to see if the user is logged in
-        if(self.user == None):
-            return None
-
         # this will get everything before the first '('
         commandLabel = inStr.split('(')[0]
 
@@ -66,8 +62,14 @@ class Terminal:
         else:
             return "Error: Command not found"
 
+        # parse out the command arguments
+        afterCommandLabel = inStr.split('(')[1]
+        betweenParenthesis = afterCommandLabel[1:len(afterCommandLabel)-1]
+        argumentList = betweenParenthesis.split(',')
+
         # function at end of this file
-        Terminal.callCommand(inStr, commandIntegerCode)
+        # self contains the user variable
+        self.callCommand(argumentList, commandIntegerCode)
 
 
 
@@ -80,7 +82,7 @@ class Terminal:
         # Destroy the user object currently being used
         return
 
-    def createAccount(self, first, last, username, password, email, permission):
+    def createAccount(self, first, last, username, password, email):
         # Create a new user in the database with all of the parameters provided and a generated ID.
         person = User()
         person.toString()
@@ -127,45 +129,51 @@ class Terminal:
         return""
     # pass
 
-    # calls the command matching the integer code, using commandString
+    # calls the command matching the integer code, using argumentList
     # from user input
-    def callCommand(self, commandString, commandIntegerCode):
+    #
+    # IMPORTANT: self contains the user variable, which contains user.permission.
+    # Therefore we do not need an argument for permission in any of the commands.
+    # I will remove them now.
+    def callCommand(self, argumentList, commandIntegerCode):
 
         if commandIntegerCode == 0:
-            pass
+            self.login(argumentList[0], argumentList[1])
 
         if commandIntegerCode == 1:
-            pass
+            self.logout(argumentList[0])
 
         if commandIntegerCode == 2:
-            pass
+            self.createAccount(argumentList[0], argumentList[1], argumentList[2],
+                               argumentList[3], argumentList[4])
 
         if commandIntegerCode == 3:
-            pass
+            self.editAccount(argumentList[0])
 
         if commandIntegerCode == 4:
-            pass
+            self.deleteAccount(argumentList[0])
 
         if commandIntegerCode == 5:
-            pass
+            self.createCourse(argumentList[0], argumentList[1], argumentList[2],
+                              argumentList[3], argumentList[4])
 
         if commandIntegerCode == 6:
-            pass
+            self.email(argumentList[0])
 
         if commandIntegerCode == 7:
-            pass
+            self.accessData()
 
         if commandIntegerCode == 8:
-            pass
+            self.assignInstructorToCourse(argumentList[0], argumentList[1])
 
         if commandIntegerCode == 9:
-            pass
+            self.assignAssistantToCourse(argumentList[0], argumentList[1])
 
         if commandIntegerCode == 10:
-            pass
+            self.viewCourseAssignments(argumentList[0])
 
         if commandIntegerCode == 11:
-            pass
+            self.viewAssistantAssignments(argumentList[0])
 
         if commandIntegerCode == 12:
-            pass
+            self.viewContactInfo(argumentList[0])
