@@ -33,9 +33,43 @@ class I_LIST(models.Model):
 
 class Terminal:
     # This class will be used to execute commands with the database.
-
+    user = None
     def command(self, inStr):
-        return inStr
+
+        # Checks to see if the user is logged in
+        if(self.user == None):
+            return None
+
+        # this will get everything before the first '('
+        commandLabel = inStr.split('(')[0]
+
+        commandLabelOptions = {"login" : 0,
+                               "logout" : 1,
+                               "createAccount" : 2,
+                               "editAccount" : 3,
+                               "deleteAccount" : 4,
+                               "createCourse" : 5,
+                               "email" : 6,
+                               "accessData" : 7,
+                               "assignInstructorToCourse" : 8,
+                               "assignAssistantToCourse" : 9,
+                               "viewCourseAssignments" : 10,
+                               "viewAssistantAssignments" : 11,
+                               "viewContactInfo" : 12}
+
+        # get the corresponding command
+        commandIntegerCode = None
+
+        if commandLabelOptions.__contains__(commandLabel):
+            commandIntegerCode = commandLabelOptions.get(commandLabel)
+
+        else:
+            return "Error: Command not found"
+
+        # function at end of this file
+        Terminal.callCommand(inStr, commandIntegerCode)
+
+
 
     def login(self, xName, xPassword):
         # Create and return a user object from the database after checking the username and password
@@ -92,3 +126,46 @@ class Terminal:
         # Return the contact info of the user.
         return""
     # pass
+
+    # calls the command matching the integer code, using commandString
+    # from user input
+    def callCommand(self, commandString, commandIntegerCode):
+
+        if commandIntegerCode == 0:
+            pass
+
+        if commandIntegerCode == 1:
+            pass
+
+        if commandIntegerCode == 2:
+            pass
+
+        if commandIntegerCode == 3:
+            pass
+
+        if commandIntegerCode == 4:
+            pass
+
+        if commandIntegerCode == 5:
+            pass
+
+        if commandIntegerCode == 6:
+            pass
+
+        if commandIntegerCode == 7:
+            pass
+
+        if commandIntegerCode == 8:
+            pass
+
+        if commandIntegerCode == 9:
+            pass
+
+        if commandIntegerCode == 10:
+            pass
+
+        if commandIntegerCode == 11:
+            pass
+
+        if commandIntegerCode == 12:
+            pass
