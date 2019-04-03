@@ -1,5 +1,5 @@
 from django.db import models
-from ScheduleApp import User, Course
+from ScheduleApp import User
 
 # Create your models here.
 
@@ -24,12 +24,6 @@ class A_LIST(models.Model):
 
 
 class COURSE(models.Model):
-    name = models.CharField(max_length = 60)
-    courseNumber = models.CharField(max_length = 60)
-    classNumber = models.CharField(max_length = 60)
-    labList = models.CharField(max_length = 60)
-    time = models.CharField(max_length = 60)
-    location = models.CharField(max_length = 60)
     pass
 
 
@@ -68,19 +62,8 @@ class Terminal:
 
     def createCourse(self, name, coursenumber, classnumber, time, location):
         # Create a course in the database with a generated ID.
-        if self.user == Null:
-            return "You must be logged in."
-        if self.user.permission == 3:
-            return "You do not have permissions to use this function."
-        if self.user.permission == 4:
-            return "You do not have permissions to use this function."
-        course = Course()
-        course.setName(name)
-        course.setCourseNumber(coursenumber)
-        course.setClassNumber(classnumber)
-        course.setTime(time)
-        course.setLocation(location)
-        return"Course successfully created."
+
+        return""
 
     def deleteCourse(self, coursenumber, classnumber):
         # Delete a course from the database
