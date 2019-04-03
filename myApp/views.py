@@ -20,7 +20,7 @@ class Shell(View):
       response = commandInput #Terminal.command(commandInput)
     else:
       response = ""
-    return render(request, 'shell/index.html',{"message":response})
+    return render(request, 'shell/index.html', {"message": response})
 
   def shellForm(request):
     if request.method == 'POST':
@@ -28,35 +28,12 @@ class Shell(View):
       if form.is_valid():
 
         command = form.cleaned_data['command']
-        Terminal.command(command)
-        return redirect('shell/')
+        terminalInstance = Terminal()
+        terminalInstance.command(command)
 
     form = InputForm()
 
     return render(request, 'shell/index.html', {'form': form})
-
-  def login(request):
-    if request.method == 'POST':
-      form = LoginForm(request.POST)
-      if form.is_valid():
-
-        username = form.cleaned_data['username']
-        password = form.cleaned_data['password']
-
-        user = None
-        try:
-          user = USER.objects.get(username=username)
-        except:
-          return HttpResponse("NOT LOGGED IN!!!!!! <a href=http://127.0.0.1:8000>Try Again</a>")
-
-
-        if(user.password == password):
-          return redirect('shell/')
-
-
-    form = LoginForm()
-
-    return render(request, 'shell/login.html', {'form': form})
 
 
 
