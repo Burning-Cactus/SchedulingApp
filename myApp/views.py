@@ -6,10 +6,10 @@ from .forms import InputForm, LoginForm
 from .models import USER
 # Create your views here.
 class Shell(View):
+  response = []
 
   def get(self, request):
-    form = InputForm()
-    return render(request, 'shell/index.html', {"form": form})
+    return render(request, 'shell/index.html', {"message": None})
 
   def post(self, request):
     if request.method == 'POST':
@@ -18,11 +18,9 @@ class Shell(View):
 
         userInput = form.cleaned_data['command']
         terminalInstance = Terminal()
-        response = terminalInstance.command(userInput)
+        Shell.response.append(terminalInstance.command(userInput))
 
-    form = InputForm()
-
-    return render(request, 'shell/index.html', {'form': form, "message": response})
+    return render(request, 'shell/index.html', {"message": Shell.response})
 
 
 

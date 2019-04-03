@@ -2,7 +2,12 @@ from django import forms
 
 
 class InputForm(forms.Form):
-    command = forms.CharField()
+    command = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+        }
+    ))
+    command.label = "OOPLA_SEVER: \\USER>"
 
 
 class LoginForm(forms.Form):
