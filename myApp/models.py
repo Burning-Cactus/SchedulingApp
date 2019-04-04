@@ -240,3 +240,5 @@ class Terminal(object):
 
         if commandIntegerCode == 13:
             return self.help()
+
+
