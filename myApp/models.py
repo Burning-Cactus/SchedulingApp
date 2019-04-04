@@ -40,6 +40,10 @@ class Terminal(object):
     username = ""
     def command(self, inStr):
 
+        # remove spaced if necessary
+        if inStr.__contains__(" "):
+            inStr = self.parseExtraSpaces(inStr)
+
         # this will get everything before the first '('
         commandLabel = inStr.split('(')[0]
 
@@ -241,4 +245,18 @@ class Terminal(object):
         if commandIntegerCode == 13:
             return self.help()
 
+    def parseExtraSpaces(self, inputString):
+
+        split = inputString.split(',')
+        parsedString = ""
+
+        for argument in split:
+            argument.lstrip()
+
+        for argument in split:
+            parsedString += argument + ","
+
+        parsedString = parsedString[0 : len(parsedString) - 1]
+
+        return parsedString
 
