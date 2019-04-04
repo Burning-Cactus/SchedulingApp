@@ -7,9 +7,10 @@ from .models import USER
 # Create your views here.
 class Shell(View):
   response = []
+  terminalInstance = Terminal()
 
   def get(self, request):
-    return render(request, 'shell/index.html', {"message": None})
+    return render(request, 'shell/index.html', {"message": None, "user": ""})
 
   def post(self, request):
     if request.method == 'POST':
@@ -17,10 +18,13 @@ class Shell(View):
       if form.is_valid():
 
         userInput = form.cleaned_data['command']
-        terminalInstance = Terminal()
-        Shell.response.append(terminalInstance.command(userInput))
 
-    return render(request, 'shell/index.html', {"message": Shell.response})
+        if(userInput != "help"):
+          Shell.response.append(Shell.terminalInstance.command(userInput))
+        else:
+          Shell.response.extend(Shell.terminalInstance.command(userInput))
+
+    return render(request, 'shell/index.html', {"message": Shell.response, "user": Shell.terminalInstance.username})
 
 
 

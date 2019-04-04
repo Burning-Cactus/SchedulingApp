@@ -32,9 +32,12 @@ class I_LIST(models.Model):
     pass
 
 
-class Terminal:
+class Terminal(object):
     # This class will be used to execute commands with the database.
     user = None
+
+    # to avoid null pointer when rendering self.user.username
+    username = ""
     def command(self, inStr):
 
         # this will get everything before the first '('
@@ -52,7 +55,8 @@ class Terminal:
                                "assignAssistantToCourse" : 9,
                                "viewCourseAssignments" : 10,
                                "viewAssistantAssignments" : 11,
-                               "viewContactInfo" : 12}
+                               "viewContactInfo" : 12,
+                               "help": 13}
 
         # get the corresponding command
         commandIntegerCode = None
@@ -61,16 +65,24 @@ class Terminal:
             commandIntegerCode = commandLabelOptions.get(commandLabel)
 
         else:
-            return "Error: Command not found"
+            return "Error: command not found, you input : " + inStr
 
-        # parse out the command arguments
-        afterCommandLabel = inStr.split('(')[1]
-        betweenParenthesis = afterCommandLabel[0:len(afterCommandLabel)-1]
-        argumentList = betweenParenthesis.split(',')
+        if commandIntegerCode == 13:
+            return self.callCommand(None, commandIntegerCode)
 
-        # function at end of this file
-        # self contains the user variable
-        return self.callCommand(argumentList, commandIntegerCode)
+        # if not help
+        if inStr[len(inStr) - 1] == ')':
+            # parse out the command arguments
+            afterCommandLabel = inStr.split('(')[1]
+            betweenParenthesis = afterCommandLabel[0:len(afterCommandLabel)-1]
+            argumentList = betweenParenthesis.split(',')
+
+            # function at end of this file
+            # self contains the user variable
+            return self.callCommand(argumentList, commandIntegerCode)
+
+        else:
+            return "Error: command not found, you input : " + inStr
 
 
 
@@ -85,20 +97,18 @@ class Terminal:
             self.user = User.User(userData.permission, userData.username, userData.password,
                                   userData.id, userData.email, userData.firstName, userData.lastName,
                                   userData.contactPhone, userData.officePhone, userData.extension)
+            self.username = self.user.username
         else:
             return "Invalid username or password"
-        return "Logged in as: " + self.user.username
+        return "Logged in as: " + self.username
 
-    def logout(self, xUser):
+    def logout(self):
+        username = self.username
         self.user = None
-        return "" + xUser + " has been logged out"
+        self.username = ""
+        return username + " has been logged out"
 
     def createAccount(self, first, last, username, password, email):
-        # Create a new user in the database with all of the parameters provided and a generated ID.
-        #person = User()
-        #person.toString()
-
-        # return value for testing, will change when function is implemented
         return '2'
 
     def editAccount(self, userid):
@@ -138,7 +148,7 @@ class Terminal:
         return '8'
 
 
-    def assignAssistantToCourse(self, courseid, instructorid):
+    def assignAssistantToCourse(self, courseid, assistantid):
         # Assign a TA to a course in the database
 
         # return value for testing, will change when function is implemented
@@ -162,6 +172,23 @@ class Terminal:
         # return value for testing, will change when function is implemented
         return '12'
 
+    def help(self):
+        helpManual = ["Possible Commands:", "", "",
+                      "login(username, password)", "",
+                      "createAccount(first name, last name, username, password, email)", "",
+                      "editAccount(userID)", "",
+                      "deleteAccount(userID)", "",
+                      "createCourse(name, course number, class number, time, location)", "",
+                      "email(message)", "",
+                      "accessData()", "",
+                      "assignInstructorToCourse(courseID, instructorID)", "",
+                      "assignAssistantToCourse(courseID, assistantID)", "",
+                      "viewCourseAssignments(userID)", "",
+                      "viewAssistantAssignments(userID)", "",
+                      "viewConatantInfo(userID)"  "",  ""]
+
+        return helpManual
+
     # calls the command matching the integer code, using argumentList
     # from user input
     #
@@ -174,7 +201,7 @@ class Terminal:
             return self.login(argumentList[0], argumentList[1])
 
         if commandIntegerCode == 1:
-            return self.logout(argumentList[0])
+            return self.logout()
 
         if commandIntegerCode == 2:
             return self.createAccount(argumentList[0], argumentList[1], argumentList[2],
@@ -210,3 +237,6 @@ class Terminal:
 
         if commandIntegerCode == 12:
             return self.viewContactInfo(argumentList[0])
+
+        if commandIntegerCode == 13:
+            return self.help()
