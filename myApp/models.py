@@ -1,5 +1,5 @@
 from django.db import models
-from ScheduleApp import User
+from ScheduleApp import User, Course
 
 # Create your models here.
 
@@ -25,7 +25,11 @@ class A_LIST(models.Model):
 
 
 class COURSE(models.Model):
-    pass
+    name = models.CharField(max_length=60)
+    courseNumber = models.CharField(max_length=60)
+    classNumber = models.CharField(max_length=60)
+    time = models.CharField(max_length=60)
+    location = models.CharField(max_length=60)
 
 
 class I_LIST(models.Model):
@@ -128,10 +132,31 @@ class Terminal(object):
         return '4'
 
     def createCourse(self, name, coursenumber, classnumber, time, location):
-        # Create a course in the database with a generated ID.
+        if self.user is None:
+            return "You must be logged in."
+        if self.user.permission == 3:
+            return "You do not have permissions to use this function."
+        if self.user.permission == 4:
+            return "You do not have permissions to use this function."
+        course = COURSE()
+        course.name = name
+        course.courseNumber = coursenumber
+        course.classNumber = classnumber
+        course.time = time
+        course.location = location
+        course.save()
+        return "Course successfully created."
 
-        # return value for testing, will change when function is implemented
-        return '5'
+    def deleteCourse(self, coursenumber, classnumber):
+        # Delete a course from the database
+        if self.user is None:
+            return "You must be logged in."
+        if self.user.permission == 3:
+            return "You do not have permissions to use this function."
+        if self.user.permission == 4:
+            return "You do not have permissions to use this function."
+        COURSE.objects.filter(courseNumber=coursenumber, classNumber=classnumber).delete()
+        return"Course successfully deleted"
 
     def email(self, message):
         # Send out an email to notify all recipients.
@@ -177,12 +202,13 @@ class Terminal(object):
         return '12'
 
     def help(self):
-        helpManual = ["Possible Commands:", "", "",
+        helpManual = ["","Possible Commands:", "", "",
                       "login(username, password)", "",
                       "createAccount(first name, last name, username, password, email)", "",
                       "editAccount(userID)", "",
                       "deleteAccount(userID)", "",
                       "createCourse(name, course number, class number, time, location)", "",
+                      "deleteCourse(course number, class number)", "",
                       "email(message)", "",
                       "accessData()", "",
                       "assignInstructorToCourse(courseID, instructorID)", "",
