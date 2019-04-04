@@ -250,7 +250,7 @@ class Terminal(object):
             ext = user.extension
             return fname + lname + email + phone + ext
         else:
-            return 'You do not have the permissions for this command''
+            return 'You do not have the permissions for this command'
 
     def help(self):
         helpManual = ["","Possible Commands:", "", "",
