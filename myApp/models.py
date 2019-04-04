@@ -1,6 +1,7 @@
 from django.db import models
 from ScheduleApp import User, Course
 import re
+from django.core.mail import send_mail
 
 # Create your models here.
 
@@ -180,11 +181,27 @@ class Terminal(object):
         COURSE.objects.filter(courseNumber=coursenumber, classNumber=classnumber).delete()
         return"Course successfully deleted"
 
-    def email(self, message):
+    def email(self, subject, message):
         # Send out an email to notify all recipients.
-
-        # return value for testing, will change when function is implemented
-        return '6'
+        if self.user is None:
+            return "You must be logged in"
+        if self.user.permission == 2:
+            emails = User.objects.all().values_list('email')
+            send_mail(
+                subject,
+                message,
+                USER.email,
+                emails)
+        elif self.user.permission == 3:
+            emails = User.objects.all().filter(User.User.permission == 4).values_list('email')
+            send_mail(
+                subject,
+                message,
+                USER.email,
+                emails)
+        else:
+            return 'You do not have the permissions for this command'
+        return "e-mail sent"
 
     def accessData(self):
         # Access all data in the system and print it in tables
@@ -219,9 +236,21 @@ class Terminal(object):
 
     def viewContactInfo(self, userid):
         # Return the contact info of the user.
-
-        # return value for testing, will change when function is implemented
-        return '12'
+        # Return the contact info of the user.
+        # pull the user data from table by the id
+        if self.user is None:
+            return "You must be logged in"
+        if self.user.permission == 4:
+            user = USER.objects.get(userid == userid)
+            # Assign the data to local variables
+            fname = user.firstname
+            lname = user.lastname
+            email = user.email
+            phone = user.contactphone
+            ext = user.extension
+            return fname + lname + email + phone + ext
+        else:
+            return 'You do not have the permissions for this command''
 
     def help(self):
         helpManual = ["","Possible Commands:", "", "",
