@@ -9,9 +9,10 @@ class USER(models.Model):
     password = models.CharField(max_length = 60)
     permission = models.CharField(max_length = 5)
     email = models.CharField(max_length = 60)
-    firstname = models.CharField(max_length = 60)
-    lastname = models.CharField(max_length = 60)
-    contactphone = models.CharField(max_length = 12)
+    firstName = models.CharField(max_length = 60)
+    lastName = models.CharField(max_length = 60)
+    contactPhone = models.CharField(max_length = 12)
+    officePhone = models.CharField(max_length= 12)
     extension = models.CharField(max_length = 5)
 
 
@@ -64,7 +65,7 @@ class Terminal:
 
         # parse out the command arguments
         afterCommandLabel = inStr.split('(')[1]
-        betweenParenthesis = afterCommandLabel[1:len(afterCommandLabel)-1]
+        betweenParenthesis = afterCommandLabel[0:len(afterCommandLabel)-1]
         argumentList = betweenParenthesis.split(',')
 
         # function at end of this file
@@ -74,17 +75,23 @@ class Terminal:
 
 
     def login(self, xName, xPassword):
-        # Create and return a user object from the database after checking the username and password
-        #person = User()
 
-        # return value for testing, will change when function is implemented
-        return '0'
+        try:
+            userData = USER.objects.get(username=xName)
+        except USER.DoesNotExist:
+            return "Invalid username or password"
+
+        if(userData.password == xPassword):
+            self.user = User.User(userData.permission, userData.username, userData.password,
+                                  userData.id, userData.email, userData.firstName, userData.lastName,
+                                  userData.contactPhone, userData.officePhone, userData.extension)
+        else:
+            return "Invalid username or password"
+        return "Logged in as: " + self.user.username
 
     def logout(self, xUser):
-        # Destroy the user object currently being used
-
-        # return value for testing, will change when function is implemented
-        return '1'
+        self.user = None
+        return "" + xUser + " has been logged out"
 
     def createAccount(self, first, last, username, password, email):
         # Create a new user in the database with all of the parameters provided and a generated ID.
