@@ -2,6 +2,7 @@
 #Made by John and Andy
 
 class User(object):
+    #1 = Administrator, 2 = Supervisor, 3 = Instructor, 4 = TA
     permission = []
     username = ""
     password = ""
@@ -12,6 +13,8 @@ class User(object):
     contactPhone = ""
     officePhone = ""
     extension = ""
+
+
 
     #Default Constructor
     def __init__(self):

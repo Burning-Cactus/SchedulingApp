@@ -1,5 +1,6 @@
 from django.db import models
 from ScheduleApp import User, Course
+import re
 
 # Create your models here.
 
@@ -116,7 +117,28 @@ class Terminal(object):
         self.username = ""
         return username + " has been logged out"
 
-    def createAccount(self, first, last, username, password, email):
+    def createAccount(self, permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension):
+
+        if self.user is None:
+            return "You are not logged in"
+
+        permissionList = re.split(' ,[[][]]', self.user.permission)
+
+        if permissionList.__contains__('1','2') == False:
+            return "User: " + self.username + ", does not have permission to preform this action"
+
+        newUser = USER()
+        newUser.permission = permission
+        newUser.username = username
+        newUser.password = password
+        newUser.email = email
+        newUser.firstName = firstName
+        newUser.lastName = lastName
+        newUser.contactPhone = contactPhone
+        newUser.officePhone = officePhone
+        newUser.extension = extension
+
+
         return '2'
 
     def editAccount(self, userid):
@@ -204,7 +226,7 @@ class Terminal(object):
     def help(self):
         helpManual = ["","Possible Commands:", "", "",
                       "login(username, password)", "",
-                      "createAccount(first name, last name, username, password, email)", "",
+                      "createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)", "",
                       "editAccount(userID)", "",
                       "deleteAccount(userID)", "",
                       "createCourse(name, course number, class number, time, location)", "",
