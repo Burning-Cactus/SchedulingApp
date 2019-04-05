@@ -73,7 +73,7 @@ class Terminal(object):
             return ["Command not found: " + inStr, "Try: help"]
 
         if len(argumentList) == commandLabelOptions[commandLabel][1]:
-            self.callCommand(commandLabelOptions[commandLabel], argumentList)
+            return self.callCommand(commandLabelOptions[commandLabel][0], argumentList)
         else:
             return ["Command argument mismatch: " + inStr, "Try: help"]
 
