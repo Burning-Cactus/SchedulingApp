@@ -2,7 +2,7 @@ from django.db import models
 from ScheduleApp import User, Course
 import re
 from django.core.mail import send_mail
-
+from .Parser import *
 # Create your models here.
 
 
@@ -46,55 +46,36 @@ class Terminal(object):
     username = ""
     def command(self, inStr):
 
-        # remove spaced if necessary
-        if inStr.__contains__(" "):
-            inStr = self.parseExtraSpaces(inStr)
+        # each key has a list, each list has a commandIntegerCode at [0]
+        # and the amount of arguments that the command takes at [1]
+        commandLabelOptions = {"login" : [0, 2],
+                               "logout" : [1, 0],
+                               "createAccount" : [2, 9],
+                               "editAccount" : [3, 1],
+                               "deleteAccount" : [4, 1],
+                               "createCourse" : [5, 5],
+                               "email" : [6, 1],
+                               "accessData" : [7, 0],
+                               "assignInstructorToCourse" : [8, 2],
+                               "assignAssistantToCourse" : [9, 2],
+                               "viewCourseAssignments" : [10, 1],
+                               "viewAssistantAssignments" : [11, 1],
+                               "viewContactInfo" : [12, 1],
+                               "help": [13, 0]}
 
-        # this will get everything before the first '('
-        commandLabel = inStr.split('(')[0]
+        parser = Parser()
+        parser.parseCommand(inStr)
 
-        commandLabelOptions = {"login" : 0,
-                               "logout" : 1,
-                               "createAccount" : 2,
-                               "editAccount" : 3,
-                               "deleteAccount" : 4,
-                               "createCourse" : 5,
-                               "email" : 6,
-                               "accessData" : 7,
-                               "assignInstructorToCourse" : 8,
-                               "assignAssistantToCourse" : 9,
-                               "viewCourseAssignments" : 10,
-                               "viewAssistantAssignments" : 11,
-                               "viewContactInfo" : 12,
-                               "help": 13}
+        commandLabel = parser.commandLabel
+        argumentList = parser.argumentList
 
-        # get the corresponding command
-        commandIntegerCode = None
+        if commandLabel in commandLabelOptions is False:
+            return ["Command not found: " + inStr, "Try: help"]
 
-        if commandLabelOptions.__contains__(commandLabel):
-            commandIntegerCode = commandLabelOptions.get(commandLabel)
-
+        if len(argumentList) == commandLabelOptions[commandLabel][1]:
+            self.callCommand(commandLabelOptions[commandLabel], argumentList)
         else:
-            return "Error: command not found, you input : " + inStr
-
-        if commandIntegerCode == 13:
-            return self.callCommand(None, commandIntegerCode)
-
-        # if not help
-        if inStr[len(inStr) - 1] == ')':
-            # parse out the command arguments
-            afterCommandLabel = inStr.split('(')[1]
-            betweenParenthesis = afterCommandLabel[0:len(afterCommandLabel)-1]
-            argumentList = betweenParenthesis.split(',')
-
-            # function at end of this file
-            # self contains the user variable
-            return self.callCommand(argumentList, commandIntegerCode)
-
-        else:
-            return "Error: command not found, you input : " + inStr
-
-
+            return ["Command argument mismatch: " + inStr, "Try: help"]
 
     def login(self, xName, xPassword):
 
@@ -276,7 +257,7 @@ class Terminal(object):
     # IMPORTANT: self contains the user variable, ie: self.user.permission
     # Therefore we do not need an argument for permission in any of the commands.
     # I will remove them now.
-    def callCommand(self, argumentList, commandIntegerCode):
+    def callCommand(self, commandIntegerCode, argumentList):
 
         if commandIntegerCode == 0:
             return self.login(argumentList[0], argumentList[1])
@@ -321,19 +302,3 @@ class Terminal(object):
 
         if commandIntegerCode == 13:
             return self.help()
-
-    def parseExtraSpaces(self, inputString):
-
-        split = inputString.split(',')
-        parsedString = ""
-
-        for argument in split:
-            argument.lstrip()
-
-        for argument in split:
-            parsedString += argument + ","
-
-        parsedString = parsedString[0 : len(parsedString) - 1]
-
-        return parsedString
-

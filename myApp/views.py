@@ -19,10 +19,12 @@ class Shell(View):
 
         userInput = form.cleaned_data['command']
 
-        if(userInput != "help"):
-          Shell.response.append(Shell.terminalInstance.command(userInput))
+        terminalResponse = Shell.terminalInstance.command(userInput)
+
+        if isinstance(terminalResponse, list):
+          Shell.response.extend(terminalResponse)
         else:
-          Shell.response.extend(Shell.terminalInstance.command(userInput))
+          Shell.response.append(terminalResponse)
 
     return render(request, 'shell/index.html', {"message": Shell.response, "user": Shell.terminalInstance.username})
 
