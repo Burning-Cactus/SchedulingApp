@@ -54,7 +54,7 @@ class Terminal(object):
                                "editAccount" : [3, 1],
                                "deleteAccount" : [4, 1],
                                "createCourse" : [5, 5],
-                               "email" : [6, 1],
+                               "email" : [6, 2],
                                "accessData" : [7, 0],
                                "assignInstructorToCourse" : [8, 2],
                                "assignAssistantToCourse" : [9, 2],
@@ -119,6 +119,7 @@ class Terminal(object):
         newUser.contactPhone = contactPhone
         newUser.officePhone = officePhone
         newUser.extension = extension
+        newUser.save()
 
 
         return '2'

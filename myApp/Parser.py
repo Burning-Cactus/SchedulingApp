@@ -47,7 +47,6 @@ class Parser(object):
                     if command[j] == ']':
                         bracketStack.pop()
                     if len(bracketStack) == 0:
-                        j = j + 1
                         i = j
                         break
                     literal += command[j]
