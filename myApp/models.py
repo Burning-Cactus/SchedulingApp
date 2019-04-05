@@ -75,7 +75,7 @@ class Terminal(object):
         if len(argumentList) == commandLabelOptions[commandLabel][1]:
             return self.callCommand(commandLabelOptions[commandLabel][0], argumentList)
         else:
-            return ["Command argument mismatch: " + inStr, "Try: help"]
+            return ["Command argument mismatch: " + inStr, "Try: help", commandLabel, argumentList]
 
     def login(self, xName, xPassword):
 

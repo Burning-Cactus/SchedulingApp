@@ -8,6 +8,8 @@ class Parser(object):
     argumentList = []
 
     def parseCommand(self, command: str):
+        self.commandLabel = ""
+        self.argumentList = []
 
         # in case of command with no arguments or (), ie: help
         if command.__contains__('(') == False:
@@ -25,8 +27,9 @@ class Parser(object):
         index = command.index('(')
 
         # parse everything between ( ... )
-        for i in range(index, len(command)):
-            parameterStack = []
+        parameterStack = []
+        i = index
+        while True:
 
             if command[i] == '(':
                 parameterStack.append('(')
@@ -60,12 +63,13 @@ class Parser(object):
                 for j in range(i, len(command)):
 
                     if command[j] == ')':
-                        i = j
+                        self.argumentList.append(argument)
+                        i = j - 1
                         break
 
                     if command[j] == ',':
                         self.argumentList.append(argument)
-                        i = j + 1
+                        i = j
                         break
 
                     argument += command[j]
@@ -74,6 +78,7 @@ class Parser(object):
             # quit if first '(' is closed with ')'
             if len(parameterStack) == 0:
                 break
+            i = i + 1
 
         return
 
