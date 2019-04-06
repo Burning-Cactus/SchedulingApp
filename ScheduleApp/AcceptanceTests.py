@@ -109,6 +109,32 @@ class AcceptanceTests(TestCase):
         self.assertEqual(Terminal.deleteAccount('314351'), "User Not Found")
         self.assertEqual(Terminal.deleteAccount(user.databaseID), "Account Deleted")
 
-    ## courseData = COURSE.objects.get(databaseID=645)
-    ##course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
-##         courseData.labList, courseData.time, courseData.location)
+    def test_createCourse(self):
+        courseData = COURSE.objects.get(databaseID=645)
+        course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
+        courseData.labList, courseData.time, courseData.location)
+        self.assertEqual(Terminal.createCourse(course.name, course.courseNumber, course.classnumber, course.time,
+                                                course.location), "Course Has Been Created")
+
+        self.assertEqual(Terminal.createCourse(course.name, course.courseNumber, course.classnumber, course.time,
+                                               course.location), "Course Already Exists")
+
+        self.assertEqual(Terminal.createCourse('sdfs)gfsfw:::::', course.courseNumber, course.classnumber, course.time,
+                                               course.location), "Invalid name")
+
+        self.assertEqual(Terminal.createCourse(course.name, 'sdkjfbdf', course.classnumber, course.time,
+                                               course.location), "Invalid Course Number")
+
+        self.assertEqual(Terminal.createCourse(course.name, course.courseNumber, '34kb23id', course.time,
+                                               course.location), "Invalid Class Number")
+
+        self.assertEqual(Terminal.createCourse(course.name, course.courseNumber, course.classnumber, 'sdffw',
+                                               course.location), "Invalid Time")
+
+        self.assertEqual(Terminal.createCourse(course.name, course.courseNumber, course.classnumber, course.time,
+                                               'eq2"kbt'), "Invalid Location")
+
+        self.assertEqual(Terminal.createCourse('eiufb23]]u', 'sdfsdf', 'wefwvfwe','wergewrg',
+                                               'wefwefwef"'), "Multiple Invalid Info")
+
+    
