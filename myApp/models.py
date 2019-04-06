@@ -69,7 +69,7 @@ class Terminal(object):
         commandLabel = parser.commandLabel
         argumentList = parser.argumentList
 
-        if commandLabel in commandLabelOptions is False:
+        if commandLabelOptions.__contains__(commandLabel) is False:
             return ["Command not found: " + inStr, "Try: help"]
 
         if len(argumentList) == commandLabelOptions[commandLabel][1]:
