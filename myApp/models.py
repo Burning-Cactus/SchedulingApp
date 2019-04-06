@@ -35,8 +35,8 @@ class COURSE(models.Model):
 
 
 class I_LIST(models.Model):
-    pass
-
+    instructorID = None
+    courseID = None
 
 class Terminal(object):
     # This class will be used to execute commands with the database.
@@ -189,9 +189,13 @@ class Terminal(object):
 
     def assignInstructorToCourse(self, courseid, instructorid):
         # Assign an instructor to a course in the database
-
-        # return value for testing, will change when function is implemented
-        return '8'
+        USER.objects.get(id=instructorid).courseID = models.ForeignKey(COURSE.objects.get(id=courseid),
+                                                                       on_delete=models.SET(None))
+        COURSE.objects.get(id=courseid).instructorID = models.ForeignKey(USER.objects.get(id=instructorid),
+                                                                         on_delete=models.SET(None))
+        I_LIST.courseID.save()
+        I_LIST.instructorID.save()
+        return "Instructor added to Course"
 
 
     def assignAssistantToCourse(self, courseid, assistantid):
