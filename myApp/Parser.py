@@ -29,7 +29,7 @@ class Parser(object):
         # parse everything between ( ... )
         parameterStack = []
         i = index
-        while True:
+        while i < len(command):
 
             if command[i] == '(':
                 parameterStack.append('(')
@@ -38,20 +38,30 @@ class Parser(object):
                 parameterStack.pop()
 
             # read literal argument
-            elif command[i] == "[":
+            elif command[i] == '[':
                 literal = ""
-                bracketStack = ['[']
-                for j in range(i + 1, len(command)):
-                    if command[j] == '[':
-                        bracketStack.append('[')
-                    if command[j] == ']':
-                        bracketStack.pop()
-                    if len(bracketStack) == 0:
-                        i = j
-                        break
-                    literal += command[j]
+                bracketStack = []
 
-                self.argumentList.append(literal)
+                while i < len(command):
+
+                    if command[i] == '[':
+                        if len(bracketStack) > 0:
+                            literal += '['
+                        bracketStack.append('[')
+
+                    elif command[i] == ']':
+                        if len(bracketStack) > 1:
+                            literal += ']'
+                        bracketStack.pop()
+
+                    else:
+                        literal += command[i]
+
+                    i = i + 1
+
+                    if len(bracketStack) == 0:
+                        self.argumentList.append(literal)
+                        break
 
             elif command[i] == " ":
                 pass

@@ -104,9 +104,7 @@ class Terminal(object):
         if self.user is None:
             return "You are not logged in"
 
-        permissionList = re.split(' ,[[][]]', self.user.permission)
-
-        if permissionList.__contains__('1','2') == False:
+        if self.user.permission.__contains__('1') is False or self.user.permission.__contains__('2') is False:
             return "User: " + self.username + ", does not have permission to preform this action"
 
         newUser = USER()
@@ -120,9 +118,7 @@ class Terminal(object):
         newUser.officePhone = officePhone
         newUser.extension = extension
         newUser.save()
-
-
-        return '2'
+        return "New user created"
 
     def editAccount(self, userid):
         # Change the values of a user in the database.
@@ -268,7 +264,8 @@ class Terminal(object):
 
         if commandIntegerCode == 2:
             return self.createAccount(argumentList[0], argumentList[1], argumentList[2],
-                               argumentList[3], argumentList[4])
+                                      argumentList[3], argumentList[4], argumentList[5],
+                                      argumentList[6], argumentList[7], argumentList[8])
 
         if commandIntegerCode == 3:
             return self.editAccount(argumentList[0])
