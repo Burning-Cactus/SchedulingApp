@@ -28,6 +28,7 @@ class LAB_SECTION(models.Model):
 
 class A_LIST(models.Model):
     assistantID = models.IntegerField()
+    courseID = models.IntegerField()
     labID = models.IntegerField()
 
 
