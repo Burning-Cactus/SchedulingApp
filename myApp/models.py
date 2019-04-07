@@ -23,7 +23,7 @@ class LAB_SECTION(models.Model):
 
 
 class A_LIST(models.Model):
-    pass
+    assistantID = models.
 
 
 class COURSE(models.Model):
@@ -189,30 +189,69 @@ class Terminal(object):
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "User: " + self.username + ", does not have permission to preform this action"
 
-        allUsers = USER.objects.all()
-        allCourses = COURSE.objects.all()
-        allLabs = LAB_SECTION.objects.all()
-        assistantAssignments = A_LIST.objects.all()
-        instructorAssignments = I_LIST.objects.all()
+        allUsers = ["no entries"]
+        allCourses = ["no entries"]
+        allLabs = ["no entries"]
+        assistantAssignments = ["no entries"]
+        instructorAssignments = ["no entries"]
 
-        allData = ["USER", ""]
+        if USER.objects.count() == 0:
+            pass
+        else:
+            allUsers = USER.objects.all()
+
+        if COURSE.objects.count() == 0:
+            pass
+        else:
+            allCourses = COURSE.objects.all()
+
+        if LAB_SECTION.objects.count() == 0:
+            pass
+        else:
+            allLabs = LAB_SECTION.objects.all()
+
+        if A_LIST.objects.count() == 0:
+            pass
+        else:
+            assistantAssignments = A_LIST.objects.all()
+
+        if I_LIST.objects.count() == 0:
+            pass
+        else:
+            instructorAssignments = I_LIST.objects.all()
+
+        allData = ["USER", "", "ID  |  permission  |  username  |  password  |  first name  |  "
+                               "last name  |  email  |  contact phone  |  office phone  |  extension"]
 
         for entry in allUsers:
-            allData.append(entry)
+            line = str(entry.id) + "  |  " + str(entry.permission) + "  |  " + str(entry.username) + "  |  " + \
+                   str(entry.password) + "  |  " + str(entry.firstName) + "  |  " + str(entry.lastName) + "  |  " + \
+                   str(entry.email) + "  |  " + str(entry.contactPhone) + "  |  " + str(entry.officePhone) + "  |  " + \
+                   str(entry.extension)
+
+            allData.append(line)
+            allData.append("")
 
         allData.append("")
         allData.append("COURSE")
         allData.append("")
 
         for entry in allCourses:
+            line = str(entry.id) + "  |  " + str(entry.name) + "  |  " + str(entry.courseNumber) + "  |  " + \
+                   str(entry.classNumber) + "  |  " + str(entry.time) + "  |  " + str(entry.location) + "  |  "
+
             allData.append(entry)
+            allData.append("")
 
         allData.append("")
         allData.append("LAB_SECTION")
         allData.append("")
 
         for entry in allLabs:
-            allData.append(entry)
+            line = str(entry.id) + "  |  " + str(entry.) + "  |  " + str(entry.username) + "  |  " + \
+                   str(entry.password) + "  |  " + str(entry.firstName) + "  |  " + str(entry.lastName) + "  |  " + \
+                   str(entry.email) + "  |  " + str(entry.contactPhone) + "  |  " + str(entry.officePhone) + "  |  " + \
+                   str(entry.extension)
 
         allData.append("")
         allData.append("A_LIST")
