@@ -1,7 +1,8 @@
 # Description of User:
 #Made by John and Andy
 
-class User:
+class User(object):
+    #1 = Administrator, 2 = Supervisor, 3 = Instructor, 4 = TA
     permission = []
     username = ""
     password = ""
@@ -12,6 +13,8 @@ class User:
     contactPhone = ""
     officePhone = ""
     extension = ""
+
+
 
     #Default Constructor
     def __init__(self):
@@ -30,6 +33,19 @@ class User:
         self.contactPhone=contactPhone
         self.officePhone=officePhone
         self.extension=extension
+
+        # Parameterized Constructor
+    def __call__(self, permission, username, password, databaseID, email, firstName, lastName, contactPhone, officePhone, extension):
+        self.permission = permission
+        self.username = username
+        self.password = password
+        self.databaseID = databaseID
+        self.email = email
+        self.firstName = firstName
+        self.lastName = lastName
+        self.contactPhone = contactPhone
+        self.officePhone = officePhone
+        self.extension = extension
 
     # Create a new User object from a string containing all the fields separated by commas.
     # The string is formated as: the permission,username,password,databaseID,email,firstName,lastName,contactPhone,officePhone,extension

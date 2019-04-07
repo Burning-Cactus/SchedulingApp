@@ -1,9 +1,12 @@
 {% extends "shell/base.html" %}
 {% block content %}
-  <form method="post" action="/">
+    {% for line in message %}
+        {{ line }}<br>
+    {% endfor %}
+  <form style="border: none; background-color: #191919;" method="post" action="/">
   {% csrf_token %}
-    {{ form }}
-    <input type="submit">
+      OOPLA_SERVER: \{{ user }}> <input style="border: none; background-color: #191919; font-family: 'Lucida Console'; color: #54a024;" autocomplete="off" type="text", size="200" name="command">
+    <input type="submit" style="visibility: hidden;">
   </form>
-  <p>{{message}}</p>
+
 {% endblock content %}
