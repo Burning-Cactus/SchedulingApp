@@ -174,14 +174,14 @@ class Terminal(object):
         if self.user is None:
             return "You must be logged in"
         if self.user.permission.__contains__('2'):
-            emails = User.objects.all().values_list('email')
+            emails = USER.objects.all().values_list('email')
             send_mail(
                 subject,
                 message,
                 USER.email,
                 emails)
         elif self.user.permission.__contains__('3'):
-            emails = User.objects.all().filter(User.User.permission.__contains__('4')).values_list('email')
+            emails = USER.objects.all().filter(User.User.permission.__contains__('4')).values_list('email')
             send_mail(
                 subject,
                 message,
