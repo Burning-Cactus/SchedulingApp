@@ -173,15 +173,15 @@ class Terminal(object):
         # Send out an email to notify all recipients.
         if self.user is None:
             return "You must be logged in"
-        if self.user.permission == 2:
+        if self.user.permission.__contains__('2'):
             emails = User.objects.all().values_list('email')
             send_mail(
                 subject,
                 message,
                 USER.email,
                 emails)
-        elif self.user.permission == 3:
-            emails = User.objects.all().filter(User.User.permission == 4).values_list('email')
+        elif self.user.permission.__contains__('3'):
+            emails = User.objects.all().filter(User.User.permission.__contains__('4')).values_list('email')
             send_mail(
                 subject,
                 message,
@@ -335,7 +335,7 @@ class Terminal(object):
         # pull the user data from table by the id
         if self.user is None:
             return "You must be logged in"
-        if self.user.permission == 4:
+        if self.user.permission.__contains__('4'):
             user = USER.objects.get(userid == userid)
             # Assign the data to local variables
             fname = user.firstname
@@ -343,7 +343,7 @@ class Terminal(object):
             email = user.email
             phone = user.contactphone
             ext = user.extension
-            return fname + lname + email + phone + ext
+            return fname + " " + " " + lname + " " + email + " " + phone + " " + ext
         else:
             return 'You do not have the permissions for this command'
 
