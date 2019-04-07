@@ -104,7 +104,7 @@ class Terminal(object):
         if self.user is None:
             return "You are not logged in"
 
-        if self.user.permission.__contains__('1') is False or self.user.permission.__contains__('2') is False:
+        if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "User: " + self.username + ", does not have permission to preform this action"
 
         newUser = USER()
@@ -185,10 +185,53 @@ class Terminal(object):
         return "e-mail sent"
 
     def accessData(self):
-        # Access all data in the system and print it in tables
 
-        # return value for testing, will change when function is implemented
-        return '7'
+        if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
+            return "User: " + self.username + ", does not have permission to preform this action"
+
+        allUsers = USER.objects.all()
+        allCourses = COURSE.objects.all()
+        allLabs = LAB_SECTION.objects.all()
+        assistantAssignments = A_LIST.objects.all()
+        instructorAssignments = I_LIST.objects.all()
+
+        allData = ["USER", ""]
+
+        for entry in allUsers:
+            allData.append(entry)
+
+        allData.append("")
+        allData.append("COURSE")
+        allData.append("")
+
+        for entry in allCourses:
+            allData.append(entry)
+
+        allData.append("")
+        allData.append("LAB_SECTION")
+        allData.append("")
+
+        for entry in allLabs:
+            allData.append(entry)
+
+        allData.append("")
+        allData.append("A_LIST")
+        allData.append("")
+
+        for entry in assistantAssignments:
+            allData.append(entry)
+
+        allData.append("")
+        allData.append("I_LIST")
+        allData.append("")
+
+        for entry in instructorAssignments:
+            allData.append(entry)
+
+        allData.append("")
+
+
+        return allData
 
     def assignInstructorToCourse(self, courseid, instructorid):
         # Assign an instructor to a course in the database
