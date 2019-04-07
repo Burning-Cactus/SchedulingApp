@@ -395,7 +395,7 @@ class Terminal(object):
                               argumentList[3], argumentList[4])
 
         if commandIntegerCode == 6:
-            return self.email(argumentList[0])
+            return self.email(argumentList[0], argumentList[1])
 
         if commandIntegerCode == 7:
             return self.accessData()
