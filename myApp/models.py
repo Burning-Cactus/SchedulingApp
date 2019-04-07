@@ -287,6 +287,14 @@ class Terminal(object):
 
     def assignInstructorToCourse(self, courseid, instructorid):
         # Assign an instructor to a course in the database
+        if self.USER is None:
+            return "You must be logged in."
+        if self.user.permission == 2:
+            return "You do not have permissions to use this function."
+        if self.user.permission == 3:
+            return "You do not have permissions to use this function."
+        if self.user.permission == 4:
+            return "You do not have permissions to use this function."
         try:
             USER.objects.get(id=instructorid).courseID = models.ForeignKey(COURSE.objects.get(id=courseid),
                                                                            on_delete=models.SET(None))
