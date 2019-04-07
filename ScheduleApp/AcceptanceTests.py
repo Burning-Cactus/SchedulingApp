@@ -9,7 +9,7 @@ class AcceptanceTests(TestCase):
         LAB_SECTION.objects.create(databaseID=1, name="Physics", courseNumber=500, classNumber=270, time="9-10am",
                                    location="Physics 270")
 
-        USER.objects.create(permission=[2], username="IPO", password="pret212", databaseID=69, email="IPO@DEZN.com",
+        USER.objects.create(permission=[1], username="IPO", password="pret212", databaseID=69, email="IPO@DEZN.com",
                             firstName="Bo", lastName="fa", contactPhone="2625874132", officePhone="2625478669",
                             extension="148")
 
@@ -137,4 +137,41 @@ class AcceptanceTests(TestCase):
         self.assertEqual(Terminal.createCourse('eiufb23]]u', 'sdfsdf', 'wefwvfwe','wergewrg',
                                                'wefwefwef"'), "Multiple Invalid Info")
 
-    
+    def test_email(self):
+        #SHould we have a user present with the wrong permissions so we can have a fail scenario?
+        self.assertEqual(Terminal.email("Hello World"), "Message Sent")
+
+    def test_accessData(self):
+        userdata = USER.objects.get(databaseID=69)
+        user = User.User(userdata.permission, userdata.username, userdata.password,
+                         userdata.databaseID, userdata.email, userdata.firstName,
+                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+        self.assertEqual(Terminal.accessData(), user.permission, user.username, user.password, user.databaseID,
+                         user.email, user.firstName, user.lastName, user.contactPhone, user.officePhone, user.extension);
+
+    def test_assignInstructorToCourse(self):
+        userdata = USER.objects.get(databaseID=69)
+        user = User.User(3, userdata.username, userdata.password,
+                         userdata.databaseID, userdata.email, userdata.firstName,
+                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+        courseData = COURSE.objects.get(databaseID=645)
+        course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
+                               courseData.labList, courseData.time, courseData.location)
+        self.assertEqual(Terminal.assignInstructorToCourse(course.databaseID, user.databaseID), user.firstName
+                         + " " + user.lastName + " was added to " + course.name)
+        self.assertEqual(Terminal.assignInstructorToCourse('234', user.databaseID), "Course not found")
+        self.assertEqual(Terminal.assignInstructorToCourse( course.databaseID, '23'), "User not found")
+
+    def test_assignAssistantToCourse(self):
+        userdata = USER.objects.get(databaseID=69)
+        user = User.User(4, userdata.username, userdata.password,
+                         userdata.databaseID, userdata.email, userdata.firstName,
+                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+        courseData = COURSE.objects.get(databaseID=645)
+        course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
+                               courseData.labList, courseData.time, courseData.location)
+        self.assertEqual(Terminal.assignAssistantToCourse(course.databaseID, user.databaseID), user.firstName
+                         + " " + user.lastName + " was added to " + course.name)
+        self.assertEqual(Terminal.assignInstructorToCourse('234', user.databaseID), "Course not found")
+        self.assertEqual(Terminal.assignInstructorToCourse(course.databaseID, '23'), "User not found")
+
