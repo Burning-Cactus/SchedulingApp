@@ -35,8 +35,8 @@ class COURSE(models.Model):
 
 
 class I_LIST(models.Model):
-    pass
-
+    instructorID = None
+    courseID = None
 
 class Terminal(object):
     # This class will be used to execute commands with the database.
@@ -156,7 +156,10 @@ class Terminal(object):
             return "You do not have permissions to use this function."
         if self.user.permission == 4:
             return "You do not have permissions to use this function."
-        COURSE.objects.filter(courseNumber=coursenumber, classNumber=classnumber).delete()
+        try:
+            COURSE.objects.filter(courseNumber=coursenumber, classNumber=classnumber).delete()
+        except COURSE.DoesNotExist:
+            return "Course Not Found"
         return"Course successfully deleted"
 
     def email(self, subject, message):
@@ -189,9 +192,20 @@ class Terminal(object):
 
     def assignInstructorToCourse(self, courseid, instructorid):
         # Assign an instructor to a course in the database
+        try:
+            USER.objects.get(id=instructorid).courseID = models.ForeignKey(COURSE.objects.get(id=courseid),
+                                                                           on_delete=models.SET(None))
+            COURSE.objects.get(id=courseid).instructorID = models.ForeignKey(USER.objects.get(id=instructorid),
+                                                                             on_delete=models.SET(None))
+        except USER.DoesNotExist:
+            return "User does not exist"
+        except COURSE.DoesNotExist:
+            return "Course does ot exist"
 
-        # return value for testing, will change when function is implemented
-        return '8'
+        joiner = I_LIST()
+        joiner.courseID.save()
+        joiner.instructorID.save()
+        return "Instructor added to Course"
 
 
     def assignAssistantToCourse(self, courseid, assistantid):
