@@ -7,23 +7,28 @@ from .Parser import *
 
 
 class USER(models.Model):
-    username = models.CharField(max_length = 60)
-    password = models.CharField(max_length = 60)
-    permission = models.CharField(max_length = 5)
-    email = models.CharField(max_length = 60)
-    firstName = models.CharField(max_length = 60)
-    lastName = models.CharField(max_length = 60)
-    contactPhone = models.CharField(max_length = 12)
-    officePhone = models.CharField(max_length= 12)
-    extension = models.CharField(max_length = 5)
+    username = models.CharField(max_length=60)
+    password = models.CharField(max_length=60)
+    permission = models.CharField(max_length=5)
+    email = models.CharField(max_length=60)
+    firstName = models.CharField(max_length=60)
+    lastName = models.CharField(max_length=60)
+    contactPhone = models.CharField(max_length=12)
+    officePhone = models.CharField(max_length=12)
+    extension = models.CharField(max_length=5)
 
 
 class LAB_SECTION(models.Model):
-    pass
+    name = models.CharField(max_length=60)
+    labNumber = models.CharField(max_length=60)
+    courseID = models.CharField(max_length=60)
+    time = models.CharField(max_length=60)
+    location = models.CharField(max_length=60)
 
 
 class A_LIST(models.Model):
-    assistantID = models.
+    assistantID = models.IntegerField()
+    labID = models.IntegerField()
 
 
 class COURSE(models.Model):
@@ -35,8 +40,9 @@ class COURSE(models.Model):
 
 
 class I_LIST(models.Model):
-    instructorID = None
-    courseID = None
+    instructorID = models.IntegerField()
+    courseID = models.IntegerField()
+
 
 class Terminal(object):
     # This class will be used to execute commands with the database.
@@ -233,42 +239,48 @@ class Terminal(object):
             allData.append("")
 
         allData.append("")
-        allData.append("COURSE")
+        allData.extend(["COURSE", "", "ID  |  name  |  course number  |  class number  |  time  |  location"])
         allData.append("")
 
         for entry in allCourses:
             line = str(entry.id) + "  |  " + str(entry.name) + "  |  " + str(entry.courseNumber) + "  |  " + \
-                   str(entry.classNumber) + "  |  " + str(entry.time) + "  |  " + str(entry.location) + "  |  "
+                   str(entry.classNumber) + "  |  " + str(entry.time) + "  |  " + str(entry.location)
 
-            allData.append(entry)
+            allData.append(line)
             allData.append("")
 
         allData.append("")
-        allData.append("LAB_SECTION")
+        allData.extend(["LAB_SECTION", "", "ID  |  name  |  lab number  |  course ID  |  time  |  location"])
         allData.append("")
 
         for entry in allLabs:
-            line = str(entry.id) + "  |  " + str(entry.) + "  |  " + str(entry.username) + "  |  " + \
-                   str(entry.password) + "  |  " + str(entry.firstName) + "  |  " + str(entry.lastName) + "  |  " + \
-                   str(entry.email) + "  |  " + str(entry.contactPhone) + "  |  " + str(entry.officePhone) + "  |  " + \
-                   str(entry.extension)
+            line = str(entry.id) + "  |  " + str(entry.name) + "  |  " + str(entry.labNumber) + "  |  " + \
+                   str(entry.courseID) + "  |  " + str(entry.time) + "  |  " + str(entry.location)
+
+            allData.append(line)
+            allData.append("")
 
         allData.append("")
-        allData.append("A_LIST")
+        allData.extend(["A_LIST", "", "assistant ID  |  lab ID"])
         allData.append("")
 
         for entry in assistantAssignments:
-            allData.append(entry)
+            line = str(entry.assistantID) + "  |  " + str(entry.labID)
+
+            allData.append(line)
+            allData.append("")
 
         allData.append("")
-        allData.append("I_LIST")
+        allData.extend(["I_LIST", "", "instructor ID  |  lab ID"])
         allData.append("")
 
         for entry in instructorAssignments:
-            allData.append(entry)
+            line = str(entry.instructorID) + "  |  " + str(entry.courseID)
+
+            allData.append(line)
+            allData.append("")
 
         allData.append("")
-
 
         return allData
 
