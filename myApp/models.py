@@ -195,11 +195,11 @@ class Terminal(object):
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "User: " + self.username + ", does not have permission to preform this action"
 
-        allUsers = ["no entries"]
-        allCourses = ["no entries"]
-        allLabs = ["no entries"]
-        assistantAssignments = ["no entries"]
-        instructorAssignments = ["no entries"]
+        allUsers = []
+        allCourses = []
+        allLabs = []
+        assistantAssignments = []
+        instructorAssignments = []
 
         if USER.objects.count() == 0:
             pass
