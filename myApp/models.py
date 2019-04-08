@@ -28,7 +28,6 @@ class LAB_SECTION(models.Model):
 
 class A_LIST(models.Model):
     assistantID = models.IntegerField()
-    courseID = models.IntegerField()
     labID = models.IntegerField()
 
 
@@ -64,13 +63,14 @@ class Terminal(object):
                                "email" : [6, 2],
                                "accessData" : [7, 0],
                                "assignInstructorToCourse" : [8, 2],
-                               "assignAssistantToCourse" : [9, 2],
+                               "assignAssistantToLab" : [9, 2],
                                "viewCourseAssignments" : [10, 1],
                                "viewAssistantAssignments" : [11, 1],
                                "viewContactInfo" : [12, 1],
                                "help": [13, 0],
                                "editCourse": [14, 0],
-                               "deleteCourse": [15, 0]}
+                               "deleteCourse": [15, 0],
+                               "editContactInfo": [16, 4]}
 
         parser = Parser()
         parser.parseCommand(inStr)
@@ -216,7 +216,10 @@ class Terminal(object):
 
     def accessData(self):
 
-        if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
+        if self.user is None:
+            return "You must be logged in"
+
+        if self.user.permission.__contains__('1') or self.user.permission.__contains__('2'):
             return "User: " + self.username + ", does not have permission to preform this action"
 
         allUsers = []
@@ -334,23 +337,80 @@ class Terminal(object):
         return "Instructor added to Course"
 
 
-    def assignAssistantToCourse(self, courseid, assistantid):
-        # Assign a TA to a course in the database
+    def assignAssistantToLab(self, labid, assistantid):
 
-        # return value for testing, will change when function is implemented
-        return '9'
+        if self.user is None:
+            return "You must be logged in"
+
+        if self.user.permission.__contains__("1"):
+            return "You do not have the permissions to preform this action"
+
+        try:
+            lab = COURSE.objects.get(id=labid)
+        except:
+            return "Course does not exist"
+
+        try:
+            assistant = USER.objects.get(id=assistantid)
+        except:
+            return "User does not exist"
+
+        entry = A_LIST()
+
+        entry.labID = lab
+        entry.assistantID = assistant
+
+        return "Assistant assigned to lab"
 
     def viewCourseAssignments(self, userid):
-        # Return data on instructor assignments in the database.
 
-        # return value for testing, will change when function is implemented
-        return '10'
+        if self.user is None:
+            return "You must be logged in"
 
-    def viewAssistantAssignments(self, userid):
-        # Return data on TA assignments in the database
+        instructorAssignments = []
+        entry = []
 
-        # return value for testing, will change when function is implemented
-        return '11'
+        if A_LIST.objects.count() == 0:
+            pass
+        else:
+            entry = A_LIST.objects.all()
+
+        instructorAssignments.append("")
+        instructorAssignments.extend(["I_LIST", "", "instructor ID  |  lab ID"])
+        instructorAssignments.append("")
+
+        for entry in instructorAssignments:
+            line = str(entry.assistantID) + "  |  " + str(entry.labID)
+
+            instructorAssignments.append(line)
+            instructorAssignments.append("")
+
+        return instructorAssignments
+
+    def viewAssistantAssignments(self):
+
+        if self.user is None:
+            return "You must be logged in"
+
+        assistantAssignments = []
+        entry = []
+
+        if A_LIST.objects.count() == 0:
+            pass
+        else:
+            entry = A_LIST.objects.all()
+
+        assistantAssignments.append("")
+        assistantAssignments.extend(["A_LIST", "", "assistant ID  |  lab ID"])
+        assistantAssignments.append("")
+
+        for entry in assistantAssignments:
+            line = str(entry.assistantID) + "  |  " + str(entry.labID)
+
+            assistantAssignments.append(line)
+            assistantAssignments.append("")
+
+        return assistantAssignments
 
     def viewContactInfo(self, userid):
         # Return the contact info of the user.
@@ -388,6 +448,33 @@ class Terminal(object):
                       "viewContactInfo(userID)"  "",  ""]
 
         return helpManual
+
+    def editContactInfo(self, email, contactPhone, officePhone, extension):
+
+        if self.user is None:
+            "You must be logged in"
+
+        if email != '~':
+            self.user.setEmail(email)
+
+        if contactPhone != '~':
+            self.user.setContactPhone(contactPhone)
+
+        if officePhone != '~':
+            self.user.officePhone(officePhone)
+
+        if extension != '~':
+            self.user.setExtension(extension)
+
+        userEntry = USER.objects.get(id=self.user.databaseID)
+
+        userEntry.email = self.user.email
+        userEntry.contactPhone = self.user.contactPhone
+        userEntry.officePhone = self.user.officePhone
+        userEntry.entension = self.user.extension
+        userEntry.save()
+
+        return "Contact information updated"
 
     # calls the command matching the integer code, using argumentList
     # from user input
@@ -428,13 +515,13 @@ class Terminal(object):
             return self.assignInstructorToCourse(argumentList[0], argumentList[1])
 
         if commandIntegerCode == 9:
-            return self.assignAssistantToCourse(argumentList[0], argumentList[1])
+            return self.assignAssistantToLab(argumentList[0], argumentList[1])
 
         if commandIntegerCode == 10:
-            return self.viewCourseAssignments(argumentList[0])
+            return self.viewCourseAssignments()
 
         if commandIntegerCode == 11:
-            return self.viewAssistantAssignments(argumentList[0])
+            return self.viewAssistantAssignments()
 
         if commandIntegerCode == 12:
             return self.viewContactInfo(argumentList[0])
@@ -447,3 +534,6 @@ class Terminal(object):
 
         if commandIntegerCode == 15:
             return self.deleteCourse(argumentList[0], argumentList[1])
+
+        if commandIntegerCode == 16:
+            return self.deleteCourse(argumentList[0], argumentList[1], argumentList[2], argumentList[3])
