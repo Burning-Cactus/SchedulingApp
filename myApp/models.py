@@ -57,7 +57,7 @@ class Terminal(object):
         commandLabelOptions = {"login" : [0, 2],
                                "logout" : [1, 0],
                                "createAccount" : [2, 9],
-                               "editAccount" : [3, 1],
+                               "editAccount" : [3, 10],
                                "deleteAccount" : [4, 1],
                                "createCourse" : [5, 5],
                                "email" : [6, 2],
@@ -129,11 +129,49 @@ class Terminal(object):
         newUser.save()
         return "New user created"
 
-    def editAccount(self, userid):
-        # Change the values of a user in the database.
+    def editAccount(self, userid, permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension):
 
-        # return value for testing, will change when function is implemented
-        return '3'
+        if self.user is None:
+            return "You are not logged in"
+
+        if self.user.permission.__contains__('1')is False and self.user.permission.__contains__('2') is False:
+            return "You do not have the permission to preform this action"
+
+        try:
+            userEntry = USER.objects.get(id=userid)
+        except:
+            return "User does not exist"
+
+        if permission != '~':
+            userEntry.permission = permission
+
+        if username != '~':
+            userEntry.username = username
+
+        if password != '~':
+            userEntry.password = password
+
+        if email != '~':
+            userEntry.email = email
+
+        if firstName != '~':
+            userEntry.firstName = firstName
+
+        if lastName != '~':
+            userEntry.lastName = lastName
+
+        if contactPhone != '~':
+            userEntry.contactPhone = contactPhone
+
+        if officePhone != '~':
+            userEntry.officePhone = officePhone
+
+        if extension != '~':
+            userEntry.extension = extension
+
+        userEntry.save()
+
+        return "User account updated"
 
     def deleteAccount(self, userid):
         # Delete a user model in the database.
@@ -219,7 +257,7 @@ class Terminal(object):
         if self.user is None:
             return "You must be logged in"
 
-        if self.user.permission.__contains__('1') or self.user.permission.__contains__('2'):
+        if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "User: " + self.username + ", does not have permission to preform this action"
 
         allUsers = []
@@ -342,7 +380,7 @@ class Terminal(object):
         if self.user is None:
             return "You must be logged in"
 
-        if self.user.permission.__contains__("1"):
+        if self.user.permission.__contains__("1") is False:
             return "You do not have the permissions to preform this action"
 
         try:
@@ -496,7 +534,10 @@ class Terminal(object):
                                       argumentList[6], argumentList[7], argumentList[8])
 
         if commandIntegerCode == 3:
-            return self.editAccount(argumentList[0])
+            return self.editAccount(argumentList[0], argumentList[1], argumentList[2],
+                                    argumentList[3], argumentList[4], argumentList[5],
+                                    argumentList[6], argumentList[7], argumentList[8],
+                                    argumentList[9])
 
         if commandIntegerCode == 4:
             return self.deleteAccount(argumentList[0])
