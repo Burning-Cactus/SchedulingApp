@@ -412,12 +412,11 @@ class Terminal(object):
         except(I_LIST.DoesNotExist):
             return "No courses assigned yet."
 
-        i = 0
+
         for temp in instructorAssignments:
-            courses[i] = COURSE.objects.get(id=temp.courseID)
-            i += 1
-        for entry in courses:
-            output.append(entry.id + "-" + entry.name)
+            course = COURSE.objects.get(id=temp.courseID)
+            output.append(course.id + "-" + course.name)
+
         return output
 
 
