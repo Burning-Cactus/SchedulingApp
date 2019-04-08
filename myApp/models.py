@@ -457,7 +457,10 @@ class Terminal(object):
         if self.user is None:
             return "You must be logged in"
         if self.user.permission.__contains__('4'):
-            user = USER.objects.get(id=userid)
+            try:
+                user = USER.objects.get(id=userid)
+            except user.DoesNotExist:
+                return "User does not exist"
             # Assign the data to local variables
             fname = user.firstName
             lname = user.lastName
