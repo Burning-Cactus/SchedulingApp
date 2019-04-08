@@ -336,12 +336,12 @@ class Terminal(object):
         if self.user is None:
             return "You must be logged in"
         if self.user.permission.__contains__('4'):
-            user = USER.objects.get(userid == userid)
+            user = USER.objects.get(id=userid)
             # Assign the data to local variables
-            fname = user.firstname
-            lname = user.lastname
+            fname = user.firstName
+            lname = user.lastName
             email = user.email
-            phone = user.contactphone
+            phone = user.contactPhone
             ext = user.extension
             return fname + " " + " " + lname + " " + email + " " + phone + " " + ext
         else:
