@@ -218,15 +218,13 @@ class Terminal(object):
         # Delete a course from the database
         if self.user is None:
             return "You must be logged in."
-        if self.user.permission == 3:
-            return "You do not have permissions to use this function."
-        if self.user.permission == 4:
+        if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "You do not have permissions to use this function."
         try:
             COURSE.objects.filter(courseNumber=coursenumber, classNumber=classnumber).delete()
         except COURSE.DoesNotExist:
             return "Course Not Found"
-        return"Course successfully deleted"
+        return "Course successfully deleted"
 
     def email(self, subject, message):
         # Send out an email to notify all recipients.
@@ -351,11 +349,7 @@ class Terminal(object):
         # Assign an instructor to a course in the database
         if self.USER is None:
             return "You must be logged in."
-        if self.user.permission == 2:
-            return "You do not have permissions to use this function."
-        if self.user.permission == 3:
-            return "You do not have permissions to use this function."
-        if self.user.permission == 4:
+        if self.user.permission.__contains('1') is False:
             return "You do not have permissions to use this function."
         try:
             USER.objects.get(id=instructorid).courseID = models.ForeignKey(COURSE.objects.get(id=courseid),
