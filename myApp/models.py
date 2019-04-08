@@ -137,9 +137,27 @@ class Terminal(object):
 
     def deleteAccount(self, userid):
         # Delete a user model in the database.
+        if self.user is None:
+            return "You are not logged in."
 
-        # return value for testing, will change when function is implemented
-        return '4'
+        if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
+            return "User: " + self.username + ", does not have permission to preform this action."
+
+        # Whiteout what is already there
+        self.user.permission = None
+
+        # i_list and a_list references deleted too
+        try:
+            A_LIST.objects.filter(assistantID=userid).delete()
+        except A_LIST.DoesNotExist:
+            return "Assistant Not in A_LIST"
+        try:
+            I_LIST.objects.filter(instructorID=userid).delete()
+        except I_LIST.DoesNotExist:
+            return "Instructor Not in I_LIST"
+
+        # Ladies and gentlemen, we got 'em.
+        return "User Deleted"
 
     def createCourse(self, name, coursenumber, classnumber, time, location):
         if self.user is None:
