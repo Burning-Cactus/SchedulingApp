@@ -64,8 +64,8 @@ class Terminal(object):
                                "accessData" : [7, 0],
                                "assignInstructorToCourse" : [8, 2],
                                "assignAssistantToLab" : [9, 2],
-                               "viewCourseAssignments" : [10, 1],
-                               "viewAssistantAssignments" : [11, 1],
+                               "viewCourseAssignments" : [10, 0],
+                               "viewAssistantAssignments" : [11, 0],
                                "viewContactInfo" : [12, 1],
                                "help": [13, 0],
                                "editCourse": [14, 0],
@@ -200,9 +200,7 @@ class Terminal(object):
     def createCourse(self, name, coursenumber, classnumber, time, location):
         if self.user is None:
             return "You must be logged in."
-        if self.user.permission == 3:
-            return "You do not have permissions to use this function."
-        if self.user.permission == 4:
+        if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "You do not have permissions to use this function."
         course = COURSE()
         course.name = name
@@ -400,30 +398,28 @@ class Terminal(object):
 
         return "Assistant assigned to lab"
 
-    def viewCourseAssignments(self, userid):
+    def viewCourseAssignments(self):
 
         if self.user is None:
             return "You must be logged in"
 
         instructorAssignments = []
-        entry = []
+        courses = []
+        output = []
 
-        if A_LIST.objects.count() == 0:
-            pass
-        else:
-            entry = A_LIST.objects.all()
+        try:
+            instructorAssignments = I_LIST.objects.get(id=self.user.databaseID)
+        except(I_LIST.DoesNotExist):
+            return "No courses assigned yet."
 
-        instructorAssignments.append("")
-        instructorAssignments.extend(["I_LIST", "", "instructor ID  |  lab ID"])
-        instructorAssignments.append("")
+        i = 0
+        for temp in instructorAssignments:
+            courses[i] = COURSE.objects.get(id=temp.courseID)
+            i += 1
+        for entry in courses:
+            output.append(entry.id + "-" + entry.name)
+        return output
 
-        for entry in instructorAssignments:
-            line = str(entry.assistantID) + "  |  " + str(entry.labID)
-
-            instructorAssignments.append(line)
-            instructorAssignments.append("")
-
-        return instructorAssignments
 
     def viewAssistantAssignments(self):
 
