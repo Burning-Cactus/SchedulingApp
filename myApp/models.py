@@ -68,7 +68,9 @@ class Terminal(object):
                                "viewCourseAssignments" : [10, 1],
                                "viewAssistantAssignments" : [11, 1],
                                "viewContactInfo" : [12, 1],
-                               "help": [13, 0]}
+                               "help": [13, 0],
+                               "editCourse": [14, 0],
+                               "deleteCourse": [15, 0]}
 
         parser = Parser()
         parser.parseCommand(inStr)
@@ -154,6 +156,9 @@ class Terminal(object):
         course.location = location
         course.save()
         return "Course successfully created."
+
+    def editCourse(self, name, coursenumber, classnumber, time, location):
+        return "this isn't made yet"
 
     def deleteCourse(self, coursenumber, classnumber):
         # Delete a course from the database
@@ -354,6 +359,7 @@ class Terminal(object):
                       "editAccount(userID)", "",
                       "deleteAccount(userID)", "",
                       "createCourse(name, course number, class number, time, location)", "",
+                      "editCourse(name, course number, class number, time, location)", "",
                       "deleteCourse(course number, class number)", "",
                       "email(message)", "",
                       "accessData()", "",
@@ -361,7 +367,7 @@ class Terminal(object):
                       "assignAssistantToCourse(courseID, assistantID)", "",
                       "viewCourseAssignments(userID)", "",
                       "viewAssistantAssignments(userID)", "",
-                      "viewConatantInfo(userID)"  "",  ""]
+                      "viewContactInfo(userID)"  "",  ""]
 
         return helpManual
 
@@ -417,3 +423,9 @@ class Terminal(object):
 
         if commandIntegerCode == 13:
             return self.help()
+
+        if commandIntegerCode == 14:
+            return self.editCourse(argumentList[0], argumentList[1], argumentList[2], argumentList[3], argumentList[4])
+
+        if commandIntegerCode == 15:
+            return self.deleteCourse(argumentList[0], argumentList[1])
