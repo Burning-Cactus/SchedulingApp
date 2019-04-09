@@ -595,7 +595,7 @@ class Terminal(object):
 
         if commandIntegerCode == 14:
             return self.editCourse(argumentList[0], argumentList[1], argumentList[2], argumentList[3], argumentList[4],
-                                   agrument[5])
+                                   argumentList[5])
 
         if commandIntegerCode == 15:
             return self.deleteCourse(argumentList[0], argumentList[1])
