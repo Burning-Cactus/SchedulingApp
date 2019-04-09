@@ -259,6 +259,8 @@ class Terminal(object):
             A_LIST.objects.get(labID=LAB_SECTION.objects.get(courseID=courseid))
         except A_LIST.DoesNotExist:
             pass
+        except LAB_SECTION.DoesNotExist:
+            pass
         try:
             I_LIST.objects.get(courseID=courseid).delete()
             COURSE.objects.get(id=courseid).delete()
@@ -642,4 +644,4 @@ class Terminal(object):
             return self.editContactInfo(argumentList[0], argumentList[1], argumentList[2], argumentList[3])
         if commandIntegerCode == 17:
             return self.createLab(argumentList[0], argumentList[1], argumentList[2],
-                                    argumentList[3], argumentList[4])
+                                  argumentList[3], argumentList[4])
