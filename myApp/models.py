@@ -69,7 +69,7 @@ class Terminal(object):
                                "viewContactInfo" : [12, 1],
                                "help": [13, 0],
                                "editCourse": [14, 6],
-                               "deleteCourse": [15, 2],
+                               "deleteCourse": [15, 1],
                                "editContactInfo": [16, 4],
                                "createLab" : [17,5] }
 
@@ -534,9 +534,9 @@ class Terminal(object):
                       "editAccount( userID, [[permission]], username, password, email, firstName, lastName, contactPhone, officePhone, extension)", "",
                       "deleteAccount(userID)", "",
                       "createCourse(name, course number, class number, time, location)", "",
-                      "editCourse(name, course id, course number, class number, time, location)", "",
+                      "editCourse(course id, name, course number, class number, time, location)", "",
                       "createLab(name, course, lab number, time, location)", "",
-                      "deleteCourse(course number, class number)", "",
+                      "deleteCourse(course id)", "",
                       "email(subject, [message])", "",
                       "accessData()", "",
                       "assignInstructorToCourse(courseID, instructorID)", "",
@@ -636,7 +636,7 @@ class Terminal(object):
                                    argumentList[5])
 
         if commandIntegerCode == 15:
-            return self.deleteCourse(argumentList[0], argumentList[1])
+            return self.deleteCourse(argumentList[0])
 
         if commandIntegerCode == 16:
             return self.editContactInfo(argumentList[0], argumentList[1], argumentList[2], argumentList[3])
