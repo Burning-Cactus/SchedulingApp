@@ -206,17 +206,17 @@ class Terminal(object):
             return "You cannot delete your own account"
 
         try:
-            A_LIST.objects.get(id=userid).delete()
+            A_LIST.objects.filter(assistantID=userid).delete()
         except A_LIST.DoesNotExist:
             pass
 
         try:
-            I_LIST.objects.get(id=userid).delete()
+            I_LIST.objects.filter(instructorID=userid).delete()
         except I_LIST.DoesNotExist:
             pass
 
         toDelete.delete()
-        
+
         return "User Deleted"
 
     def createCourse(self, name, coursenumber, classnumber, time, location):
@@ -284,7 +284,7 @@ class Terminal(object):
         # Send out an email to notify all recipients.
         if self.user is None:
             return "You must be logged in"
-        if self.user.permission.__contains__('2'):
+        if self.user.permission.__contains__('2') or self.user.permission.__contains__('1'):
             emails = USER.objects.all().values_list('email')
         elif self.user.permission.__contains__('3'):
             emails = USER.objects.all().filter(User.User.permission.__contains__('4')).values_list('email')
