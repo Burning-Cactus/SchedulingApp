@@ -197,20 +197,26 @@ class Terminal(object):
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "User: " + self.username + ", does not have permission to preform this action."
 
-        # Whiteout what is already there
-        self.user.permission = None
-
-        # i_list and a_list references deleted too
         try:
-            A_LIST.objects.filter(assistantID=userid).delete()
+            toDelete = USER.objects.get(id=userid)
+        except USER.DoesNotExist:
+            return "User does not exist"
+
+        if toDelete.id == self.user.databaseID:
+            return "You cannot delete your own account"
+
+        try:
+            A_LIST.objects.get(id=userid).delete()
         except A_LIST.DoesNotExist:
-            return "Assistant Not in A_LIST"
-        try:
-            I_LIST.objects.filter(instructorID=userid).delete()
-        except I_LIST.DoesNotExist:
-            return "Instructor Not in I_LIST"
+            pass
 
-        # Ladies and gentlemen, we got 'em.
+        try:
+            I_LIST.objects.get(id=userid).delete()
+        except I_LIST.DoesNotExist:
+            pass
+
+        toDelete.delete()
+        
         return "User Deleted"
 
     def createCourse(self, name, coursenumber, classnumber, time, location):
