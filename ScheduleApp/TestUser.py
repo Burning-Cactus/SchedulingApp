@@ -1,15 +1,16 @@
 import unittest
+from ScheduleApp.User import User
 
 
 class TestUser(unittest.TestCase):
-    
+
     def test_constructor(self):
         with self.asserRaises(ValueError):
             pass
     
     def test_fromString(self):
         userString = "[1,2]$username$password$45$email@email.com$first name$last name$4142223333"
-        user.fromString(userString)
+        user = User.fromString(userString)
         
         self.assertEquals([1,2], user.permission)
         self.assertEquals('username', user.username)
@@ -126,7 +127,7 @@ class TestUser(unittest.TestCase):
     def test_getExtension(self):
         user = User(extension = "325")
         self.assertEquals("325", user.getExtension())
-        getLastName
+
         user = User(extension = None)
         self.assertEquals(None, user.getExtension())
         
@@ -152,7 +153,7 @@ class TestUser(unittest.TestCase):
             user.setPermission(1,"this")
             user.setPermission("this")
             user.setPermission({})
-            user.setPermission(35i)
+            user.setPermission(35)
             user.setPermission('raw')
             user.setPermission(4.5)
             user.setPermission([42])
@@ -169,7 +170,7 @@ class TestUser(unittest.TestCase):
             user.setUsername(1)
             user.setUsername(1,"this")
             user.setUsername({})
-            user.setUsername(35i)
+            user.setUsername(35)
             user.setUsername(4.5)
             user.setUsername([42])
     
@@ -184,7 +185,7 @@ class TestUser(unittest.TestCase):
             user.setPassword(1)
             user.setPassword(1,"this")
             user.setPassword({})
-            user.setPassword(35i)
+            user.setPassword(35)
             user.setPassword(4.5)
             user.setPassword([42])
     
@@ -199,7 +200,7 @@ class TestUser(unittest.TestCase):
             user.setEmail(1)
             user.setEmail(1,"this")
             user.setEmail({})
-            user.setEmail(35i)
+            user.setEmail(35)
             user.setEmail(4.5)
             user.setEmail([42])
             user.setEmail('this')
@@ -218,7 +219,7 @@ class TestUser(unittest.TestCase):
             user.setFirstName(1)
             user.setFirstName(1,"this")
             user.setFirstName({})
-            user.setFirstName(35i)
+            user.setFirstName(35)
             user.setFirstName(4.5)
             user.setFirstName([42])
     
@@ -233,13 +234,13 @@ class TestUser(unittest.TestCase):
             user.setLastName(1)
             user.setLastName(1,"this")
             user.setLastName({})
-            user.setLastName(35i)
+            user.setLastName(35)
             user.setLastName(4.5)
             user.setLastName([42])
     
     def test_setContactPhone(self):
-        user = User()
-        
+        user = User('.','.','.','.','.','.','.','.','.','')
+
         user.setContactPhone("2223334444")
         self.assertEquals("2223334444", user.officePhone)
         
@@ -248,7 +249,7 @@ class TestUser(unittest.TestCase):
             user.setContactPhone(1)
             user.setContactPhone(1,"this")
             user.setContactPhone({})
-            user.setContactPhone(35i)
+            user.setContactPhone(35)
             user.setContactPhone(4.5)
             user.setContactPhone([42])
             user.setContactPhone("222       333334444444")
@@ -267,7 +268,7 @@ class TestUser(unittest.TestCase):
             user.setOfficePhone(1)
             user.setOfficePhone(1,"this")
             user.setOfficePhone({})
-            user.setOfficePhone(35i)
+            user.setOfficePhone(35)
             user.setOfficePhone(4.5)
             user.setOfficePhone([42])
             user.setOfficePhone("222       333334444444")
@@ -285,7 +286,7 @@ class TestUser(unittest.TestCase):
             user.setExtension(1)
             user.setExtension(1,"this")
             user.setExtension({})
-            user.setExtension(35i)
+            user.setExtension(35)
             user.setExtension(4.5)
             user.setExtension([42])
             user.setExtension("222       333334444444")
