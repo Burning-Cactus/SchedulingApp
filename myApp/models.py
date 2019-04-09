@@ -479,19 +479,21 @@ class Terminal(object):
         if self.user.permission.__contains__('3') is False:
             return "You don't have permission for this command."
 
-        instructorAssignments = []
-        courses = []
         output = []
 
-        try:
-            instructorAssignments = I_LIST.objects.get(id=self.user.databaseID)
-        except I_LIST.DoesNotExist:
+        # try:
+        #    I_LIST.objects.exists(instructorID=self.user.databaseID)
+        # except I_LIST.DoesNotExist:
+        #    return "No courses assigned yet."
+
+        if I_LIST.objects.filter(instructorID=self.user.databaseID).exists() is False:
             return "No courses assigned yet."
 
+        instructorAssignments = I_LIST.objects.filter(instructorID=self.user.databaseID)
 
         for temp in instructorAssignments:
             course = COURSE.objects.get(id=temp.courseID)
-            output.append(course.id + "-" + course.name)
+            output.append(str(course.id) + "-" + course.name)
 
         return output
 
