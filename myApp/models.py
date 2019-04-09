@@ -71,7 +71,7 @@ class Terminal(object):
                                "editCourse": [14, 6],
                                "deleteCourse": [15, 2],
                                "editContactInfo": [16, 4],
-                               "createLab" : [17,7] }
+                               "createLab" : [17,5] }
 
         parser = Parser()
         parser.parseCommand(inStr)
@@ -108,20 +108,19 @@ class Terminal(object):
         self.user = None
         self.username = ""
         return username + " has been logged out"
-    def createLab(self,ID,name,course,classnr,time,location,labnr):
+    def createLab(self,name,course,labnr,time,location):
         if self.user is None:
             return "You are not logged in"
 
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "User: " + self.username + ", does not have permission to preform this action"
-        newLab=Lab()
-        newlab.labID=ID
-        newlab.name=name
-        newlab.courseID=course
-        newlab.classNumber=classnr
-        newlab.time=time
-        newlab.location=location
-        newlab.labNumber=labnr
+        newLab=LAB_SECTION()
+        newLab.name = name
+        newLab.courseID=course
+        newLab.time=time
+        newLab.location=location
+        newLab.labNumber=labnr
+        newLab.save()
         return "new Lab Created"
 
 
@@ -600,5 +599,4 @@ class Terminal(object):
             return self.editContactInfo(argumentList[0], argumentList[1], argumentList[2], argumentList[3])
         if commandIntegerCode == 17:
             return self.createLab(argumentList[0], argumentList[1], argumentList[2],
-                                    argumentList[3], argumentList[4], argumentList[5],
-                                    argumentList[6], argumentList[7])
+                                    argumentList[3], argumentList[4])
