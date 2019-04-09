@@ -69,7 +69,7 @@ class Terminal(object):
                                "viewContactInfo" : [12, 1],
                                "help": [13, 0],
                                "editCourse": [14, 6],
-                               "deleteCourse": [15, 2],
+                               "deleteCourse": [15, 1],
                                "editContactInfo": [16, 4],
                                "createLab" : [17,5] }
 
@@ -249,17 +249,30 @@ class Terminal(object):
 
         return "Course successfully edited."
 
-    def deleteCourse(self, coursenumber, classnumber):
+    def deleteCourse(self, courseid):
         # Delete a course from the database
         if self.user is None:
             return "You must be logged in."
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "You do not have permissions to use this function."
         try:
-            COURSE.objects.filter(courseNumber=coursenumber, classNumber=classnumber).delete()
+            A_LIST.objects.get(labID=LAB_SECTION.objects.get(courseID=courseid))
+        except A_LIST.DoesNotExist:
+            pass
+        except LAB_SECTION.DoesNotExist:
+            pass
+        try:
+            I_LIST.objects.get(courseID=courseid).delete()
+            COURSE.objects.get(id=courseid).delete()
+            LAB_SECTION.objects.get(courseID=courseid).delete()
         except COURSE.DoesNotExist:
             return "Course Not Found"
+        except I_LIST.DoesNotExist:
+            pass
+        except LAB_SECTION.DoesNotExist:
+            pass
         return "Course successfully deleted"
+
 
     def email(self, subject, message):
         # Send out an email to notify all recipients.
@@ -376,20 +389,20 @@ class Terminal(object):
             return "You must be logged in."
         if self.user.permission.__contains__('1') is False:
             return "You do not have permissions to use this function."
+
         try:
-            course = COURSE.objects.get(id=courseid)
+            COURSE.objects.get(id=courseid)
         except:
             return "Course does not exist"
 
         try:
-            instructor = USER.objects.get(id=instructorid)
+            USER.objects.get(id=instructorid)
         except:
             return "User does not exist"
 
         joiner = I_LIST()
-
-        joiner.courseID = course.id
-        joiner.instructorID = instructor.id
+        joiner.courseID = courseid
+        joiner.instructorID = instructorid
         joiner.save()
         return "Instructor added to Course"
 
@@ -523,9 +536,9 @@ class Terminal(object):
                       "editAccount( userID, [[permission]], username, password, email, firstName, lastName, contactPhone, officePhone, extension)", "",
                       "deleteAccount(userID)", "",
                       "createCourse(name, course number, class number, time, location)", "",
-                      "editCourse(name, course id, course number, class number, time, location)", "",
+                      "editCourse(course id, name, course number, class number, time, location)", "",
                       "createLab(name, course, lab number, time, location)", "",
-                      "deleteCourse(course number, class number)", "",
+                      "deleteCourse(course id)", "",
                       "email(subject, [message])", "",
                       "accessData()", "",
                       "assignInstructorToCourse(courseID, instructorID)", "",
@@ -625,10 +638,10 @@ class Terminal(object):
                                    argumentList[5])
 
         if commandIntegerCode == 15:
-            return self.deleteCourse(argumentList[0], argumentList[1])
+            return self.deleteCourse(argumentList[0])
 
         if commandIntegerCode == 16:
             return self.editContactInfo(argumentList[0], argumentList[1], argumentList[2], argumentList[3])
         if commandIntegerCode == 17:
             return self.createLab(argumentList[0], argumentList[1], argumentList[2],
-                                    argumentList[3], argumentList[4])
+                                  argumentList[3], argumentList[4])
