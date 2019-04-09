@@ -66,13 +66,15 @@ class Terminal(object):
                                "assignAssistantToLab" : [9, 2],
                                "viewCourseAssignments" : [10, 0],
                                "viewAssistantAssignments" : [11, 0],
-                               "viewContactInfo" : [12, 1],
+                               "viewContactInfo" : [12, 0],
                                "help": [13, 0],
                                "editCourse": [14, 6],
                                "deleteCourse": [15, 1],
                                "editContactInfo": [16, 4],
                                "createLab" : [17,5],
-                               "assignAssistantToCourse": [18, 2]}
+                               "assignAssistantToCourse": [18, 2],
+                               "me": [19, 0],
+                               "editLab": [20, 6]}
 
         parser = Parser()
         parser.parseCommand(inStr)
@@ -109,7 +111,8 @@ class Terminal(object):
         self.user = None
         self.username = ""
         return username + " has been logged out"
-    def createLab(self,name,course,labnr,time,location):
+
+    def createLab(self, name, courseid, labnr, time, location):
         if self.user is None:
             return "You are not logged in"
 
@@ -117,11 +120,41 @@ class Terminal(object):
             return "User: " + self.username + ", does not have permission to preform this action"
         newLab=LAB_SECTION()
         newLab.name = name
-        newLab.courseID=course
+        newLab.courseID=courseid
         newLab.time=time
         newLab.location=location
         newLab.labNumber=labnr
         newLab.save()
+        return "new Lab Created"
+
+    def editLab(self, labid, name, courseid, labnr, time, location):
+        if self.user is None:
+            return "You are not logged in"
+
+        if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
+            return "User: " + self.username + ", does not have permission to preform this action"
+
+        try:
+            lab = LAB_SECTION.objects.get(id=labid)
+        except:
+            return "Lab does not exist"
+
+        if name != '~':
+            lab.name = name
+
+        if courseid != '~':
+            lab.courseid = courseid
+
+        if labnr != '~':
+            lab.labnr = labnr
+
+        if time != '~':
+            lab.time = time
+
+        if location != '~':
+            lab.location = location
+
+        lab.save()
         return "new Lab Created"
 
 
@@ -503,7 +536,7 @@ class Terminal(object):
         if self.user is None:
             return "You must be logged in"
 
-        if self.user.permission.__contains__(4):
+        if self.user.permission.__contains__('4'):
             assistantAssignments = []
             entry = []
 
@@ -524,11 +557,11 @@ class Terminal(object):
 
             return assistantAssignments
 
-        if self.user.permission.__contains__(3):
+        if self.user.permission.__contains__('3'):
             assistantAssignments = []
 
             try:
-                instructorCourses = I_LIST.objects.get(id=self.user.databaseID)
+                instructorCourses = I_LIST.objects.filter(id=self.user.databaseID)
             except:
                 return "You are not assigned to any courses"
 
@@ -538,40 +571,50 @@ class Terminal(object):
 
             for element in courses:
                 try:
-                    assistant = I_LIST.objects.get(courseID=element)
-                    assistantAssignments.append(assistant.instructorID + ": " + USER.objects.get(id=assistant.instructorID).lastName)
+                    assistant = I_LIST.objects.filter(courseID=element)
+                    if assistant:
+                        assistantAssignments.append(assistant.instructorID + ": " + USER.objects.get(id=assistant.instructorID).lastName)
                 except:
                     pass
+
+            if len(assistantAssignments) == 0:
+                return "You do not have any Assistants"
 
             return assistantAssignments
 
 
 
-    def viewContactInfo(self, userid):
+    def viewContactInfo(self):
         # Return the contact info of the user.
         # Return the contact info of the user.
         # pull the user data from table by the id
         if self.user is None:
             return "You must be logged in"
-        if self.user.permission.__contains__('4'):
-            try:
-                user = USER.objects.get(id=userid)
-            except user.DoesNotExist:
-                return "User does not exist"
-            # Assign the data to local variables
-            fname = user.firstName
-            lname = user.lastName
-            email = user.email
-            phone = user.contactPhone
-            ext = user.extension
-            return fname + " " + " " + lname + " " + email + " " + phone + " " + ext
-        else:
-            return 'You do not have the permissions for this command'
+
+        try:
+            user = USER.objects.all()
+        except user.DoesNotExist:
+            return "User does not exist"
+        # Assign the data to local variables
+        publicInfo = []
+        for entry in user:
+            fname = entry.firstName
+            lname = entry.lastName
+            email = entry.email
+            phone = entry.contactPhone
+            ext = entry.extension
+            publicInfo.append(fname + " " + " " + lname + " " + email + " " + phone + " " + ext)
+            publicInfo.append("")
+
+
+
+        return publicInfo
 
     def help(self):
         helpManual = ["","Possible Commands:", "", "",
                       "login(username, password)", "",
                       "logout()", "",
+                      "me", "",
                       "createAccount([[permission]], username, password, email, firstName, lastName, contactPhone, officePhone, extension)", "",
                       "editAccount( userID, [[permission]], username, password, email, firstName, lastName, contactPhone, officePhone, extension)", "",
                       "deleteAccount(userID)", "",
@@ -586,7 +629,8 @@ class Terminal(object):
                       "assignAssistantToLab(assistantID, labID)", "",
                       "viewCourseAssignments()", "",
                       "viewAssistantAssignments()", "",
-                      "viewContactInfo(userID)"  "",  ""]
+                      "viewContactInfo(userID)"  "",  "",
+                      "editContactInfo(email, contactPhone, officePhone, extension)",""]
 
         return helpManual
 
@@ -596,26 +640,38 @@ class Terminal(object):
             "You must be logged in"
 
         if email != '~':
-            self.user.setEmail(email)
+            self.user.email = email
 
         if contactPhone != '~':
-            self.user.setContactPhone(contactPhone)
+            self.user.contactPhone = contactPhone
 
         if officePhone != '~':
-            self.user.officePhone(officePhone)
+            self.user.officePhone = officePhone
 
         if extension != '~':
-            self.user.setExtension(extension)
+            self.user.extenstion = extension
 
         userEntry = USER.objects.get(id=self.user.databaseID)
 
         userEntry.email = self.user.email
         userEntry.contactPhone = self.user.contactPhone
         userEntry.officePhone = self.user.officePhone
-        userEntry.entension = self.user.extension
+        userEntry.extension = self.user.extension
         userEntry.save()
 
         return "Contact information updated"
+
+    def me(self):
+
+        if self.user is None:
+            return "You are not logged in"
+
+        myAccount = ['',"Permission: " + self.user.permission, '', "Username: " + self.user.username, '', "Password: " + self.user.password, '',
+                     "email: " + self.user.email, '', "First Name: " + self.user.firstName, '', "Last Name: " + self.user.lastName, '',
+                     "Contact Phone: " + self.user.contactPhone, '', "Office Phone: " + self.user.officePhone, '',
+                     "Extension: " + self.user.extension,'']
+
+        return myAccount
 
     # calls the command matching the integer code, using argumentList
     # from user input
@@ -668,7 +724,7 @@ class Terminal(object):
             return self.viewAssistantAssignments()
 
         if commandIntegerCode == 12:
-            return self.viewContactInfo(argumentList[0])
+            return self.viewContactInfo()
 
         if commandIntegerCode == 13:
             return self.help()
@@ -689,3 +745,10 @@ class Terminal(object):
 
         if commandIntegerCode == 18:
             return self.assignAssistantToCourse(argumentList[0], argumentList[1])
+
+        if commandIntegerCode == 19:
+            return self.me()
+
+        if commandIntegerCode == 20:
+            return self.editLab(argumentList[0], argumentList[1], argumentList[2],
+                                argumentList[3], argumentList[4], argumentList[5])
