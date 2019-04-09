@@ -251,21 +251,11 @@ class Terminal(object):
             return "You must be logged in"
         if self.user.permission.__contains__('2'):
             emails = USER.objects.all().values_list('email')
-            send_mail(
-                subject,
-                message,
-                USER.email,
-                emails)
         elif self.user.permission.__contains__('3'):
             emails = USER.objects.all().filter(User.User.permission.__contains__('4')).values_list('email')
-            send_mail(
-                subject,
-                message,
-                USER.email,
-                emails)
         else:
             return 'You do not have the permissions for this command'
-        return "e-mail sent"
+        return list(emails)
 
     def accessData(self):
 
