@@ -1,5 +1,5 @@
 # Description of User:
-#Made by John and Andy
+# Made by John and Andy
 
 class User:
     permission = []
@@ -13,12 +13,12 @@ class User:
     officePhone = ""
     extension = ""
 
-    #Default Constructor
+    #  Constructor
     def __init__(self):
-        #all the variables default to the values above...
+        # all the variables default to the values above...
         pass
 
-    #Parameterized Constructor
+    # Parameterized Constructor
     def __init__(self, permission, username, password, databaseID, email, firstName, lastName, contactPhone, officePhone, extension):
         self.permission=permission
         self.username=username
@@ -36,8 +36,8 @@ class User:
     # Example: "(1 2 3),usermane,pass1234,1337,test@gmail.com,first,last,9-(123)-123-1234,1-800-crayonSLAYER,247"
     #TODO: Require that none of these fields may contain a comma or else this won't work. /n may be a better delimiter
     def fromString(self, formatedString):
-        params = formatedString.split(",")      #splits the contents of the string into elements of an array
-        params[0] = params[0][1:-1]             #removes the first and last character in (example) "(0 1)" -> "0 1"
+        params = formatedString.split(",")      # splits the contents of the string into elements of an array
+        params[0] = params[0][1:-1]             # removes the first and last character in (example) "(0 1)" -> "0 1"
         self.permission = params[0].split(" ")
         self.username = params[1]
         self.password = params[2]
@@ -54,13 +54,13 @@ class User:
     # Currently meant to function with fromString.
     # May want an alternative method for printing out the User in a pretty way.
     def toString(self):
-        #can't print an array, grab it's contents
+        # can't print an array, grab it's contents
         intermediate = "("
-        for i in permission:
+        for i in self.permission:
             intermediate += i + " "
         return intermediate+"),"+self.username+","+self.password+","+self.databaseID+","+self.email+","+self.firstName+","+self.lastName+","+self.contactPhone+","+self.officePhone+","+self.extension
 
-    #Setters
+    # Setters
     def setPermisson(self, permissionList):
         self.permission=permissionList
 
@@ -91,7 +91,7 @@ class User:
     def setExtension(self, extension):
         self.extension=extension
 
-    #Getters
+    # Getters
     def getPermisson(self):
         return self.permission
 

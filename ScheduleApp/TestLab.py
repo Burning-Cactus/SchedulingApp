@@ -1,3 +1,5 @@
+from . import Lab
+
 #Lab (data structure: class) Unit Tests
 #Tests:
 	#CreateLab()
@@ -12,11 +14,11 @@ import unittest
 
 class LabTests(unittest.TestCase):
 #LabTests: We're doing science now
-	labDefault = CreateLab()
+	labDefault = Lab()
 	#"a" might not be able to be ran fast enough to match the above. 
-	a = int(round(time.time() * 1000))
+	#a = int(round(time.time() * 1000))
 	
-	lab = CreateLab(a,"If you see this, tell a programmer", 1, 3600, "4-5pm", "A bad location to program")
+	lab = Lab("If you see this, tell a programmer", 1, 3600, "4-5pm", "A bad location to program")
 	
 	labDefault.settaID(1)
 	lab.settaID(2)
@@ -31,12 +33,12 @@ class LabTests(unittest.TestCase):
 		#location: "Location"
 		#(May not be needed) taID: 0 (a foreign key, so it is set from another table)
     def testCreateLabDefault(self):
-        self.assertEqual(labDefault.labID, a)
-		self.assertEqual(labDefault.name, "Lab")
-		self.assertEqual(labDefault.labNumber, 1)
-		self.assertEqual(labDefault.courseID, 101)
-		self.assertEqual(labDefault.time, "9-10am")
-		self.assertEqual(labDefault.location, "Location")
+        self.assertEqual(lab.labID, a)
+		self.assertEqual(lab.name, "Lab")
+		self.assertEqual(lab.labNumber, 1)
+		self.assertEqual(lab.courseID, 101)
+		self.assertEqual(lab.time, "9-10am")
+		self.assertEqual(lab.location, "Location")
 		#taID is set by another class
 		#self.assertEqual(labDefault.taID, 0)
 
