@@ -25,12 +25,18 @@ class Lab:
         location=location
         labNumber=labnr
 
-        return 0
+        return
 
 
     def toString(self):
         return (self.labID+","+self.name+","+self.labNumber+","+self.courseID+","+self.time+","+self.location)
 
+    def getlabID(self):
+        return self.labID
+
+    def setLabID(self, x):
+        self.labID = x
+        return 0
     def getName(self):
         return self.name
 
