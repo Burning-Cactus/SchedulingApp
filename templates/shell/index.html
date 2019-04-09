@@ -5,8 +5,10 @@
     {% endfor %}
   <form style="border: none; background-color: #191919;" method="post" action="/">
   {% csrf_token %}
-      OOPLA_SERVER: \{{ user }}> <input style="border: none; background-color: #191919; font-family: 'Lucida Console'; color: #54a024;" autocomplete="off" type="text", size="200" name="command">
+      OOPLA_SERVER: \{{ user }}><input autofocus style="border: none; background-color: #191919; font-family: 'Lucida Console'; color: #54a024; width: 80%;" autocomplete="off" type="text", name="command">
     <input type="submit" style="visibility: hidden;">
   </form>
+    <br>
+    <br>
 
 {% endblock content %}
