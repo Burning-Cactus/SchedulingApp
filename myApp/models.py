@@ -71,7 +71,8 @@ class Terminal(object):
                                "editCourse": [14, 6],
                                "deleteCourse": [15, 1],
                                "editContactInfo": [16, 4],
-                               "createLab" : [17,5] }
+                               "createLab" : [17,5],
+                               "assignAssistantToCourse": [18, 2]}
 
         parser = Parser()
         parser.parseCommand(inStr)
@@ -402,15 +403,44 @@ class Terminal(object):
             return "Course does not exist"
 
         try:
-            USER.objects.get(id=instructorid)
+            instructor = USER.objects.get(id=instructorid)
         except:
             return "User does not exist"
+
+        if instructor.permission.__contains__('3') != True:
+            return "This user is not an instructor"
 
         joiner = I_LIST()
         joiner.courseID = courseid
         joiner.instructorID = instructorid
         joiner.save()
         return "Instructor added to Course"
+
+    def assignAssistantToCourse(self, courseid, assistantid):
+        # Assign an instructor to a course in the database
+        if self.user is None:
+            return "You must be logged in."
+        if self.user.permission.__contains__('1') is False:
+            return "You do not have permissions to use this function."
+
+        try:
+            COURSE.objects.get(id=courseid)
+        except:
+            return "Course does not exist"
+
+        try:
+            assistant = USER.objects.get(id=assistantid)
+        except:
+            return "User does not exist"
+
+        if assistant.permission.__contains__('4') != True:
+            return "This user is not an assistant"
+
+        joiner = I_LIST()
+        joiner.courseID = courseid
+        joiner.instructorID = assistantid
+        joiner.save()
+        return "Assistant added to Course"
 
 
     def assignAssistantToLab(self, labid, assistantid):
@@ -431,8 +461,10 @@ class Terminal(object):
         except:
             return "User does not exist"
 
-        entry = A_LIST()
+        if assistant.permission.__contains__('4') != True:
+            return "This user is not an assistant"
 
+        entry = A_LIST()
         entry.labID = lab.id
         entry.assistantID = assistant.id
         entry.save()
@@ -648,6 +680,10 @@ class Terminal(object):
 
         if commandIntegerCode == 16:
             return self.editContactInfo(argumentList[0], argumentList[1], argumentList[2], argumentList[3])
+
         if commandIntegerCode == 17:
             return self.createLab(argumentList[0], argumentList[1], argumentList[2],
                                   argumentList[3], argumentList[4])
+
+        if commandIntegerCode == 18:
+            return self.assignAssistantToCourse(argumentList[0], argumentList[1])
