@@ -450,25 +450,49 @@ class Terminal(object):
         if self.user is None:
             return "You must be logged in"
 
-        assistantAssignments = []
-        entry = []
+        if self.user.permission.__contains__(4):
+            assistantAssignments = []
+            entry = []
 
-        if A_LIST.objects.count() == 0:
-            pass
-        else:
-            entry = A_LIST.objects.all()
+            if A_LIST.objects.count() == 0:
+                pass
+            else:
+                entry = A_LIST.objects.all()
 
-        assistantAssignments.append("")
-        assistantAssignments.extend(["A_LIST", "", "assistant ID  |  lab ID"])
-        assistantAssignments.append("")
-
-        for entry in assistantAssignments:
-            line = str(entry.assistantID) + "  |  " + str(entry.labID)
-
-            assistantAssignments.append(line)
+            assistantAssignments.append("")
+            assistantAssignments.extend(["A_LIST", "", "assistant ID  |  lab ID"])
             assistantAssignments.append("")
 
-        return assistantAssignments
+            for entry in assistantAssignments:
+                line = str(entry.assistantID) + "  |  " + str(entry.labID)
+
+                assistantAssignments.append(line)
+                assistantAssignments.append("")
+
+            return assistantAssignments
+
+        if self.user.permission.__contains__(3):
+            assistantAssignments = []
+
+            try:
+                instructorCourses = I_LIST.objects.get(id=self.user.databaseID)
+            except:
+                return "You are not assigned to any courses"
+
+            courses = []
+            for entry in instructorCourses:
+                courses.append(entry.courseID)
+
+            for element in courses:
+                try:
+                    assistant = I_LIST.objects.get(courseID=element)
+                    assistantAssignments.append(assistant.instructorID + ": " + USER.objects.get(id=assistant.instructorID).lastName)
+                except:
+                    pass
+
+            return assistantAssignments
+
+
 
     def viewContactInfo(self, userid):
         # Return the contact info of the user.
