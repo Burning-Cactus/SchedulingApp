@@ -249,17 +249,28 @@ class Terminal(object):
 
         return "Course successfully edited."
 
-    def deleteCourse(self, coursenumber, classnumber):
+    def deleteCourse(self, courseid):
         # Delete a course from the database
         if self.user is None:
             return "You must be logged in."
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "You do not have permissions to use this function."
         try:
-            COURSE.objects.filter(courseNumber=coursenumber, classNumber=classnumber).delete()
+            A_LIST.objects.get(labID=LAB_SECTION.objects.get(courseID=courseid))
+        except A_LIST.DoesNotExist:
+            pass
+        try:
+            I_LIST.objects.get(courseID=courseid).delete()
+            COURSE.objects.get(id=courseid).delete()
+            LAB_SECTION.objects.get(courseID=courseid).delete()
         except COURSE.DoesNotExist:
             return "Course Not Found"
+        except I_LIST.DoesNotExist:
+            pass
+        except LAB_SECTION.DoesNotExist:
+            pass
         return "Course successfully deleted"
+
 
     def email(self, subject, message):
         # Send out an email to notify all recipients.
@@ -376,20 +387,20 @@ class Terminal(object):
             return "You must be logged in."
         if self.user.permission.__contains__('1') is False:
             return "You do not have permissions to use this function."
+
         try:
-            course = COURSE.objects.get(id=courseid)
+            COURSE.objects.get(id=courseid)
         except:
             return "Course does not exist"
 
         try:
-            instructor = USER.objects.get(id=instructorid)
+            USER.objects.get(id=instructorid)
         except:
             return "User does not exist"
 
         joiner = I_LIST()
-
-        joiner.courseID = course.id
-        joiner.instructorID = instructor.id
+        joiner.courseID = courseid
+        joiner.instructorID = instructorid
         joiner.save()
         return "Instructor added to Course"
 
