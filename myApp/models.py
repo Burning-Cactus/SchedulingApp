@@ -396,8 +396,9 @@ class Terminal(object):
 
         entry = A_LIST()
 
-        entry.labID = lab
-        entry.assistantID = assistant
+        entry.labID = lab.id
+        entry.assistantID = assistant.id
+        entry.save()
 
         return "Assistant assigned to lab"
 
