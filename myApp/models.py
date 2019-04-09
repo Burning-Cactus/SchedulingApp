@@ -356,23 +356,25 @@ class Terminal(object):
 
     def assignInstructorToCourse(self, courseid, instructorid):
         # Assign an instructor to a course in the database
-        if self.USER is None:
+        if self.user is None:
             return "You must be logged in."
-        if self.user.permission.__contains('1') is False:
+        if self.user.permission.__contains__('1') is False:
             return "You do not have permissions to use this function."
         try:
-            USER.objects.get(id=instructorid).courseID = models.ForeignKey(COURSE.objects.get(id=courseid),
-                                                                           on_delete=models.SET(None))
-            COURSE.objects.get(id=courseid).instructorID = models.ForeignKey(USER.objects.get(id=instructorid),
-                                                                             on_delete=models.SET(None))
-        except USER.DoesNotExist:
+            course = COURSE.objects.get(id=courseid)
+        except:
+            return "Course does not exist"
+
+        try:
+            instructor = USER.objects.get(id=instructorid)
+        except:
             return "User does not exist"
-        except COURSE.DoesNotExist:
-            return "Course does ot exist"
 
         joiner = I_LIST()
-        joiner.courseID.save()
-        joiner.instructorID.save()
+
+        joiner.courseID = course.id
+        joiner.instructorID = instructor.id
+        joiner.save()
         return "Instructor added to Course"
 
 
@@ -407,13 +409,16 @@ class Terminal(object):
         if self.user is None:
             return "You must be logged in"
 
+        if self.user.permission.__contains__('3') is False:
+            return "You don't have permission for this command."
+
         instructorAssignments = []
         courses = []
         output = []
 
         try:
             instructorAssignments = I_LIST.objects.get(id=self.user.databaseID)
-        except(I_LIST.DoesNotExist):
+        except I_LIST.DoesNotExist:
             return "No courses assigned yet."
 
 
