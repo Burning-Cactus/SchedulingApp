@@ -357,7 +357,7 @@ class Terminal(object):
             allData.append("")
 
         allData.append("")
-        allData.extend(["I_LIST", "", "instructor ID  |  lab ID"])
+        allData.extend(["I_LIST", "", "user ID  |  course ID"])
         allData.append("")
 
         for entry in instructorAssignments:
@@ -494,18 +494,21 @@ class Terminal(object):
     def help(self):
         helpManual = ["","Possible Commands:", "", "",
                       "login(username, password)", "",
-                      "createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)", "",
-                      "editAccount(userID)", "",
+                      "logout()", "",
+                      "createAccount([[permission]], username, password, email, firstName, lastName, contactPhone, officePhone, extension)", "",
+                      "editAccount( userID, [[permission]], username, password, email, firstName, lastName, contactPhone, officePhone, extension)", "",
                       "deleteAccount(userID)", "",
                       "createCourse(name, course number, class number, time, location)", "",
                       "editCourse(name, course id, course number, class number, time, location)", "",
+                      "createLab(name, course, lab number, time, location)", "",
                       "deleteCourse(course number, class number)", "",
-                      "email(message)", "",
+                      "email(subject, [message])", "",
                       "accessData()", "",
                       "assignInstructorToCourse(courseID, instructorID)", "",
                       "assignAssistantToCourse(courseID, assistantID)", "",
-                      "viewCourseAssignments(userID)", "",
-                      "viewAssistantAssignments(userID)", "",
+                      "assignAssistantToLab(assistantID, labID)", "",
+                      "viewCourseAssignments()", "",
+                      "viewAssistantAssignments()", "",
                       "viewContactInfo(userID)"  "",  ""]
 
         return helpManual
