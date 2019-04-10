@@ -1,5 +1,9 @@
 import unittest
+<<<<<<< HEAD
 from ScheduleApp.User import User
+=======
+from ScheduleApp import User
+>>>>>>> AcceptanceTests
 
 
 class TestUser(unittest.TestCase):
@@ -10,6 +14,10 @@ class TestUser(unittest.TestCase):
     
     def test_fromString(self):
         userString = "[1,2]$username$password$45$email@email.com$first name$last name$4142223333"
+<<<<<<< HEAD
+=======
+
+>>>>>>> AcceptanceTests
         user = User.fromString(userString)
         
         self.assertEquals([1,2], user.permission)
@@ -127,7 +135,10 @@ class TestUser(unittest.TestCase):
     def test_getExtension(self):
         user = User(extension = "325")
         self.assertEquals("325", user.getExtension())
+<<<<<<< HEAD
 
+=======
+>>>>>>> AcceptanceTests
         user = User(extension = None)
         self.assertEquals(None, user.getExtension())
         
