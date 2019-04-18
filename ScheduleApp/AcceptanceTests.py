@@ -7,33 +7,33 @@ from myApp.models import Terminal
 
 class AcceptanceTests(TestCase):
     def setUp(self):
-        LAB_SECTION.objects.create(databaseID=1, name="Physics", courseNumber=500, classNumber=270, time="9-10am",
+        LAB_SECTION.objects.create(name="Physics", labNumber=842, courseID=270, time="9-10am",
                                    location="Physics 270")
 
-        USER.objects.create(permission=[1], username="IPO", password="pret212", databaseID=69, email="IPO@DEZN.com",
+        USER.objects.create(permission=[1], username="IPO", password="pret212", email="IPO@DEZN.com",
                             firstName="Bo", lastName="fa", contactPhone="2625874132", officePhone="2625478669",
                             extension="148")
-        USER.objects.create(permission=[2], username="Dio", password="pret123", databaseID=70, email="Dio@gmail.com",
+        USER.objects.create(permission=[2], username="Dio", password="pret123", email="Dio@gmail.com",
                             firstName="Dezn", lastName="Uts", contactPhone="2621111223", officePhone="262753865",
                             extension="149")
-        USER.objects.create(permission=[3], username="Jotaro", password="pret12", databaseID=71, email="Jotaro@yahoo.com",
+        USER.objects.create(permission=[3], username="Jotaro", password="pret12", email="Jotaro@yahoo.com",
                             firstName="Lig", lastName="Ma", contactPhone="2628377456", officePhone="2629846210",
                             extension="150")
-        USER.objects.create(permission=[4], username="Poyo", password="pret2", databaseID=72, email="Poyo@hotmail.com",
+        USER.objects.create(permission=[4], username="Poyo", password="pret2", email="Poyo@hotmail.com",
                             firstName="Bo", lastName="fa", contactPhone="2628889765", officePhone="2624235436",
                             extension="151")
 
-        COURSE.objects.create(databaseID=645, name="DEATHSCI", courseNumber=500, classNumber=204,
-                              labList=[804, 803, 802], time="8-9am", location="EMS 203")
+        COURSE.objects.create(name="DEATHSCI", courseNumber=500, classNumber=204,
+                             time="8-9am", location="EMS 203")
 
 
-        A_LIST.objects.create(courseID=68, assistantID=67)
+        A_LIST.objects.create(labID=68, assistantID=67)
         I_LIST.objects.create(courseID=56, instructorID=75)
 
     def test_login(self):
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
+                         userdata.email, userdata.firstName,
                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
         self.assertEquals(Terminal.login(user.username, user.password), "Login Successful")
         self.assertEquals(Terminal.login(user.username, 'wrong'), "Invalid Login")
@@ -42,9 +42,9 @@ class AcceptanceTests(TestCase):
 
     def test_logout(self):
         self.assertEquals(Terminal.logout(), "No User Logged In")
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
+                         userdata.email, userdata.firstName,
                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
         Terminal.login(user.username, user.password)
         self.assertEquals(Terminal.logout(), "Successfully Logged Out")
@@ -52,17 +52,17 @@ class AcceptanceTests(TestCase):
 
 
     def test_createAccount(self):
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
-                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
-        userdata2 = USER.objects.get(databaseID=70)
+                          userdata.email, userdata.firstName,
+                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+        userdata2 = USER.objects.get(username="Dio")
         user2 = User.User(userdata2.permission, userdata2.username, userdata2.password,
-                          userdata2.databaseID, userdata2.email, userdata2.firstName,
+                          userdata2.email, userdata2.firstName,
                           userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                          userdata3.databaseID, userdata3.email, userdata3.firstName,
+                          userdata3.email, userdata3.firstName,
                           userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
 
         self.assertEqual(user.permission == 1 | user.permission == 2)
@@ -124,78 +124,78 @@ class AcceptanceTests(TestCase):
                                                 '204444444423244', '4238'), "Multiple Invalid Credentials")
 
     def test_editAccount(self):
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
-                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
-        userdata2 = USER.objects.get(databaseID=70)
+                          userdata.email, userdata.firstName,
+                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+        userdata2 = USER.objects.get(username="Dio")
         user2 = User.User(userdata2.permission, userdata2.username, userdata2.password,
-                          userdata2.databaseID, userdata2.email, userdata2.firstName,
+                          userdata2.email, userdata2.firstName,
                           userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                          userdata3.databaseID, userdata3.email, userdata3.firstName,
+                          userdata3.email, userdata3.firstName,
                           userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
 
         self.assertEqual(user.permission == 1 | user.permission == 2)
         self.assertEqual(user2.permission == 1 | user2.permission == 2)
         self.assertTrue((user3.permission != 1 & user2.permission == 2), "Not Authorized To Use This Command")
 
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
-                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+                          userdata.email, userdata.firstName,
+                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
         self.assertEqual(Terminal.editAccount(user.databaseID), "What Would You Like To Edit?")
         self.assertEqual(Terminal.editAccount('231231'), "User Not Found")
 
 
     def test_deleteAccount(self):
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
-                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
-        userdata2 = USER.objects.get(databaseID=70)
+                          userdata.email, userdata.firstName,
+                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+        userdata2 = USER.objects.get(username="Dio")
         user2 = User.User(userdata2.permission, userdata2.username, userdata2.password,
-                          userdata2.databaseID, userdata2.email, userdata2.firstName,
+                          userdata2.email, userdata2.firstName,
                           userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                          userdata3.databaseID, userdata3.email, userdata3.firstName,
+                          userdata3.email, userdata3.firstName,
                           userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
 
         self.assertEqual(user.permission == 1 | user.permission == 2)
         self.assertEqual(user2.permission == 1 | user2.permission == 2)
         self.assertTrue((user3.permission != 1 & user2.permission == 2), "Not Authorized To Use This Command")
 
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
-                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+                          userdata.email, userdata.firstName,
+                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
         self.assertEqual(Terminal.deleteAccount('314351'), "User Not Found")
         self.assertEqual(Terminal.deleteAccount(user.databaseID), "Account Deleted")
 
 
     def test_createCourse(self):
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
+                         userdata.email, userdata.firstName,
                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
-        userdata2 = USER.objects.get(databaseID=70)
+        userdata2 = USER.objects.get(username="Dio")
         user2 = User.User(userdata2.permission, userdata2.username, userdata2.password,
-                          userdata2.databaseID, userdata2.email, userdata2.firstName,
+                          userdata2.email, userdata2.firstName,
                           userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                          userdata3.databaseID, userdata3.email, userdata3.firstName,
+                          userdata3.email, userdata3.firstName,
                           userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
 
         self.assertEqual(user.permission == 1 | user.permission == 2)
         self.assertEqual(user2.permission == 1 | user2.permission == 2)
         self.assertTrue((user3.permission != 1 & user2.permission == 2), "Not Authorized To Use This Command")
 
-        courseData = COURSE.objects.get(databaseID=645)
-        course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
-        courseData.labList, courseData.time, courseData.location)
+        courseData = COURSE.objects.get(courseNumber=500)
+        course = COURSE.Course(courseData.name, courseData.courseNumber, courseData.classNumber,
+        courseData.time, courseData.location)
         self.assertEqual(Terminal.createCourse(course.name, course.courseNumber, course.classnumber, course.time,
                                                 course.location), "Course Has Been Created")
 
@@ -222,21 +222,21 @@ class AcceptanceTests(TestCase):
 
 
     def test_email(self):
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
-                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
-        userdata2 = USER.objects.get(databaseID=70)
+                          userdata.email, userdata.firstName,
+                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+        userdata2 = USER.objects.get(username="Dio")
         user2 = User.User(userdata2.permission, userdata2.username, userdata2.password,
-                          userdata2.databaseID, userdata2.email, userdata2.firstName,
+                          userdata2.email, userdata2.firstName,
                           userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                          userdata3.databaseID, userdata3.email, userdata3.firstName,
+                          userdata3.email, userdata3.firstName,
                           userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
-        userdata4 = USER.objects.get(databaseID=72)
+        userdata4 = USER.objects.get(username="Poyo")
         user4 = User.User(userdata4.permission, userdata4.username, userdata4.password,
-                          userdata4.databaseID, userdata4.email, userdata4.firstName,
+                          userdata4.email, userdata4.firstName,
                           userdata4.lastName, userdata4.contactPhone, userdata4.officePhone, userdata4.extension)
 
         self.assertEqual(user.permission == 1 | user.permission == 2 | user.permission == 3)
@@ -249,26 +249,26 @@ class AcceptanceTests(TestCase):
 
 
     def test_accessData(self):
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
-                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
-        userdata2 = USER.objects.get(databaseID=70)
+                          userdata.email, userdata.firstName,
+                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+        userdata2 = USER.objects.get(username="Dio")
         user2 = User.User(userdata2.permission, userdata2.username, userdata2.password,
-                          userdata2.databaseID, userdata2.email, userdata2.firstName,
+                          userdata2.email, userdata2.firstName,
                           userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
 
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                          userdata3.databaseID, userdata3.email, userdata3.firstName,
+                          userdata3.email, userdata3.firstName,
                           userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
-        userdata4 = USER.objects.get(databaseID=72)
+        userdata4 = USER.objects.get(username="Poyo")
         user4 = User.User(userdata4.permission, userdata4.username, userdata4.password,
-                          userdata4.databaseID, userdata4.email, userdata4.firstName,
+                          userdata4.email, userdata4.firstName,
                           userdata4.lastName, userdata4.contactPhone, userdata4.officePhone, userdata4.extension)
-        courseData = COURSE.objects.get(databaseID=645)
-        course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
-                               courseData.labList, courseData.time, courseData.location)
+        courseData = COURSE.objects.get(courseNumber=500)
+        course = COURSE.Course(courseData.name, courseData.courseNumber, courseData.classNumber,
+        courseData.time, courseData.location)
         self.assertEqual(user.permission == 1 | user.permission == 2)
         self.assertEqual(user2.permission == 1 | user2.permission == 2)
         self.assertTrue(user3.permission != 1 | user3.permission != 2 )
@@ -287,31 +287,31 @@ class AcceptanceTests(TestCase):
                 course.courseNumber + " " + course.classNumber + " " + course.labList + " " + course.time + " " +course.location)
 
     def test_assignInstructorToCourse(self):
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
+                         userdata.email, userdata.firstName,
                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
-        userdata2 = USER.objects.get(databaseID=70)
+        userdata2 = USER.objects.get(username="Dio")
         user2 = User.User(userdata2.permission, userdata2.username, userdata2.password,
-                          userdata2.databaseID, userdata2.email, userdata2.firstName,
+                          userdata2.email, userdata2.firstName,
                           userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
 
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                          userdata3.databaseID, userdata3.email, userdata3.firstName,
+                          userdata3.email, userdata3.firstName,
                           userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
-        userdata4 = USER.objects.get(databaseID=72)
+        userdata4 = USER.objects.get(username="Poyo")
         user4 = User.User(userdata4.permission, userdata4.username, userdata4.password,
-                          userdata4.databaseID, userdata4.email, userdata4.firstName,
+                          userdata4.email, userdata4.firstName,
                           userdata4.lastName, userdata4.contactPhone, userdata4.officePhone, userdata4.extension)
         self.assertEqual((user.permission == 1), "Not Authorized To Use This Command")
         self.assertTrue((user2.permission != 1), "Not Authorized To Use This Command")
         self.assertTrue((user3.permission != 1), "Not Authorized To Use This Command")
         self.assertTrue((user4.permission != 1), "Not Authorized To Use This Command")
 
-        courseData = COURSE.objects.get(databaseID=645)
-        course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
-                               courseData.labList, courseData.time, courseData.location)
+        courseData = COURSE.objects.get(courseNumber=500)
+        course = COURSE.Course(courseData.name, courseData.courseNumber, courseData.classNumber,
+        courseData.time, courseData.location)
         self.assertEqual(Terminal.assignInstructorToCourse(course.databaseID, user.databaseID), user.firstName
                          + " " + user.lastName + " was added to " + course.name)
         self.assertEqual(Terminal.assignInstructorToCourse('234', user.databaseID), "Course not found")
@@ -319,29 +319,26 @@ class AcceptanceTests(TestCase):
 
 
     def test_assignAssistantToCourse(self):
-        userdata = USER.objects.get(databaseID=69)
+        userdata = USER.objects.get(username="IPO")
         user = User.User(userdata.permission, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
-                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
-        userdata2 = USER.objects.get(databaseID=70)
+                          userdata.email, userdata.firstName,
+                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+        userdata2 = USER.objects.get(username="Dio")
         user2 = User.User(userdata2.permission, userdata2.username, userdata2.password,
-                          userdata2.databaseID, userdata2.email, userdata2.firstName,
+                          userdata2.email, userdata2.firstName,
                           userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
 
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                          userdata3.databaseID, userdata3.email, userdata3.firstName,
+                          userdata3.email, userdata3.firstName,
                           userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
-        userdata4 = USER.objects.get(databaseID=72)
+        userdata4 = USER.objects.get(username="Poyo")
         user4 = User.User(userdata4.permission, userdata4.username, userdata4.password,
-                          userdata4.databaseID, userdata4.email, userdata4.firstName,
+                          userdata4.email, userdata4.firstName,
                           userdata4.lastName, userdata4.contactPhone, userdata4.officePhone, userdata4.extension)
-        courseData = COURSE.objects.get(databaseID=645)
-        course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
-                               courseData.labList, courseData.time, courseData.location)
-        courseData = COURSE.objects.get(databaseID=645)
-        course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
-                               courseData.labList, courseData.time, courseData.location)
+        courseData = COURSE.objects.get(courseNumber=500)
+        course = COURSE.Course(courseData.name, courseData.courseNumber, courseData.classNumber,
+        courseData.time, courseData.location)
         self.assertEqual((user.permission == 1), "Not Authorized To Use This Command")
         self.assertTrue((user2.permission != 1), "Not Authorized To Use This Command")
         self.assertTrue((user3.permission != 1), "Not Authorized To Use This Command")
@@ -353,18 +350,18 @@ class AcceptanceTests(TestCase):
 
     def test_viewCourseAssignments(self):
 
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                         userdata3.databaseID, userdata3.email, userdata3.firstName,
-                         userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
-        userdata4 = USER.objects.get(databaseID=72)
+                          userdata3.email, userdata3.firstName,
+                          userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
+        userdata4 = USER.objects.get(username="Poyo")
         user4 = User.User(userdata4.permission, userdata4.username, userdata4.password,
-                          userdata4.databaseID, userdata4.email, userdata4.firstName,
+                          userdata4.email, userdata4.firstName,
                           userdata4.lastName, userdata4.contactPhone, userdata4.officePhone, userdata4.extension)
 
-        courseData = COURSE.objects.get(databaseID=645)
-        course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
-                               courseData.labList, courseData.time, courseData.location)
+        courseData = COURSE.objects.get(courseNumber=500)
+        course = COURSE.Course(courseData.name, courseData.courseNumber, courseData.classNumber,
+        courseData.time, courseData.location)
         self.assertTrue(user3.permission == 3)
         self.assertTrue((user4.permission != 4), "Not Authorized To Use This Command")
         self.assertEqual(Terminal.viewCourseAssignments(userdata4.databaseID), "User is not an Instructor")
@@ -373,22 +370,22 @@ class AcceptanceTests(TestCase):
         self.assertEqual(Terminal.viewCourseAssignments('qakbd'), "Invalid UserId")
 
     def test_viewAssistantAssignments(self):
-        userdata2 = USER.objects.get(databaseID=70)
-        user2= User.User(userdata2.permission, userdata2.username, userdata2.password,
-                         userdata2.databaseID, userdata2.email, userdata2.firstName,
-                         userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
+        userdata2 = USER.objects.get(username="Dio")
+        user2 = User.User(userdata2.permission, userdata2.username, userdata2.password,
+                          userdata2.email, userdata2.firstName,
+                          userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
 
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                         userdata3.databaseID, userdata3.email, userdata3.firstName,
-                         userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
-        userdata4 = USER.objects.get(databaseID=72)
+                          userdata3.email, userdata3.firstName,
+                          userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
+        userdata4 = USER.objects.get(username="Poyo")
         user4 = User.User(userdata4.permission, userdata4.username, userdata4.password,
-                         userdata4.databaseID, userdata4.email, userdata4.firstName,
-                         userdata4.lastName, userdata4.contactPhone, userdata4.officePhone, userdata4.extension)
-        courseData = COURSE.objects.get(databaseID=645)
-        course = COURSE.Course(courseData.databaseID, courseData.name, courseData.courseNumber, courseData.classNumber,
-                               courseData.labList, courseData.time, courseData.location)
+                          userdata4.email, userdata4.firstName,
+                          userdata4.lastName, userdata4.contactPhone, userdata4.officePhone, userdata4.extension)
+        courseData = COURSE.objects.get(courseNumber=500)
+        course = COURSE.Course(courseData.name, courseData.courseNumber, courseData.classNumber,
+        courseData.time, courseData.location)
         self.assertTrue(user4.permission == 4)
         self.assertTrue(user3.permission == 3)
         self.assertTrue((user2.permission != 4 | user2.permission != 3), "Not Authorized To Use This Command")
@@ -399,23 +396,23 @@ class AcceptanceTests(TestCase):
         self.assertEqual(Terminal.viewAssistantAssignments('qakbd'), "Invalid UserId")
 
     def test_viewContactInfo(self):
-        userdata = USER.objects.get(databaseID=69)
-        user = User.User(3, userdata.username, userdata.password,
-                         userdata.databaseID, userdata.email, userdata.firstName,
-                         userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
+        userdata = USER.objects.get(username="IPO")
+        user = User.User(userdata.permission, userdata.username, userdata.password,
+                          userdata.email, userdata.firstName,
+                          userdata.lastName, userdata.contactPhone, userdata.officePhone, userdata.extension)
 
-        userdata2 = USER.objects.get(databaseID=70)
+        userdata2 = USER.objects.get(username="Dio")
         user2 = User.User(userdata2.permission, userdata2.username, userdata2.password,
-                          userdata2.databaseID, userdata2.email, userdata2.firstName,
+                          userdata2.email, userdata2.firstName,
                           userdata2.lastName, userdata2.contactPhone, userdata2.officePhone, userdata2.extension)
 
-        userdata3 = USER.objects.get(databaseID=71)
+        userdata3 = USER.objects.get(username="Jotaro")
         user3 = User.User(userdata3.permission, userdata3.username, userdata3.password,
-                          userdata3.databaseID, userdata3.email, userdata3.firstName,
+                          userdata3.email, userdata3.firstName,
                           userdata3.lastName, userdata3.contactPhone, userdata3.officePhone, userdata3.extension)
-        userdata4 = USER.objects.get(databaseID=72)
+        userdata4 = USER.objects.get(username="Poyo")
         user4 = User.User(userdata4.permission, userdata4.username, userdata4.password,
-                          userdata4.databaseID, userdata4.email, userdata4.firstName,
+                          userdata4.email, userdata4.firstName,
                           userdata4.lastName, userdata4.contactPhone, userdata4.officePhone, userdata4.extension)
 
         self.assertEqual(Terminal.viewContactInfo(user.databaseID),user.permission + " " + user.username + " " + user.password
