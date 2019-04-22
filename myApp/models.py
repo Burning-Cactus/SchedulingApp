@@ -9,7 +9,6 @@ from .Parser import *
 class USER(models.Model):
     username = models.CharField(max_length=60)
     password = models.CharField(max_length=60)
-    databaseID = models.CharField(max_length=12)
     permission = models.CharField(max_length=5)
     email = models.CharField(max_length=60)
     firstName = models.CharField(max_length=60)
@@ -33,7 +32,6 @@ class A_LIST(models.Model):
 
 
 class COURSE(models.Model):
-    databaseID = models.CharField(max_length=12)
     name = models.CharField(max_length=60)
     courseNumber = models.CharField(max_length=60)
     classNumber = models.CharField(max_length=60)
