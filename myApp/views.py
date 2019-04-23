@@ -34,7 +34,7 @@ class editAccount(View):
 
   def get(self, request, UserName):
     edited = USER.objects.get(username=UserName)
-    return render(request,edited, 'shell/editAccount.html')
+    return render(request, edited, 'shell/editAccount.html')
 
   def post(self, request, user):
     if request.POST['UserName'] != '~':
