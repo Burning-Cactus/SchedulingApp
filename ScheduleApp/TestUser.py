@@ -1,5 +1,7 @@
 import unittest
-from ScheduleApp.User import User
+
+from ScheduleApp import User
+
 
 
 class TestUser(unittest.TestCase):
@@ -10,6 +12,7 @@ class TestUser(unittest.TestCase):
     
     def test_fromString(self):
         userString = "[1,2]$username$password$45$email@email.com$first name$last name$4142223333"
+
         user = User.fromString(userString)
         
         self.assertEquals([1,2], user.permission)
