@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account</title>
+</head>
+<body>
+    <form method="post" action="#">
+        {% csrf_token %}
+        User Name:<br><input type="text" name="UserName"></br>
+        Password:<br><input type="password" name="Password"></br>
+        Permission:<br><input type="number" name="Permission"></br>
+        Email:<br><input type="email" name="Email"></br>
+        First Name:<br><input type="text" name="FirstName"></br>
+        Last Name:<br><input type="text" name="LastName"></br>
+        Contact Phone:<br><input type="tel" name="ContactPhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></br>
+        Office Phone:<br><input type="tel" name="OfficePhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></br>
+        Extension:<br><input type="number" name="Extension"></br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

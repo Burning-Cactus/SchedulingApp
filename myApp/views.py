@@ -28,5 +28,11 @@ class Shell(View):
 
     return render(request, 'shell/index.html', {"message": Shell.response, "user": Shell.terminalInstance.username})
 
+class createAccount(View):
 
+    def get(self, request):
+      return render(request, 'shell/createAccount.html')
 
+    def post(self, request):
+      message = Terminal.createAccount()
+      return(request, 'shell/createAccount.html')
