@@ -274,7 +274,7 @@ class Terminal(object):
         if self.user.permission.__contains__('1')is False and self.user.permission.__contains__('2') is False:
             return "You do not have the permission to preform this action"
         try:
-            current = COURSE.objects.filter(courseid=courseid)
+            current = COURSE.objects.get(id=courseid)
         except COURSE.DoesNotExist:
             return "Course Not Found"
 
@@ -296,7 +296,7 @@ class Terminal(object):
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "You do not have permissions to use this function."
         try:
-            A_LIST.objects.get(labID=LAB_SECTION.objects.get(courseID=courseid))
+            A_LIST.objects.filter(labID=LAB_SECTION.objects.get(courseID=courseid))
         except A_LIST.DoesNotExist:
             pass
         except LAB_SECTION.DoesNotExist:
