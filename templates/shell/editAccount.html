@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User Data</title>
+</head>
+<body>
+    <form method="post" action="#">
+        {% csrf_token %}
+        User Name<input type="text" name="UserName"></br>
+        Password<input type="password" name="Password"></br>
+        Permission<input type="number" name="Permission"></br>
+        Email<input type="email" name="Email"></br>
+        First Name<input type="text" name="FirstName"></br>
+        Last Name<input type="text" name="LastName"></br>
+        Contact Phone<input type="tel" name="ContactPhone"></br>
+        Office Phone<input type="tel" name="OfficePhone"></br>
+        Extension<input type="number" name="Extension"></br>
+    </form>
+</body>
+</html>
