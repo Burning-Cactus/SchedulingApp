@@ -12,20 +12,20 @@ class editAccount(View):
 
   def post(self, request):
     if request.POST['UserName'] != '~':
-        user.username = request.POST['UserName']
+        USER.username = request.POST['UserName']
     if request.POST['Password'] != '~':
-        user.password = request.POST['Password']
+        USER.password = request.POST['Password']
     if request.POST['Permission'] != '~':
-        user.email = request.POST['Permission']
+        USER.email = request.POST['Permission']
     if request.POST['Email'] != '~':
-        user.email = request.POST['Email']
+        USER.email = request.POST['Email']
     if request.POST['FirstName'] != '~':
-        user.firstName = request.POST['FirstName']
+        USER.firstName = request.POST['FirstName']
     if request.POST['LastName'] != '~':
-        user.LastName = request.POST['LastName']
+        USER.LastName = request.POST['LastName']
     if request.POST['ContactPhone'] != '~':
-        user.contactPhone = request.POST['ContactPhone']
+        USER.contactPhone = request.POST['ContactPhone']
     if request.POST['OfficePhone'] != '~':
-        user.officePhone = request.POST['OfficePhone']
+        USER.officePhone = request.POST['OfficePhone']
     if request.POST['Extension'] != '~':
-        user.extension = request.POST['Extension']
+        USER.extension = request.POST['Extension']

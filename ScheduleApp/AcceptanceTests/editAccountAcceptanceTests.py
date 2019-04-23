@@ -1,5 +1,4 @@
 from django.test import Client, TestCase
-from ScheduleApp import User
 from myApp.models import USER
 
 class AcceptanceTests(TestCase):
@@ -13,8 +12,8 @@ class AcceptanceTests(TestCase):
 
     def editAccountTests(self):
         c = Client()
-        idToEdit = self.c.session['editID']
-        ro = self.c.post('editSelect.html', {'UserId': idToEdit})
+        idToEdit = c.session['editID']
+        ro = c.post('editSelect.html', {'UserId': idToEdit})
         url = ro.redirect_chain
         self.assertEquals(url, ['editAccount.html'])
 
@@ -26,4 +25,4 @@ class AcceptanceTests(TestCase):
 
         self.assertEqual(c.session['editID'].username, 'Boso')
 
-        self.assertEqual(c.session['editID'].username, 'Mozo')
+        #self.assertEqual(c.session['editID'].username, 'Mozo')
