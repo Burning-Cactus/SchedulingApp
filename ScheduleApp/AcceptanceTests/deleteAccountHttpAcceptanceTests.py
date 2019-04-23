@@ -9,8 +9,8 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
         # returns a status_code equal to 200
     def test1(self):
         c = Client()
-        response = c.post('/delete/', {'username': 'john', 'password': 'smith'})
-        response = c.get('/customer/details/')
+        response = c.post('/delete/', {'username': 'john', 'password': 'smith', 'databaseID': '-1337'})
+        #response = c.get('/customer/details/')
         TestCase.assertEqual(response.status_code, 200)
 
         # check databaseID
