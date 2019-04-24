@@ -2,6 +2,7 @@ from django.test import Client, TestCase
 from myApp.models import USER
 
 
+# Andy
 class DeleteAccountHttpAcceptanceTest(TestCase):
 
     def setUp(self):
