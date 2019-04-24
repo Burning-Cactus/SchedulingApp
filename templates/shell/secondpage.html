@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Second Page yo</title>
+</head>
+<body>
+    <h1>{{ username }}</h1>
+    <form action="/logout" method="get">
+        {% csrf_token %}
+        <input type="submit" name="sub" value="Logout">
+
+    </form>
+</body>
+</html>
