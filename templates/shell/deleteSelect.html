@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Delete an Account</title>
+    </head>
+    <body>
+        <form method="post" action="#">
+            {% csrf_token %}
+            Input User's ID: <input type="text" name="UserId"></br>
+            <input value="Submit" type="submit">
+        </form>
+    </body>
+</html>
