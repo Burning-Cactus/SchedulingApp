@@ -1,5 +1,5 @@
 from django.db import models
-from ScheduleApp import User, Course
+from SchedulingApp.ScheduleApp import User, Course
 import re
 from django.core.mail import send_mail
 from .Parser import *
