@@ -11,26 +11,16 @@ class editAccount(View):
     return render(request, 'shell/editAccount.html')
 
   def post(self, request):
-    editAccount(request.session['editID'], request.POST['Permission'], request.POST['UserName'],
+    response = editAccount(request.session['editID'], request.POST['Permission'], request.POST['UserName'],
                 request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
                 request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
                 request.POST['Extension'])
+    if response == "User account updated":
+        return render(request, ['http://127.0.0.1:8000/home'])
+    if response == "User does not exist":
+        return render(request, ['shell/editAccount.html'])
+    else:
+        return render(request, ['shell/editAccount.html'])
 
-    #if request.POST['UserName'] != '~':
-    #    USER.username = request.POST['UserName']
-    #if request.POST['Password'] != '~':
-    #    USER.password = request.POST['Password']
-    #if request.POST['Permission'] != '~':
-    #    USER.email = request.POST['Permission']
-    #if request.POST['Email'] != '~':
-    #    USER.email = request.POST['Email']
-    #if request.POST['FirstName'] != '~':
-    #    USER.firstName = request.POST['FirstName']
-    #if request.POST['LastName'] != '~':
-    #    USER.LastName = request.POST['LastName']
-    #if request.POST['ContactPhone'] != '~':
-    #    USER.contactPhone = request.POST['ContactPhone']
-    #if request.POST['OfficePhone'] != '~':
-    #    USER.officePhone = request.POST['OfficePhone']
-    #if request.POST['Extension'] != '~':
-    #    USER.extension = request.POST['Extension']
+
+
