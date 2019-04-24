@@ -5,10 +5,10 @@
         <title>Delete an Account</title>
     </head>
     <body>
-        <form method="post" action="#">
+        <form target="_blank" method="post" action="#">
             {% csrf_token %}
             Input User's ID: <input type="text" name="UserId"></br>
-            <input value="Submit" type="submit">
+            <input onclick="window.location.href = 'deleteAccount.html';" type="submit" value="Delete" />
         </form>
     </body>
 </html>
