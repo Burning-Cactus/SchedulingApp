@@ -9,18 +9,36 @@ class loginHttpAcceptanceTests(TestCase):
                                         firstName="john", lastName="flupper", contactPhone="2628889765",
                                         officePhone="2624235436", extension="151")
 
+        self.c = Client()
 
 
-    def testLoginSuccess(self):
+    def testGetLogin(self):
+        ret = self.c.get('/login/')
+        self.assertTrue(ret.content.__contains__(b'<title>Log In</title>'))
 
-        c = Client()
+    def testLoginPost(self):
 
-        ret = c.post('/login/', {'username': self.user.username, 'password': self.user.password})
-        url = ret.redirect_chain
-        self.assertEquals(url, [('http://127.0.0.1:8000/home', 302)])
+        ret = self.c.post('/login/', {'UserName': self.user.username, 'Password': self.user.password}, follow=True)
+        self.assertEqual(ret.redirect_chain, [("/commands/", 302)])
 
-        userId = c.session['userid']
+        userId = self.c.session['userid']
         self.assertEqual(userId, self.user.id)
+
+    def testLoginPostError1(self):
+
+        ret = self.c.post('/login/', {'UserName': '', 'Password': self.user.password})
+        self.assertEqual(ret.content.__contains__(b'<tile>Login Error</title>'))
+
+    def testLoginPostError2(self):
+
+        ret = self.c.post('/login/', {'UserName': '', 'Password': ''})
+        self.assertEqual(ret.content.__contains__(b'<tile>Login Error</title>'))
+
+    def testLoginPostError3(self):
+
+        ret = self.c.post('/login/', {'UserName': self.user.username, 'Password': ''})
+        self.assertEqual(ret.content.__contains__(b'<tile>Login Error</title>'))
+
 
 
 
