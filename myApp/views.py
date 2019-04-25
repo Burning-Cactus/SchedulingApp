@@ -85,8 +85,8 @@ class editSelect(View):
 
     def post(self, request):
         try:
-            if USER.objects.get(request.POST['UserID']):
-                request.session['editID'] = request.POST['UserID']
+            if USER.objects.get(request.POST['userid']) is not None:
+                request.session['editID'] = request.POST['userid']
                 return render(request, 'shell/editAccount.html')
         except USER.DoesNotExist:
             return render(request, 'shell/editAccountError.html')

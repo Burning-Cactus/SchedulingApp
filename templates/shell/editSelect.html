@@ -5,9 +5,9 @@
     <title>Select User to Edit</title>
 </head>
 <body>
-    <form method="post" action="#">
+    <form method="post" action="http://127.0.0.1:8000/editSelect/">
         {% csrf_token %}
-        Input User's ID<input type="text" name="UserID"></br>
+        Input User's ID<input type="text" name="userid"></br>
         <input value="Submit" type="submit">
     </form>
 </body>
