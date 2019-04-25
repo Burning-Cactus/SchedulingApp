@@ -1,9 +1,15 @@
-{% extends "shell/base.html" %}
-{% block content %}
-  <form method="post" action="/">
-  {% csrf_token %}
-    {{ form }}
-    <input type="submit">
-  </form>
-  <p>{{message}}</p>
-{% endblock content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log In</title>
+</head>
+<body>
+    <form method="post" action="#">
+        {% csrf_token %}
+        User Name:<br><input type="text" name="UserName"></br>
+        Password:<br><input type="password" name="Password"></br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
