@@ -22,9 +22,7 @@ from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('editAccount/', views.editAccount.as_view()),
-    path('editSelect/', views.editSelect.as_view()),
+
     path("", include('myApp.urls'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
