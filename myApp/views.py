@@ -49,12 +49,13 @@ class createAccount(View):
         terminalInstance = Terminal()
         id = request.session['userid']
         user = USER.objects.get(id=id)
-        terminalInstance = terminalInstance.login(USER.username, USER.password)
+        terminalInstance.login(user.username, user.password)
         response = terminalInstance.createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
-        if response is not "New user created":
-          return redirect('/createAccountError/')
+        if response.__eq__("New user created"):
+            request.method = 'get'
+            return render(request, 'shell/commands.html')
         else:
-          return redirect('/commands/')
+            return render(request, 'shell/createAccountError.html')
 
 class createAccountError(View):
 
