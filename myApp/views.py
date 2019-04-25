@@ -125,8 +125,9 @@ class Logout(View):
     def get(self, request):
         return render(request, 'shell/logout.html')
     def post(self, request):
+        request.session.pop("userid", None)
         del request.session
-        return redirect("")
+        return render(request, 'shell/login.html')
 
 
 

@@ -5,7 +5,7 @@
     <title>Log Out</title>
 </head>
 <body>
-    <form method="post" action="/login/">
+    <form method="get" action="/login/">
         {% csrf_token %}
         <input type="submit" value="Submit">
     </form>
