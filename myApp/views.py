@@ -61,6 +61,43 @@ class createAccountError(View):
     def post(self, request):
       return render(request, 'shell/createAccountError.html')
 
+class editAccount(View):
+
+  def get(self, request):
+    return render(request, 'shell/editAccount.html')
+
+  def post(self, request):
+    response = Terminal.editAccount(request.session['editID'], request.POST['Permission'], request.POST['UserName'],
+                                    request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
+                                    request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
+                                    request.POST['Extension'])
+    if response == "User account updated":
+        return render(request, ['http://127.0.0.1:8000/home'])
+    if response == "User does not exist":
+        return render(request, ['shell/editAccountError.html'])
+    else:
+        return render(request, ['shell/editAccountError.html'])
+
+class editSelect(View):
+
+  def get(self, request):
+      return render(request, 'shell/editSelect.html')
+
+  def post(self, request):
+      try:
+          if USER.objects.get(request.POST['UserID']):
+              request.session['editID'] = request.POST['UserID']
+              return render(request, 'shell/editAccount.html')
+      except USER.DoesNotExist:
+          return render(request, 'shell/editAccountError.html')
+
+class commands(View):
+
+    def get(self, request):
+      return render(request, 'shell/commands.html')
+
+    def post(self, request):
+      return render(request, 'shell/commands.html')
 
 class Login(View):
     def get(self, request):
