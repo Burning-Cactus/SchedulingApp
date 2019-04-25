@@ -28,5 +28,31 @@ class Shell(View):
 
     return render(request, 'shell/index.html', {"message": Shell.response, "user": Shell.terminalInstance.username})
 
+class createAccount(View):
 
+  def get(self, request):
+    return render(request, 'shell/createAccount.html')
+
+  def post(self, request):
+        username = request.POST['UserName']
+        password = request.POST['Password']
+        permission = request.POST['Permission']
+        email = request.POST['Email']
+        firstName = request.POST['FirstName']
+        lastName = request.POST['LastName']
+        contactPhone = request.POST['ContactPhone']
+        officePhone = request.POST['OfficePhone']
+        extension = request.POST['Extension']
+        response = Terminal.createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
+        if response is not "New user created":
+          return redirect('createAccountError/')
+        else:
+          return redirect('homepagee/')
+        # placeholder^
+class createAccountError(View):
+
+    def get(self, request):
+      return render(request, 'shell/createAccountError.html')
+    def post(self, request):
+      return render(request, 'shell/createAccountError.html')
 
