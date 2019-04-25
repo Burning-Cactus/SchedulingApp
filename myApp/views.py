@@ -71,13 +71,13 @@ class editAccount(View):
 
   def post(self, request):
     terminalInstance = Terminal()
-    id = request.session['userid']
+    id = request.session['editID']
     user = USER.objects.get(id=id)
     terminalInstance.login(user.username, user.password)
     response = terminalInstance.editAccount(id, request.POST['Permission'], request.POST['UserName'],
-                                    request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
-                                    request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
-                                    request.POST['Extension'])
+                                                request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
+                                                request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
+                                                request.POST['Extension'])
     if response == "User account updated":
         request.session.pop("editID", None)
         return render(request, ['shell/commands.html'])
