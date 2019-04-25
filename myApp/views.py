@@ -132,3 +132,25 @@ class accessAllData(View):
 
     def post(self, request):
       return render(request, 'shell/accessAllData.html')
+
+class deleteSelect(View):
+    def post(self, request):
+        UserID = request.POST["UserID"]
+
+        # if the UserID exists
+        if USER.objects.filter(databaseID=UserID).count() == 1:
+            return redirect("/deleteAccount/")
+
+        # else go home
+        return render(request, "/commands/")
+
+class deleteAccount(View):
+    def get(self, request):
+        terminalInstance = Terminal()
+        username = request.POST['UserName']
+        password = request.POST['Password']
+        response = terminalInstance.login(username, password)
+        UserID = request.GET["UserID"]  # is this a thing?
+        # call model.py's deleteAccount method
+        Terminal.deleteAccount(response, UserID)
+        return render(request, "/commands/")
