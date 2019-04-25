@@ -5,7 +5,7 @@
     <title>Edit User Data</title>
 </head>
 <body>
-    <form method="post" action="#">
+    <form method="post" action="http://127.0.0.1:8000/editAccount/">
         {% csrf_token %}
         User Name<input type="text" name="UserName"></br>
         Password<input type="password" name="Password"></br>
