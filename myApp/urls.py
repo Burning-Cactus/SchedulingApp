@@ -11,4 +11,5 @@ path('createAccountError/', views.createAccountError.as_view()),
 path('login/', views.Login.as_view()),
 path('loginError/', views.LoginError.as_view()),
 path('commands/', views.commands.as_view()),
+path('accessAllData/', views.accessAllData.as_view()),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
