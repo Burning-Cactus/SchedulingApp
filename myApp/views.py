@@ -110,7 +110,9 @@ class Login(View):
       if response is not "Logged in as: " + username:
        return redirect('/loginError/')
       else:
-       return redirect('/homepage/')
+          user = USER.objects.get(username=username)
+          request.session['userid'] = user.id
+          return redirect('/commands/')
 
 
 class LoginError(View):
