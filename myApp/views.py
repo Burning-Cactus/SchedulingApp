@@ -120,3 +120,11 @@ class LoginError(View):
       return render(request, 'shell/loginError.html')
     def post(self, request):
       return render(request, 'shell/loginError.html')
+
+class accessAllData(View):
+
+    def get(self, request):
+      return render(request, 'shell/accessAllData.html')
+
+    def post(self, request):
+      return render(request, 'shell/accessAllData.html')
