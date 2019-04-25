@@ -21,7 +21,7 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
 
 
     # Tests a properly used delete page
-        # returns a status_code equal to 200
+        # Returns a status_code equal to 200
     def deleteAccountTest(self):
         self.setUp()
         c = Client()
