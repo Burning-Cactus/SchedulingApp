@@ -6,6 +6,10 @@
 </head>
 <body>
 <h1>Data:</h1><br>
-
+<ul>
+        {% for user in users %}
+           <li><a>{{ user.permission }}</a></li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

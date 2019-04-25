@@ -46,7 +46,8 @@ class createAccount(View):
         contactPhone = request.POST['ContactPhone']
         officePhone = request.POST['OfficePhone']
         extension = request.POST['Extension']
-        response = Terminal.createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
+        terminal = Terminal()
+        response = Terminal.createAccount(terminal,permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
         if response is not "New user created":
             return redirect('createAccountError/')
         else:
@@ -124,7 +125,8 @@ class LoginError(View):
 class accessAllData(View):
 
     def get(self, request):
-      return render(request, 'shell/accessAllData.html')
+      users = USER.objects.all()
+      return render(request, 'shell/accessAllData.html', {"users": users})
 
     def post(self, request):
       return render(request, 'shell/accessAllData.html')
