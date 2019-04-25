@@ -46,13 +46,15 @@ class createAccount(View):
         contactPhone = request.POST['ContactPhone']
         officePhone = request.POST['OfficePhone']
         extension = request.POST['Extension']
-        response = Terminal.createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
+        terminalInstance = Terminal()
+        id = request.session['userid']
+        user = USER.objects.get(id=id)
+        response = terminalInstance.login(USER.username, USER.password)
+        response = terminalInstance.createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
         if response is not "New user created":
-          return redirect('createAccountError/')
+          return redirect('/createAccountError/')
         else:
-          return redirect('homepagee/')
-        # placeholder^
-
+          return redirect('/commands/')
 
 class createAccountError(View):
 
@@ -126,3 +128,33 @@ class LoginError(View):
       return render(request, 'shell/loginError.html')
     def post(self, request):
       return render(request, 'shell/loginError.html')
+
+class accessAllData(View):
+
+    def get(self, request):
+        terminalInstance = Terminal()
+        id = request.session['userid']
+        user = USER.objects.get(id=id)
+        terminalInstance.login(user.username, user.password)
+        users = terminalInstance.accessData()
+        return render(request, 'shell/accessAllData.html', {"users": users})
+
+class deleteSelect(View):
+    def post(self, request):
+        UserID = request.POST["UserID"]
+
+        # if the UserID exists
+        if USER.objects.filter(databaseID=UserID).count() == 1:
+            return redirect("/deleteAccount/")
+
+        # else go home
+        return render(request, "/commands/")
+
+class deleteAccount(View):
+    def get(self, request):
+        terminalInstance = Terminal()
+        response = terminalInstance.login(username, password)
+        UserID = request.GET["UserID"]  # is this a thing?
+        # call model.py's deleteAccount method
+        Terminal.deleteAccount(response, UserID)
+        return render(request, "/commands/")
