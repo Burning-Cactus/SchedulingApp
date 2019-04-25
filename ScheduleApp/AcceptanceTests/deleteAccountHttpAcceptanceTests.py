@@ -39,7 +39,7 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
 
         # after deleted, go home
         url = go.redirect_chain
-        self.assertEquals(url, ['http://127.0.0.1:8000/home'])
+        self.assertEquals(url, ['http://127.0.0.1:8000/commands'])
 
         # Check to ensure that the user is gone
         self.assertEqual(c.session['userid'], None)

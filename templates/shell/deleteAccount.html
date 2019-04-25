@@ -5,10 +5,10 @@
         <title>Delete Account?</title>
     </head>
     <body>
-        {% csrf_token %}
-        <form method="post" action="/home">
-            Execute account?
-            <input value="Submit" type="submit">
+        <form method="post" action="/commands/">
+            {% csrf_token %}
+            Execute account? <br>
+            <input value="Submit" type="submit"/>
         </form>
     </body>
 </html>
