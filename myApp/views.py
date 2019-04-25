@@ -64,3 +64,21 @@ def logout(request):
   request.session.pop("username", None)
   return redirect("/admin")
 
+
+class deleteSelect(View):
+  def post(self, request):
+    UserID = request.POST["UserID"]
+
+    #if the UserID exists
+    if USER.objects.filter(databaseID=UserID).count() == 1:
+      return redirect("/deleteAccount")
+
+    #else go home
+    return render(request, "homepage.html")
+
+class deleteAccount(View):
+  def get(self, request):
+    UserID = request.GET["UserID"]  #is this a thing?
+    #call model.py's deleteAccount method
+    Terminal.deleteAccount(UserID)
+    return render(request, "homepage.html")
