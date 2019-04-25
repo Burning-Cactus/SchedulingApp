@@ -5,9 +5,9 @@
         <title>Delete an Account</title>
     </head>
     <body>
-        <form method="post" action="#">
-            {% csrf_token %}
-            Input User's ID: <input type="text" name="UserID"></br>
+        {% csrf_token %}
+        <form method="post" action="/deleteAccount">
+            Input User's ID: <input type="text" name="userid"></br>
             <input value="Submit" type="submit" />
         </form>
     </body>
