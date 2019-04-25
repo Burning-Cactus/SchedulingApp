@@ -4,6 +4,8 @@ from myApp.models import Terminal
 from django.http import HttpRequest, HttpResponse
 from .forms import InputForm, LoginForm
 from .models import USER
+
+
 # Create your views here.
 class Shell(View):
     response = [""]
@@ -28,6 +30,7 @@ class Shell(View):
 
         return render(request, 'shell/index.html', {"message": Shell.response, "user": Shell.terminalInstance.username})
 
+
 class createAccount(View):
 
     def get(self, request):
@@ -49,6 +52,8 @@ class createAccount(View):
         else:
             return redirect('homepagee/')
         # placeholder^
+
+
 class createAccountError(View):
 
     def get(self, request):
@@ -93,3 +98,23 @@ class commands(View):
 
     def post(self, request):
       return render(request, 'shell/commands.html')
+
+class Login(View):
+    def get(self, request):
+        return render(request, 'shell/login.html')
+
+    def post(self, request):
+      username = request.POST['UserName']
+      password = request.POST['Password']
+      response = Terminal.login(self, username, password)
+      if response is not "Logged in as: " + username:
+       return redirect('/loginError/')
+      else:
+       return redirect('/homepage/')
+
+
+class LoginError(View):
+    def get(self, request):
+      return render(request, 'shell/loginError.html')
+    def post(self, request):
+      return render(request, 'shell/loginError.html')
