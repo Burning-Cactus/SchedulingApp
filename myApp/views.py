@@ -126,7 +126,8 @@ class Logout(View):
         return render(request, 'shell/logout.html')
     def post(self, request):
         del request.session
-        render(request, 'shell/login.html')
+        return redirect("")
+
 
 
 class LoginError(View):
