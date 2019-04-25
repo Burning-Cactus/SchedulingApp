@@ -1,31 +1,25 @@
 from django.test import Client, TestCase
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 from myApp.models import USER
-=======
+
+
 from django.urls import reverse
 from . import views
->>>>>>> parent of 215c56f... Added the setUp method
-=======
+
 from django.urls import reverse
 from . import views
->>>>>>> parent of 215c56f... Added the setUp method
+
 
 
 # Andy
 class DeleteAccountHttpAcceptanceTest(TestCase):
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     def setUp(self):
         memes = USER.objects.create(permission=[4], username="john", password="test", email="john@this.com",
                                     firstName="john", lastName="flupper", contactPhone="2628889765",
                                     officePhone="2624235436", extension="151")
 
-=======
->>>>>>> parent of 215c56f... Added the setUp method
-=======
->>>>>>> parent of 215c56f... Added the setUp method
+
     # Tests a properly used delete page
         # returns a status_code equal to 200
     def deleteAccountTest(self):
