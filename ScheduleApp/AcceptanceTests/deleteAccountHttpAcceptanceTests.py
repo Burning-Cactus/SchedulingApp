@@ -21,14 +21,14 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
 
 
     # Tests a properly used delete page
-        # returns a status_code equal to 200
+        # Returns a status_code equal to 200
     def deleteAccountTest(self):
         self.setUp()
         c = Client()
         idToDelete = c.session[USER.objects.get(username="john")]
 
         # Go to the delete user selection page
-        ro = c.post('deleteSelect.html', {'UserId': idToDelete})
+        ro = c.post('deleteSelect.html', {'userid': idToDelete})
 
         # Make sure we redirect to the proper page for deleting
         url = ro.redirect_chain
@@ -42,4 +42,4 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
         self.assertEquals(url, ['http://127.0.0.1:8000/home'])
 
         # Check to ensure that the user is gone
-        self.assertEqual(c.session['UserId'], None)
+        self.assertEqual(c.session['userid'], None)
