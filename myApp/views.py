@@ -86,4 +86,10 @@ class editSelect(View):
         except USER.DoesNotExist:
             return render(request, 'shell/editAccountError.html')
 
+class commands(View):
 
+    def get(self, request):
+      return render(request, 'shell/commands.html')
+
+    def post(self, request):
+      return render(request, 'shell/commands.html')
