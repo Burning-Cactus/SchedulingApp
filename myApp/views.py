@@ -126,11 +126,12 @@ class LoginError(View):
 class accessAllData(View):
 
     def get(self, request):
-      users = USER.objects.all()
-      return render(request, 'shell/accessAllData.html', {"users": users})
-
-    def post(self, request):
-      return render(request, 'shell/accessAllData.html')
+        terminalInstance = Terminal()
+        id = request.session['userid']
+        user = USER.objects.get(id=id)
+        terminalInstance.login(user.username, user.password)
+        users = terminalInstance.accessData()
+        return render(request, 'shell/accessAllData.html', {"users": users})
 
 class deleteSelect(View):
     def post(self, request):
