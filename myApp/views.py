@@ -46,8 +46,11 @@ class createAccount(View):
         contactPhone = request.POST['ContactPhone']
         officePhone = request.POST['OfficePhone']
         extension = request.POST['Extension']
-        terminal = Terminal()
-        response = Terminal.createAccount(terminal,permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
+        terminalInstance = Terminal()
+        username = request.POST['UserName']
+        password = request.POST['Password']
+        response = terminalInstance.login(username, password)
+        response = Terminal.createAccount(response,permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
         if response is not "New user created":
           return redirect('/createAccountError/')
         else:
