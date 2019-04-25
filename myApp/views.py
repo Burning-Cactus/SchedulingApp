@@ -121,6 +121,13 @@ class Login(View):
             request.session['userid'] = user.id
             return redirect('/commands/')
 
+class Logout(View):
+    def get(self, request):
+        return render(request, 'shell/logout.html')
+    def post(self, request):
+        del request.session
+        render(request, 'shell/login.html')
+
 
 class LoginError(View):
     def get(self, request):
