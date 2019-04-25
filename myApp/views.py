@@ -49,9 +49,9 @@ class createAccount(View):
         terminal = Terminal()
         response = Terminal.createAccount(terminal,permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
         if response is not "New user created":
-          return redirect('createAccountError/')
+          return redirect('/createAccountError/')
         else:
-          return redirect('homepagee/')
+          return redirect('/commands/')
         # placeholder^
 
 
