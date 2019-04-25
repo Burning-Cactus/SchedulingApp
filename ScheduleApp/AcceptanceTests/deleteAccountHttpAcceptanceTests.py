@@ -1,25 +1,45 @@
 from django.test import Client, TestCase
+
 from myApp.models import USER
+
+
 from django.urls import reverse
+from . import views
+
+from django.urls import reverse
+from . import views
 
 
+
+# Andy
 class DeleteAccountHttpAcceptanceTest(TestCase):
 
     def setUp(self):
-        self.user = USER.objects.create(permission=[4], username="john", password="test", email="john@this.com",
-                                        firstName="john", lastName="flupper", contactPhone="2628889765",
-                                        officePhone="2624235436", extension="151")
+        memes = USER.objects.create(permission=[4], username="john", password="test", email="john@this.com",
+                                    firstName="john", lastName="flupper", contactPhone="2628889765",
+                                    officePhone="2624235436", extension="151")
+
 
     # Tests a properly used delete page
         # returns a status_code equal to 200
-    def test1(self):
+    def deleteAccountTest(self):
+        self.setUp()
         c = Client()
-        response = c.post('/delete/', {'username': 'john', 'password': 'smith', 'databaseID': '-1337'})
-        #response = c.get('/customer/details/')
-        TestCase.assertEqual(response.status_code, 200)
+        idToDelete = c.session[USER.objects.get(username="john")]
 
-        # check databaseID
-        # looking at session and make sure it is equal to something?
+        # Go to the delete user selection page
+        ro = c.post('deleteSelect.html', {'UserId': idToDelete})
 
+        # Make sure we redirect to the proper page for deleting
+        url = ro.redirect_chain
+        self.assertEquals(url, ['deleteAccount.html'])
 
+        # delete UserId
+        go = c.post('deleteAccount.html')
 
+        # after deleted, go home
+        url = go.redirect_chain
+        self.assertEquals(url, ['http://127.0.0.1:8000/home'])
+
+        # Check to ensure that the user is gone
+        self.assertEqual(c.session['UserId'], None)
