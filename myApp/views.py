@@ -55,8 +55,6 @@ class createAccount(View):
           return redirect('/createAccountError/')
         else:
           return redirect('/commands/')
-        # placeholder^
-
 
 class createAccountError(View):
 
