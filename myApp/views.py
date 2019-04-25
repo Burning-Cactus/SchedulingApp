@@ -30,7 +30,7 @@ class Shell(View):
 
     return render(request, 'shell/index.html', {"message": Shell.response, "user": Shell.terminalInstance.username})
 
-
+#a
 class createAccount(View):
 
   def get(self, request):
