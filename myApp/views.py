@@ -119,7 +119,6 @@ class Login(View):
         else:
             user = USER.objects.get(username=username)
             request.session['userid'] = user.id
-            request.session['terminalInstance'] = terminalInstance
             return redirect('/commands/')
 
 
