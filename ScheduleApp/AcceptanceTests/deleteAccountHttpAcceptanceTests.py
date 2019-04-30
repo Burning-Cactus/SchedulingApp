@@ -1,14 +1,5 @@
 from django.test import Client, TestCase
-
 from myApp.models import USER
-
-
-from django.urls import reverse
-from . import views
-
-from django.urls import reverse
-from . import views
-
 
 
 # Andy
