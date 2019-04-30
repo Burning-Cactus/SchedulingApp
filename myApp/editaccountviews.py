@@ -11,21 +11,14 @@ class editAccount(View):
     return render(request, 'shell/editAccount.html')
 
   def post(self, request):
-    if request.POST['UserName'] != '~':
-        user.username = request.POST['UserName']
-    if request.POST['Password'] != '~':
-        user.password = request.POST['Password']
-    if request.POST['Permission'] != '~':
-        user.email = request.POST['Permission']
-    if request.POST['Email'] != '~':
-        user.email = request.POST['Email']
-    if request.POST['FirstName'] != '~':
-        user.firstName = request.POST['FirstName']
-    if request.POST['LastName'] != '~':
-        user.LastName = request.POST['LastName']
-    if request.POST['ContactPhone'] != '~':
-        user.contactPhone = request.POST['ContactPhone']
-    if request.POST['OfficePhone'] != '~':
-        user.officePhone = request.POST['OfficePhone']
-    if request.POST['Extension'] != '~':
-        user.extension = request.POST['Extension']
+    response = Terminal.editAccount(request.session['editID'], request.POST['Permission'], request.POST['UserName'],
+                                    request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
+                                    request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
+                                    request.POST['Extension'])
+    if response == "User account updated":
+        return render(request, ['http://127.0.0.1:8000/home'])
+    if response == "User does not exist":
+        return render(request, ['shell/editAccountError.html'])
+    else:
+        return render(request, ['shell/editAccountError.html'])
+

@@ -4,6 +4,8 @@ from myApp.models import Terminal
 from django.http import HttpRequest, HttpResponse
 from .forms import InputForm, LoginForm
 from .models import USER
+
+
 # Create your views here.
 class Shell(View):
   response = [""]
@@ -28,11 +30,145 @@ class Shell(View):
 
     return render(request, 'shell/index.html', {"message": Shell.response, "user": Shell.terminalInstance.username})
 
+#a
 class createAccount(View):
 
+  def get(self, request):
+    return render(request, 'shell/createAccount.html')
+
+  def post(self, request):
+        username = request.POST['UserName']
+        password = request.POST['Password']
+        permission = request.POST['Permission']
+        email = request.POST['Email']
+        firstName = request.POST['FirstName']
+        lastName = request.POST['LastName']
+        contactPhone = request.POST['ContactPhone']
+        officePhone = request.POST['OfficePhone']
+        extension = request.POST['Extension']
+        terminalInstance = Terminal()
+        id = request.session['userid']
+        user = USER.objects.get(id=id)
+        terminalInstance.login(user.username, user.password)
+        response = terminalInstance.createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
+        if response.__eq__("New user created"):
+            request.method = 'get'
+            return render(request, 'shell/commands.html')
+        else:
+            return render(request, 'shell/createAccountError.html')
+
+class createAccountError(View):
+
     def get(self, request):
-      return render(request, 'shell/createAccount.html')
+      return render(request, 'shell/createAccountError.html')
+    def post(self, request):
+      return render(request, 'shell/createAccountError.html')
+
+class editAccount(View):
+
+  def get(self, request):
+    return render(request, 'shell/editAccount.html')
+
+  def post(self, request):
+    terminalInstance = Terminal()
+    id = request.session['editID']
+    user = USER.objects.get(id=id)
+    terminalInstance.login(user.username, user.password)
+    response = terminalInstance.editAccount(id, request.POST['Permission'], request.POST['UserName'],
+                                                request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
+                                                request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
+                                                request.POST['Extension'])
+    if response == "User account updated":
+        request.session.pop("editID", None)
+        return render(request, ['shell/commands.html'])
+    if response == "User does not exist":
+        request.session.pop("editID", None)
+        return render(request, ['shell/editAccountError.html'])
+    else:
+        request.session.pop("editID", None)
+        return render(request, ['shell/editAccountError.html'])
+
+class editSelect(View):
+
+  def get(self, request):
+      return render(request, 'shell/editSelect.html')
+
+  def post(self, request):
+      #terminalInstance = Terminal()
+      #userinstance = request.session['userid']
+      try:
+          if USER.objects.get(id=request.POST['userid']):
+              request.session['editID'] = request.POST['userid']
+              return render(request, 'shell/editAccount.html')
+      except USER.DoesNotExist:
+          return render(request, 'shell/editAccountError.html')
+
+class commands(View):
+
+    def get(self, request):
+      return render(request, 'shell/commands.html')
 
     def post(self, request):
-      message = Terminal.createAccount()
-      return(request, 'shell/createAccount.html')
+      return render(request, 'shell/commands.html')
+
+class Login(View):
+    def get(self, request):
+        return render(request, 'shell/login.html')
+
+    def post(self, request):
+        terminalInstance = Terminal()
+        username = request.POST['UserName']
+        password = request.POST['Password']
+        response = terminalInstance.login(username, password)
+        if not response.__eq__("Logged in as: " + username):
+            return render(request, 'shell/loginError.html', {'res': response})
+        else:
+            user = USER.objects.get(username=username)
+            request.session['userid'] = user.id
+            return redirect('/commands/')
+
+class Logout(View):
+    def get(self, request):
+        return render(request, 'shell/logout.html')
+    def post(self, request):
+        request.session.pop("userid", None)
+        del request.session
+        return render(request, 'shell/login.html')
+
+
+
+class LoginError(View):
+    def get(self, request):
+      return render(request, 'shell/loginError.html')
+    def post(self, request):
+      return render(request, 'shell/loginError.html')
+
+class accessAllData(View):
+
+    def get(self, request):
+        terminalInstance = Terminal()
+        id = request.session['userid']
+        user = USER.objects.get(id=id)
+        terminalInstance.login(user.username, user.password)
+        users = terminalInstance.accessData()
+        return render(request, 'shell/accessAllData.html', {"users": users})
+
+class deleteSelect(View):
+    def post(self, request):
+        UserID = request.POST["UserID"]
+
+        # if the UserID exists
+        if USER.objects.filter(databaseID=UserID).count() == 1:
+            return redirect("/deleteAccount/")
+
+        # else go home
+        return render(request, "/commands/")
+
+class deleteAccount(View):
+    def get(self, request):
+        terminalInstance = Terminal()
+        response = terminalInstance.login(username, password)
+        UserID = request.GET["UserID"]  # is this a thing?
+        # call model.py's deleteAccount method
+        Terminal.deleteAccount(response, UserID)
+        return render(request, "/commands/")
