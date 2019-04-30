@@ -19,6 +19,10 @@ class CreateLabTests(TestCase):
         session['userid'] = self.user.id
         session.save()
 
+    def testGetWithUserRedirect(self):
+        with self.assertTemplateUsed('createLab.html'):
+            self.c.get('/createLab/', follow=True)
+
     def TestCreateLabGet(self):
         ret = self.c.get('/createLab/')
         self.assertTrue(ret.content.__contains__(b'<title>Create Lab</title>'))
@@ -73,3 +77,42 @@ class CreateLabTests(TestCase):
 
         self.assertTrue(ret.conent.__contains__(b'<title>Create Lab Error</title>'))
         self.assertTrue(ret.conent.__contains__(b'href="/createLab/"'))
+
+    def testCreateLabPostError3(self):
+        ret = self.c.post('/createLab/', {'name': 'Test Lab', 'labNumber': '500', 'courseID': '',
+                                          'time': '11:00 am', 'location': 'Test Hall'})
+
+        self.assertTrue(ret.conent.__contains__(b'<title>Create Lab Error</title>'))
+        self.assertTrue(ret.conent.__contains__(b'href="/createLab/"'))
+
+    def testCreateLabPostError4(self):
+        ret = self.c.post('/createLab/', {'name': 'Test Lab', 'labNumber': '500', 'courseID': self.lab,
+                                          'time': '', 'location': 'Test Hall'})
+
+        self.assertTrue(ret.conent.__contains__(b'<title>Create Lab Error</title>'))
+        self.assertTrue(ret.conent.__contains__(b'href="/createLab/"'))
+
+    def testCreateLabPostError5(self):
+        ret = self.c.post('/createLab/', {'name': 'Test Lab', 'labNumber': '500', 'courseID': self.lab,
+                                          'time': '11:00 am', 'location': ''})
+
+        self.assertTrue(ret.conent.__contains__(b'<title>Create Lab Error</title>'))
+        self.assertTrue(ret.conent.__contains__(b'href="/createLab/"'))
+
+    def testTypes1(self):
+        ret = self.c.get('/createLab/')
+        self.assertTrue(ret.content.__contains__(b'type="submit"'))
+
+    def testTypes2(self):
+        ret = self.c.get('/createLab/')
+        self.assertTrue(ret.content.__contains__(b'type="str"'))
+
+    def testTypes3(self):
+        ret = self.c.get('/createLab/')
+        self.assertTrue(ret.content.__contains__(b'type="number"'))
+
+    def testTypes4(self):
+        ret = self.c.get('/createLab/')
+        self.assertTrue(ret.content.__contains__(b'type="time"'))
+
+
