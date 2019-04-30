@@ -33,7 +33,7 @@ class User:
 
     # Create a new User object from a string containing all the fields separated by commas.
     # The string is formated as: the permission,username,password,databaseID,email,firstName,lastName,contactPhone,officePhone,extension
-    # Example: "(1 2 3),usermane,pass1234,1337,test@gmail.com,first,last,9-(123)-123-1234,1-800-crayonSLAYER,247"
+    # Example: "(1 2 3),username,pass1234,1337,test@gmail.com,first,last,9-(123)-123-1234,1-800-crayonSLAYER,247"
     #TODO: Require that none of these fields may contain a comma or else this won't work. /n may be a better delimiter
     def fromString(self, formatedString):
         params = formatedString.split(",")      # splits the contents of the string into elements of an array

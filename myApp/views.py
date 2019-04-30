@@ -37,15 +37,15 @@ class createAccount(View):
     return render(request, 'shell/createAccount.html')
 
   def post(self, request):
-        username = request.POST['UserName']
-        password = request.POST['Password']
-        permission = request.POST['Permission']
-        email = request.POST['Email']
-        firstName = request.POST['FirstName']
-        lastName = request.POST['LastName']
-        contactPhone = request.POST['ContactPhone']
-        officePhone = request.POST['OfficePhone']
-        extension = request.POST['Extension']
+        username = request.POST['username']
+        password = request.POST['password']
+        permission = request.POST['permission']
+        email = request.POST['email']
+        firstName = request.POST['firstName']
+        lastName = request.POST['lastName']
+        contactPhone = request.POST['contactPhone']
+        officePhone = request.POST['officePhone']
+        extension = request.POST['extension']
         terminalInstance = Terminal()
         id = request.session['userid']
         user = USER.objects.get(id=id)
