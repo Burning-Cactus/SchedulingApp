@@ -6,14 +6,14 @@ from myApp.models import USER, COURSE
 class assignInstuctorToCourseHttpTests(TestCase):
 
     def setup(self):
-        self.user = USER.objects.create(permission=[3], username="john", password="test", email="john@this.com",
+        self.user = USER.objects.create(permission=[1], username="john", password="test", email="john@this.com",
                                         firstName="john", lastName="flupper", contactPhone="2628889765",
                                         officePhone="2624235436", extension="151")
         self.user.save()
 
-        self.course = COURSE.objects.create('/createCourse/', {'name': 'TestClass', 'courseNumber': '602',
-                                                               'classNumber': '401', 'time': '9:30 am', 'location':
-                                                               'Test Hall'})
+        self.course = COURSE.objects.create(name='TestClass', courseNumber='602', classNumber='401', time='9:30 am',
+                                            location='Test Hall')
+        self.course.save()
 
         self.c = Client()
         session = self.c.session

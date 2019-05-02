@@ -1,6 +1,6 @@
 from django.test import Client
 from django.test import TestCase
-from myApp.models import USER, LAB_SECTION
+from myApp.models import USER, LAB_SECTION, COURSE
 
 
 class EditLabTests(TestCase):
@@ -11,9 +11,13 @@ class EditLabTests(TestCase):
                                         officePhone="2624235436", extension="151")
         self.user.save()
 
-        self.lab = LAB_SECTION.objects.create('/createLab/', {'name': 'TestClass', 'courseNumber': '602',
-                                                              'classNumber': '401', 'time': '9:30 am', 'location':
-                                                              'Test Hall'})
+        self.course = COURSE.objects.create(name='TestClass', courseNumber='602', classNumber='401', time='9:30 am',
+                                            location='Test Hall')
+        self.course.save()
+
+        self.lab = LAB_SECTION.objects.create(name='TestLab', labNumber='602', courseID=self.course.id, time='9:30 am'
+                                              , location='Test Hall')
+        self.lab.save()
 
         self.c = Client()
         session = self.c.session
