@@ -55,7 +55,7 @@ class createAccount(View):
             request.method = 'get'
             return render(request, 'shell/commands.html')
         else:
-            return render(request, 'shell/createAccountError.html')
+            return redirect('shell/createAccountError.html')
 
 class createAccountError(View):
 
