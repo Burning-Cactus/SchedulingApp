@@ -11,8 +11,9 @@ class EditLabTests(TestCase):
                                         officePhone="2624235436", extension="151")
         self.user.save()
 
-        self.lab = LAB_SECTION.objects.create('/createCourse/', {'name': 'TestClass', 'courseNumber': '602', 'classNumber': '401',
-                                             'time': '9:30 am', 'location': 'Test Hall'})
+        self.lab = LAB_SECTION.objects.create('/createLab/', {'name': 'TestClass', 'courseNumber': '602',
+                                                              'classNumber': '401', 'time': '9:30 am', 'location':
+                                                              'Test Hall'})
 
         self.c = Client()
         session = self.c.session
