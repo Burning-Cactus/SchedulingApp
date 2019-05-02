@@ -144,10 +144,3 @@ class CreateAccountTest(TestCase):
     def testTypes5(self):
         ret = self.c.get('/createAccount/')
         self.assertTrue(ret.content.__contains__(b'type="number"'))
-
-
-
-
-
-
-##
