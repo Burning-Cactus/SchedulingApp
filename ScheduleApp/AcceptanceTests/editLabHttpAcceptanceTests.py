@@ -5,7 +5,7 @@ from myApp.models import USER, LAB_SECTION, COURSE
 
 class EditLabTests(TestCase):
 
-    def setup(self):
+    def setUp(self):
         self.user = USER.objects.create(permission=[1], username="john", password="test", email="john@this.com",
                                         firstName="john", lastName="flupper", contactPhone="2628889765",
                                         officePhone="2624235436", extension="151")
@@ -28,6 +28,17 @@ class EditLabTests(TestCase):
         with self.assertTemplateUsed('editLab.html'):
             self.c.get('/editLab/', follow=True)
 
+    def testEditLabSelect(self):
+        with self.assertTemplateUsed('editLabSelect.html'):
+            self.c.get('/editLabSelect/', follow=True)
+
+    def testEditLabSelectTable(self):
+        ret = self.c.get('/editLab/')
+        self.assertTrue(ret.content.__contains__(b'<table>'))
+        self.assertTrue(ret.content.__contains__(b'<tr><th>labID</th><th>Name</th><th>CourseID</th><th>Lab Number</th>'
+                                                 b'<th>Time</th><th>Location</th></tr>'))
+        self.assertTrue(ret.content.__contains__(b'</table>'))
+
     def TestEditLabGet(self):
         ret = self.c.get('/editLab/')
         self.assertTrue(ret.content.__contains__(b'<title>Edit Lab</title>'))
@@ -36,6 +47,14 @@ class EditLabTests(TestCase):
         ret = self.c.get('/editLab/')
         self.assertTrue(
             ret.content.__contains__(b'<form method="post" action="/editLab/">'))
+
+    def testForTable(self):
+        ret = self.c.get('/editLab/')
+        self.assertTrue(ret.content.__contains__(b'<table>'))
+
+    def testForTableClose(self):
+        ret = self.c.get('/editLab/')
+        self.assertTrue(ret.content.__contains__(b'</table>'))
 
     def testFormFields1(self):
         ret = self.c.get('/editLab/')
