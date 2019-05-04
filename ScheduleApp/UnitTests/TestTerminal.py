@@ -1604,11 +1604,132 @@ class TestTerminal(TestCase):
 
     # Assign Instructor to Course Tests
 
+    def testAssignPermissions(self):
+        instructorToAssign = self.INSTRUCTOR
+
+        self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, instructorToAssign.id)
+        self.assertEqual(self.INSTRUCTOR.id, I_LIST.objects.get(courseID=self.ENGLISH.id,
+                                                                instructorID=instructorToAssign.id).instructorID)
+        I_LIST.objects.get(courseID=self.ENGLISH.id, instructorID=instructorToAssign.id).delete()
+
+        self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, instructorToAssign.id)
+        self.assertEqual(self.INSTRUCTOR.id, I_LIST.objects.get(courseID=self.ENGLISH.id,
+                                                                instructorID=instructorToAssign.id).instructorID)
+        I_LIST.objects.get(courseID=self.ENGLISH.id, instructorID=instructorToAssign.id).delete()
+
+        self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, instructorToAssign.id)
+        self.assertEqual(self.INSTRUCTOR.id, I_LIST.objects.get(courseID=self.ENGLISH.id,
+                                                                instructorID=instructorToAssign.id).instructorID)
+        I_LIST.objects.get(courseID=self.ENGLISH.id, instructorID=instructorToAssign.id).delete()
+
+        self.TERMINAL.login(self.INSTRUCTOR.username, self.INSTRUCTOR.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, instructorToAssign.id)
+        self.assertEqual(0, len(I_LIST.objects.filter(courseID=self.ENGLISH.id,
+                                                      instructorID=instructorToAssign.id).instructorID))
+
+        self.TERMINAL.login(self.ASSISTANT.username, self.ASSISTANT.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, instructorToAssign.id)
+        self.assertEqual(0, len(I_LIST.objects.filter(courseID=self.ENGLISH.id,
+                                                      instructorID=instructorToAssign.id).instructorID))
+
+        self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, instructorToAssign.id)
+        self.assertEqual(0, len(I_LIST.objects.filter(courseID=self.ENGLISH.id,
+                                                      instructorID=instructorToAssign.id).instructorID))
+
+        self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, instructorToAssign.id)
+        self.assertEqual(0, len(I_LIST.objects.filter(courseID=self.ENGLISH.id,
+                                                      instructorID=instructorToAssign.id).instructorID))
+
     def testAssignInstructorToCourse(self):
-        pass
+        instructorToAssign = self.INSTRUCTOR
+        superInstructorToAssign = self.SUPER_INSTRUCTOR
+        adminInstructorToAssign = self.ADMIN_INSTRUCTOR
+
+        self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, instructorToAssign.id)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, superInstructorToAssign.id)
+        self.TERMINAL.assignInstructorToCourse(self.MUSIC.id, adminInstructorToAssign.id)
+        self.TERMINAL.assignInstructorToCourse(self.PHYSICS.id, instructorToAssign.id)
+
+        self.assertEqual(self.INSTRUCTOR.id, I_LIST.objects.get(courseID=self.ENGLISH.id,
+                                                                instructorID=instructorToAssign.id).instructorID)
+
+        self.assertEqual(self.SUPER_INSTRUCTOR.id, I_LIST.objects.get(courseID=self.ENGLISH.id,
+                                                                      instructorID=superInstructorToAssign.id).instructorID)
+
+        self.assertEqual(self.ADMIN_INSTRUCTOR.id, I_LIST.objects.get(courseID=self.MUSIC.id,
+                                                                      instructorID=adminInstructorToAssign.id).instructorID)
+
+        self.assertEqual(self.INSTRUCTOR.id, I_LIST.objects.get(courseID=self.PHYSICS.id,
+                                                                instructorID=instructorToAssign.id).instructorID)
+
+        I_LIST.objects.get(courseID=self.ENGLISH.id, instructorID=instructorToAssign.id).delete()
+        I_LIST.objects.get(courseID=self.ENGLISH.id, instructorID=superInstructorToAssign.id).delete()
+        I_LIST.objects.get(courseID=self.MUSIC.id, instructorID=adminInstructorToAssign.id).delete()
+        I_LIST.objects.get(courseID=self.PHYSICS.id, instructorID=instructorToAssign.id).delete()
+
+        self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, instructorToAssign.id)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, superInstructorToAssign.id)
+        self.TERMINAL.assignInstructorToCourse(self.MUSIC.id, adminInstructorToAssign.id)
+        self.TERMINAL.assignInstructorToCourse(self.PHYSICS.id, instructorToAssign.id)
+
+        self.assertEqual(self.INSTRUCTOR.id, I_LIST.objects.get(courseID=self.ENGLISH.id,
+                                                                instructorID=instructorToAssign.id).instructorID)
+
+        self.assertEqual(self.SUPER_INSTRUCTOR.id, I_LIST.objects.get(courseID=self.ENGLISH.id,
+                                                                      instructorID=superInstructorToAssign.id).instructorID)
+
+        self.assertEqual(self.ADMIN_INSTRUCTOR.id, I_LIST.objects.get(courseID=self.MUSIC.id,
+                                                                      instructorID=adminInstructorToAssign.id).instructorID)
+
+        self.assertEqual(self.INSTRUCTOR.id, I_LIST.objects.get(courseID=self.PHYSICS.id,
+                                                                instructorID=instructorToAssign.id).instructorID)
+
+        I_LIST.objects.get(courseID=self.ENGLISH.id, instructorID=instructorToAssign.id).delete()
+        I_LIST.objects.get(courseID=self.ENGLISH.id, instructorID=superInstructorToAssign.id).delete()
+        I_LIST.objects.get(courseID=self.MUSIC.id, instructorID=adminInstructorToAssign.id).delete()
+        I_LIST.objects.get(courseID=self.PHYSICS.id, instructorID=instructorToAssign.id).delete()
+
+        self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, instructorToAssign.id)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, superInstructorToAssign.id)
+        self.TERMINAL.assignInstructorToCourse(self.MUSIC.id, adminInstructorToAssign.id)
+        self.TERMINAL.assignInstructorToCourse(self.PHYSICS.id, instructorToAssign.id)
+
+        self.assertEqual(self.INSTRUCTOR.id, I_LIST.objects.get(courseID=self.ENGLISH.id,
+                                                                instructorID=instructorToAssign.id).instructorID)
+
+        self.assertEqual(self.SUPER_INSTRUCTOR.id, I_LIST.objects.get(courseID=self.ENGLISH.id,
+                                                                      instructorID=superInstructorToAssign.id).instructorID)
+
+        self.assertEqual(self.ADMIN_INSTRUCTOR.id, I_LIST.objects.get(courseID=self.MUSIC.id,
+                                                                      instructorID=adminInstructorToAssign.id).instructorID)
+
+        self.assertEqual(self.INSTRUCTOR.id, I_LIST.objects.get(courseID=self.PHYSICS.id,
+                                                                instructorID=instructorToAssign.id).instructorID)
+
+        I_LIST.objects.get(courseID=self.ENGLISH.id, instructorID=instructorToAssign.id).delete()
+        I_LIST.objects.get(courseID=self.ENGLISH.id, instructorID=superInstructorToAssign.id).delete()
+        I_LIST.objects.get(courseID=self.MUSIC.id, instructorID=adminInstructorToAssign.id).delete()
+        I_LIST.objects.get(courseID=self.PHYSICS.id, instructorID=instructorToAssign.id).delete()
 
     def testAssignInstructorToCourseInstructorDoesNotExist(self):
-        pass
+        self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, "3432")
+        self.TERMINAL.assignInstructorToCourse(self.ENGLISH.id, "2346")
+        self.TERMINAL.assignInstructorToCourse(self.MUSIC.id, "2343")
+        self.TERMINAL.assignInstructorToCourse(self.PHYSICS.id, "9944")
+
+        self.assertEqual(0, I_LIST.objects.filter(instructorID="3432"))
+        self.assertEqual(0, I_LIST.objects.filter(instructorID="2346"))
+        self.assertEqual(0, I_LIST.objects.filter(instructorID="2343"))
+        self.assertEqual(0, I_LIST.objects.filter(instructorID="9944"))
 
     def testAssignInstructorToCourseUserIsNotInstructor(self):
         pass
@@ -1622,7 +1743,9 @@ class TestTerminal(TestCase):
     # Assign Assistant to Course Tests
 
     def testAssignAssistantToCourse(self):
-        pass
+        assistantToAssign = self.ASSISTANT
+        superAssistantToAssign = self.SUPER_ASSISTANT
+        adminAssistantToAssign = self.ADMIN_ASSISTANT
 
     def testAssignAssistantToCourseAssistantDoesNotExist(self):
         pass
