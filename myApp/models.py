@@ -157,6 +157,9 @@ class Terminal(object):
         lab.save()
         return "new Lab Created"
 
+    def deleteLab(self, labID):
+        pass
+
 
     def createAccount(self, permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension):
 

@@ -20,7 +20,8 @@ class AccessDataTests(TestCase):
 
 
     def testAccessDataGet1(self):
-        ret = self.c.get('/accessAllData/')
+        with self.assertTemplateUsed('shell/accessAllData.html'):
+            ret = self.c.get('/accessAllData/')
         self.assertTrue(ret.content.__contains__(b'<title>Data</title>'))
 
     def testAccessDataGet2(self):

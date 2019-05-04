@@ -22,7 +22,7 @@ class CreateCourseTest(TestCase):
 
     def testFormMethodAction(self):
         ret = self.c.get('/createCourse/')
-        self.assertTrue(ret.content.__contains__(b'<form method="post", action="http://127.0.0.1:8000/createCourse/">'))
+        self.assertTrue(ret.content.__contains__(b'<form method="post", action="/createCourse/">'))
 
     def testFormFields1(self):
         ret = self.c.get('/createCourse/')
