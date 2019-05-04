@@ -213,7 +213,6 @@ class TestTerminal(TestCase):
         self.assertEqual("Calculus Lab", LAB_SECTION.objects.get(labNumber="100", courseID="2").name)
         LAB_SECTION.objects.filter(labNumber="100", courseID="2").delete()
 
-
     def testCreateLabWithConflictingLabNumber(self):
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
         self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", self.LAB_CALCULUS.labNumber, "4:00pm-6:00pm",
@@ -822,13 +821,12 @@ class TestTerminal(TestCase):
         self.assertEqual("1", LAB_SECTION.objects.get(id=self.LAB_CALCULUS.id).courseID)
         self.assertEqual(0, len(A_LIST.objects.filter(assistantID=self.ASSISTANT.id)))
 
-
     # Delete Lab Tests
 
     def testDeleteLab(self):
-        labToDelete = LAB_SECTION.objects.create(name="Music Lab", courseID=5, labNumber=334,
-                                                 time="4:00pm-6:00pm", location="MUS 125")
-        labToDelete.save()
+        LAB_SECTION.objects.create(name="Music Lab", courseID="5", labNumber="344", time="4:00pm-6:00pm",
+                                   location="MUS 125").save()
+        labToDelete = LAB_SECTION.objects.get(courseID="5", labNumber="334")
 
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
         A_LIST.objects.create(assistantID=self.ASSISTANT.id, labID=labToDelete.id).save()
@@ -836,20 +834,14 @@ class TestTerminal(TestCase):
         self.assertEqual(0, len(LAB_SECTION.objects.filter(id=labToDelete.id)))
         self.assertEqual(0, len(A_LIST.objects.filter(labID=labToDelete.id)))
 
-        labToDelete = LAB_SECTION.objects.create(name="Music Lab", courseID=5, labNumber=334,
-                                                 time="4:00pm-6:00pm", location="MUS 125")
         labToDelete.save()
-
         self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
         A_LIST.objects.create(assistantID=self.ASSISTANT.id, labID=labToDelete.id).save()
         self.TERMINAL.deleteLab(labToDelete.id)
-        self.assertEqual(0, len(LAB_SECTION.objects.filter(id=self.labToDelete.id)))
+        self.assertEqual(0, len(LAB_SECTION.objects.filter(id=labToDelete.id)))
         self.assertEqual(0, len(A_LIST.objects.filter(labID=labToDelete.id)))
 
-        labToDelete = LAB_SECTION.objects.create(name="Music Lab", courseID=5, labNumber=334,
-                                                 time="4:00pm-6:00pm", location="MUS 125")
         labToDelete.save()
-
         self.TERMINAL.login(self.INSTRUCTOR.username, self.INSTRUCTOR.password)
         A_LIST.objects.create(assistantID=self.ASSISTANT.id, labID=labToDelete.id).save()
         self.TERMINAL.deleteLab(labToDelete.id)
@@ -868,39 +860,26 @@ class TestTerminal(TestCase):
         self.assertEqual(0, len(LAB_SECTION.objects.filter(id=labToDelete.id)))
         self.assertEqual(0, len(A_LIST.objects.filter(labID=labToDelete.id)))
 
-        labToDelete = LAB_SECTION.objects.create(name="Music Lab", courseID=5, labNumber=334,
-                                                 time="4:00pm-6:00pm", location="MUS 125")
         labToDelete.save()
-
         self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
         A_LIST.objects.create(assistantID=self.ASSISTANT.id, labID=labToDelete.id).save()
         self.TERMINAL.deleteLab(labToDelete.id)
-        self.assertEqual(0, len(LAB_SECTION.objects.filter(id=self.labToDelete.id)))
+        self.assertEqual(0, len(LAB_SECTION.objects.filter(id=labToDelete.id)))
         self.assertEqual(0, len(A_LIST.objects.filter(labID=labToDelete.id)))
 
-        labToDelete = LAB_SECTION.objects.create(name="Music Lab", courseID=5, labNumber=334,
-                                                 time="4:00pm-6:00pm", location="MUS 125")
         labToDelete.save()
-
         self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
         A_LIST.objects.create(assistantID=self.ASSISTANT.id, labID=labToDelete.id).save()
         self.TERMINAL.deleteLab(labToDelete.id)
         self.assertEqual(0, len(LAB_SECTION.objects.filter(id=labToDelete.id)))
         self.assertEqual(0, len(A_LIST.objects.filter(labID=labToDelete.id)))
 
-        labToDelete = LAB_SECTION.objects.create(name="Music Lab", courseID=5, labNumber=334,
-                                                 time="4:00pm-6:00pm", location="MUS 125")
         labToDelete.save()
-
         self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
         A_LIST.objects.create(assistantID=self.ASSISTANT.id, labID=labToDelete.id).save()
         self.TERMINAL.deleteLab(labToDelete.id)
-        self.assertEqual(0, len(LAB_SECTION.objects.filter(id=self.labToDelete.id)))
+        self.assertEqual(0, len(LAB_SECTION.objects.filter(id=labToDelete.id)))
         self.assertEqual(0, len(A_LIST.objects.filter(labID=labToDelete.id)))
-
-        labToDelete = LAB_SECTION.objects.create(name="Music Lab", courseID=5, labNumber=334,
-                                                 time="4:00pm-6:00pm", location="MUS 125")
-        labToDelete.save()
 
     # Create Course Tests
 
@@ -1117,8 +1096,10 @@ class TestTerminal(TestCase):
     # Delete Course Tests
 
     def testDeleteCourse(self):
-        courseToDelete = COURSE.objects.create(name="Physics", courseNumber=342, classNumber=111,
+        COURSE.objects.create(name="Physics", courseNumber="342", classNumber="111",
                                                time="7:00am-8:30am", location="PHY 324").save()
+        courseToDelete = COURSE.objects.get(courseNumber="342", classNumber="111")
+
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
         self.TERMINAL.deleteCourse(courseToDelete.id)
         self.assertEqual(0, len(COURSE.objects.filter(id=courseToDelete.id)))
@@ -1158,10 +1139,13 @@ class TestTerminal(TestCase):
         courseToDelete.save()
 
     def testDeleteCourseWithDependencies(self):
-        courseToDelete = COURSE.objects.create(name="Physics", courseNumber=342, classNumber=111,
-                                               time="7:00am-8:30am", location="PHY 324").save()
-        labToDelete = LAB_SECTION.objects.create(name="Physics Lab", courseID=courseToDelete.id, labNumber=1444,
+        COURSE.objects.create(name="Physics", courseNumber="342", classNumber="111", time="7:00am-8:30am",
+                              location="PHY 324").save()
+        courseToDelete = COURSE.objects.get(courseNumber="342", classNumber="111")
+
+        LAB_SECTION.objects.create(name="Physics Lab", courseID=courseToDelete.id, labNumber="1444",
                                                  time="4:00pm-6:00pm", location="PHY 345").save()
+        labToDelete = LAB_SECTION.objects.get(courseID=courseToDelete.id, labNumber="1444")
 
         I_LIST.objects.create(instructorID=self.INSTRUCTOR.id, courseID=courseToDelete.id).save()
         I_LIST.objects.create(instructorID=self.ASSISTANT.id, courseID=courseToDelete.id).save()
@@ -1495,10 +1479,11 @@ class TestTerminal(TestCase):
     # Delete Account Tests
 
     def testDeleteAccount(self):
-        userToDelete = USER.objects.create(permission=[1,3], username="aUsername", password="aPassword",
+        USER.objects.create(permission=[1,3], username="aUsername", password="aPassword",
                                            email="email@email.com", firstName="James", lastName="Franco",
                                            contactPhone="3453334444", officePhone="3325554444",
                                            extension="2312").save()
+        userToDelete = USER.objects.get(username="aUsername", password="aPassword")
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
         self.TERMINAL.deleteAccount(userid=userToDelete.id)
         self.assertEqual(0, USER.objects.filter(id=userToDelete.id))
@@ -1537,40 +1522,85 @@ class TestTerminal(TestCase):
         self.assertEqual(0, USER.objects.filter(id=userToDelete.id))
 
     def testDeleteAccountWithDependencies(self):
-        userToDelete = USER.objects.create(permission=[1, 3], username="aUsername", password="aPassword",
+        USER.objects.create(permission=[1, 3], username="aUsername", password="aPassword",
                                            email="email@email.com", firstName="James", lastName="Franco",
                                            contactPhone="3453334444", officePhone="3325554444",
                                            extension="2312").save()
+        userToDelete = USER.objects.get(username="aUsername", password="aPassword")
 
-        otherUserToDelete = USER.objects.create(permission=[1, 4], username="bUsername", password="bPassword",
-                                           email="email@email.com", firstName="will", lastName="fred",
-                                           contactPhone="3453334444", officePhone="3325554444",
-                                           extension="2312").save()
+        USER.objects.create(permission=[1, 4], username="bUsername", password="bPassword",
+                                                email="email@email.com", firstName="will", lastName="fred",
+                                                contactPhone="3453334444", officePhone="3325554444",
+                                                extension="2312").save()
+        otherUserToDelete = USER.objects.get(username="bUsername", password="bPassword")
 
         I_LIST.objects.create(instructorID=userToDelete.id, courseID=self.PHYSICS.id).save()
         I_LIST.objects.create(instructorID=otherUserToDelete.id, courseID=self.PHYSICS.id).save()
         A_LIST.objects.create(assistantID=otherUserToDelete.id, labID=self.LAB_PHYSICS.id).save()
 
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
+        self.TERMINAL.deleteAccount(userToDelete.id)
+        self.TERMINAL.deleteAccount(otherUserToDelete.id)
 
-    def testDeleteInstructorWithCourses(self):
-        pass
-
-    def testDeleteAssistantWithCourses(self):
-        pass
-
-    def testDeleteAssistantWithLabSections(self):
-        pass
+        self.assertEqual(0, I_LIST.objects.filter(instructorID=userToDelete.id, courseID=self.PHYSICS.id))
+        self.assertEqual(0, I_LIST.objects.filter(instructorID=otherUserToDelete.id, courseID=self.PHYSICS.id))
+        self.assertEqual(0, A_LIST.objects.filter(instructorID=otherUserToDelete.id, courseID=self.PHYSICS.id))
+        self.assertEqual(0, USER.objects.filter(id=userToDelete.id))
+        self.assertEqual(0, USER.objects.filter(id=otherUserToDelete.id))
 
     # Email Tests
 
     def testEmail(self):
-        pass
+        self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
+        self.TERMINAL.email("subject", "message")
+
+        self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
+        self.TERMINAL.email("subject", "message")
+
+        self.TERMINAL.login(self.INSTRUCTOR.username, self.INSTRUCTOR.password)
+        self.TERMINAL.email("subject", "message")
+
+        self.TERMINAL.login(self.ASSISTANT.username, self.ASSISTANT.password)
+        self.TERMINAL.email("subject", "message")
+
+        self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
+        self.TERMINAL.email("subject", "message")
+
+        self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
+        self.TERMINAL.email("subject", "message")
+
+        self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
+        self.TERMINAL.email("subject", "message")
+
+        self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
+        self.TERMINAL.email("subject", "message")
 
     # Accesss Data Tests
 
     def testAccessData(self):
-        pass
+        self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
+        self.TERMINAL.accessData()
+
+        self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
+        self.TERMINAL.accessData()
+
+        self.TERMINAL.login(self.INSTRUCTOR.username, self.INSTRUCTOR.password)
+        self.TERMINAL.accessData()
+
+        self.TERMINAL.login(self.ASSISTANT.username, self.ASSISTANT.password)
+        self.TERMINAL.accessData()
+
+        self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
+        self.TERMINAL.accessData()
+
+        self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
+        self.TERMINAL.accessData()
+
+        self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
+        self.TERMINAL.accessData()
+
+        self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
+        self.TERMINAL.accessData()
 
     # Assign Instructor to Course Tests
 
@@ -1637,11 +1667,3 @@ class TestTerminal(TestCase):
 
     def testViewContactInfo(self):
         pass
-
-
-
-
-
-
-
-
