@@ -15,11 +15,9 @@ class logoutHttpTest(TestCase):
         self.assertTrue(ret.content.__contains__(b'<title>Log Out</title>'))
 
     def testPostAffirmLogout(self):
-        ret = self.c.post('/logout/', {'Yes': self.user.username}, follow=True)
+        ret = self.c.post('/logout/', {'Yes'}, follow=True)
         self.assertEqual(ret.redirect_chain, [("/login/", 302)])
-        userId = self.c.session['userid']
-        self.assertEqual(userId, self.user.id)
 
     def testPostCancelLogout(self):
-        ret = self.c.post('/logout/', {'Cancel': self.user.username}, follow=True)
+        ret = self.c.post('/logout/', {'Cancel'}, follow=True)
         self.assertEqual(ret.redirect_chain, [("/commands/", 302)])
