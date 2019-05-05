@@ -12,7 +12,48 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
         self.userToDelete.save()
         self.c = Client()
         self.client = self.c
+        session = self.c.session
+        session['userid'] = self.user.id
+        session.save()
 
+    # HTML Tests
+        # deleteSelect.html 's tests
+    def testDeleteSelectPost(self):
+        with self.assertTemplateUsed("deleteAccount.html"):
+            with self.assertTemplateNotUsed("homepage.html"):
+                res = self.client.get("/deleteSelect/", follow=True)
+                expected_url = "/deleteAccount/"
+                self.assertRedirects(res, expected_url)
+
+        # deleteAccount.html 's tests
+    def testDeleteAccountGet(self):
+        with self.assertTemplateUsed("commands.html"):
+            with self.assertTemplateNotUsed("deleteSelect.html"):
+                res = self.client.get("/deleteAccount/", follow=True)
+                expected_url = "/commands/"
+                self.assertRedirects(res, expected_url)
+
+    # HTML file tests
+    def testFormMethodAction(self):
+        ret = self.c.get('/deleteAccount/')
+        self.assertTrue(ret.content.__contains__(b'<form method="post", action="http://127.0.0.1:8000/commands/">'))
+
+    def testSubmit(self):
+        ret = self.c.get('/deleteAccount/')
+        self.assertTrue(ret.content.__contains__(b'type="submit"'))
+        self.assertTrue(ret.content.__contains__(b'value="Submit"'))
+
+    def test_title(self):
+        ret = self.c.get('/deleteAccount/')
+        self.assertTrue(ret.content.__contains__(b'<title>Delete Account?</title>'))
+
+    # post method redirect test
+    def test_delete_select_post_redirect(self):
+        ret = self.c.post('/deleteSelect/',
+                          {'userid' : self.c.session[USER.objects.get(username="john")]}, follow=True)
+
+        self.assertEqual(ret.redirect_chain, [("/deleteAccount/", 302)])
+        self.assertTrue(ret.content.__contains__(b'<title>Delete Account?</title>'))
 
     # Functionality Tests
     # Tests for deletion being done
@@ -32,42 +73,7 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
 
         # after deleted, go home
         url = go.redirect_chain
-        self.assertEquals(url, ['http://127.0.0.1:8000/home'])
+        self.assertEquals(url, ['http://127.0.0.1:8000/commands'])
 
         # Check to ensure that the user is gone
         self.assertEqual(self.c.session['userid'], None)
-
-    # HTML Tests
-        # deleteSelect.html 's tests
-    def testDeleteSelectPost(self):
-        session = self.client.session
-        session["username"] = "we"
-        session.save()
-
-        with self.assertTemplateUsed("deleteAccount.html"):
-            with self.assertTemplateNotUsed("homepage.html"):
-                res = self.client.get("/deleteSelect/", follow=True)
-                expected_url = "/deleteAccount/"
-                self.assertRedirects(res, expected_url)
-
-        # deleteAccount.html 's tests
-    def testDeleteAccountGet(self):
-        session = self.client.session
-        session["username"] = "we"
-        session.save()
-
-        with self.assertTemplateUsed("commands.html"):
-            with self.assertTemplateNotUsed("deleteSelect.html"):
-                res = self.client.get("/deleteAccount/", follow=True)
-                expected_url = "/commands/"
-                self.assertRedirects(res, expected_url)
-
-    # HTML file tests
-    def testFormMethodAction(self):
-        ret = self.c.get('/deleteAccount/')
-        self.assertTrue(ret.content.__contains__(b'<form method="post", action="http://127.0.0.1:8000/deleteAccount/">'))
-
-    def testSubmit(self):
-        ret = self.c.get('/deleteAccount/')
-        self.assertTrue(ret.content.__contains__(b'type="submit"'))
-        self.assertTrue(ret.content.__contains__(b'value="Submit"'))
