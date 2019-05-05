@@ -119,15 +119,15 @@ class TestTerminal(TestCase):
 
     def testLoginFail(self):
         # Invalid
-        self.assertEqual("Invalid username or password", self.TERMINAL.login("bad", "data"))
-        self.assertEqual("Invalid username or password", self.TERMINAL.login("bad", ""))
-        self.assertEqual("Invalid username or password", self.TERMINAL.login("", "data"))
-        self.assertEqual("Invalid username or password", self.TERMINAL.login("", ""))
-        self.assertEqual("Invalid username or password", self.TERMINAL.login("Wilton", "data"))
+        self.assertEqual(("Invalid username or password",False), self.TERMINAL.login("bad", "data"))
+        self.assertEqual(("Invalid username or password",False), self.TERMINAL.login("bad", ""))
+        self.assertEqual(("Invalid username or password",False), self.TERMINAL.login("", "data"))
+        self.assertEqual(("Invalid username or password",False), self.TERMINAL.login("", ""))
+        self.assertEqual(("Invalid username or password",False), self.TERMINAL.login("Wilton", "data"))
 
         # Partially Valid
-        self.assertEqual("Invalid username or password", self.TERMINAL.login("Wilton", ""))
-        self.assertEqual("Invalid username or password", self.TERMINAL.login("", "slick"))
+        self.assertEqual(("Invalid username or password",False), self.TERMINAL.login("Wilton", ""))
+        self.assertEqual(("Invalid username or password",False), self.TERMINAL.login("", "slick"))
 
     # Logout Tests
 
@@ -208,209 +208,209 @@ class TestTerminal(TestCase):
 
     def testCreateLabWithConflictingLabNumber(self):
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", self.LAB_CALCULUS.labNumber, "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", self.LAB_CALCULUS.labNumber, "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "2", self.LAB_CALCULUS.labNumber, "4:00pm-6:00pm",
                                                  "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "2", self.LAB_CALCULUS.labNumber, "4:00pm-6:00pm",
                                                  "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "2", self.LAB_CALCULUS.labNumber, "4:00pm-6:00pm",
                                                  "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "2", self.LAB_CALCULUS.labNumber, "4:00pm-6:00pm",
                                                  "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "2", self.LAB_CALCULUS.labNumber, "4:00pm-6:00pm",
                                                  "MATH 231"))
 
     def testCreateLabCourseDoesNotExist(self):
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "500", "100", "4:00pm-6:00pm",
                                                  "MATH 231"))
 
         self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "500", "100", "4:00pm-6:00pm",
                                                  "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "500", "100", "4:00pm-6:00pm",
                                                  "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "500", "100", "4:00pm-6:00pm",
                                                  "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "500", "100", "4:00pm-6:00pm",
                                                  "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
-        self.assertEqual(None,
+        self.assertEqual((None,False),
                          self.TERMINAL.createLab("Calculus Lab", "500", "100", "4:00pm-6:00pm",
                                                  "MATH 231"))
 
     def testCreateLabCourseIsNONE(self):
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", None, "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
     def testCreateLabMissingInput(self):
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("", "2", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "", "100", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "", "4:00pm-6:00pm",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "",
                                                        "MATH 231"))
 
         self.TERMINAL.login(self.SUPERVISOR.username, self.SUPERVISOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
                                                        ""))
 
         self.TERMINAL.login(self.ADMINISTRATOR.username, self.ADMINISTRATOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
                                                        ""))
 
         self.TERMINAL.login(self.SUPER_INSTRUCTOR.username, self.SUPER_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
                                                        ""))
 
         self.TERMINAL.login(self.SUPER_ASSISTANT.username, self.SUPER_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
                                                        ""))
 
         self.TERMINAL.login(self.ADMIN_INSTRUCTOR.username, self.ADMIN_INSTRUCTOR.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
                                                        ""))
 
         self.TERMINAL.login(self.ADMIN_ASSISTANT.username, self.ADMIN_ASSISTANT.password)
-        self.assertEqual(None, self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
+        self.assertEqual((None,False), self.TERMINAL.createLab("Calculus Lab", "2", "100", "4:00pm-6:00pm",
                                                        ""))
 
     # Edit Lab Tests
