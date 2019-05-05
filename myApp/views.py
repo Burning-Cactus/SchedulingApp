@@ -180,3 +180,17 @@ class deleteAccount(View):
         # call model.py's deleteAccount method
         Terminal.deleteAccount(response, userid)
         return render(request, "/commands/")
+
+class deleteCourse(View):
+    def post(self, request):
+        courseid = request.POST["courseid"]
+        terminalInstance = Terminal()
+        response = terminalInstance.login(username, password)
+
+        # if the UserID exists
+        if USER.objects.filter(databaseID=courseid).count() == 1:
+            Terminal.deleteAccount(response, courseid)
+            return render(request, "/commands/")
+
+        # else go home
+        return render(request, "/commands/")
