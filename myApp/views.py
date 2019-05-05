@@ -30,7 +30,7 @@ class Shell(View):
 
     return render(request, 'shell/index.html', {"message": Shell.response, "user": Shell.terminalInstance.username})
 
-#a
+
 class createAccount(View):
 
   def get(self, request):
@@ -57,12 +57,14 @@ class createAccount(View):
         else:
             return redirect('shell/createAccountError.html')
 
+
 class createAccountError(View):
 
     def get(self, request):
       return render(request, 'shell/createAccountError.html')
     def post(self, request):
       return render(request, 'shell/createAccountError.html')
+
 
 class editAccount(View):
 
@@ -88,6 +90,7 @@ class editAccount(View):
         request.session.pop("editID", None)
         return render(request, ['shell/editAccountError.html'])
 
+
 class editSelect(View):
 
   def get(self, request):
@@ -103,6 +106,7 @@ class editSelect(View):
       except USER.DoesNotExist:
           return render(request, 'shell/editAccountError.html')
 
+
 class commands(View):
 
     def get(self, request):
@@ -110,6 +114,7 @@ class commands(View):
 
     def post(self, request):
       return render(request, 'shell/commands.html')
+
 
 class Login(View):
     def get(self, request):
@@ -127,6 +132,7 @@ class Login(View):
             request.session['userid'] = user.id
             return redirect('/commands/')
 
+
 class Logout(View):
     def get(self, request):
         return render(request, 'shell/logout.html')
@@ -136,12 +142,12 @@ class Logout(View):
         return render(request, 'shell/login.html')
 
 
-
 class LoginError(View):
     def get(self, request):
       return render(request, 'shell/loginError.html')
     def post(self, request):
       return render(request, 'shell/loginError.html')
+
 
 class accessAllData(View):
 
@@ -153,6 +159,7 @@ class accessAllData(View):
         users = terminalInstance.accessData()
         return render(request, 'shell/accessAllData.html', {"users": users})
 
+
 class deleteSelect(View):
     def post(self, request):
         UserID = request.POST["UserID"]
@@ -163,6 +170,7 @@ class deleteSelect(View):
 
         # else go home
         return render(request, "/commands/")
+
 
 class deleteAccount(View):
     def get(self, request):
