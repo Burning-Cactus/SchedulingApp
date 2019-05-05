@@ -150,14 +150,13 @@ class LoginError(View):
 
 
 class accessAllData(View):
-
     def get(self, request):
         terminalInstance = Terminal()
         id = request.session['userid']
         user = USER.objects.get(id=id)
         terminalInstance.login(user.username, user.password)
-        users = terminalInstance.accessData()
-        return render(request, 'shell/accessAllData.html', {"users": users})
+        allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments = terminalInstance.accessData()
+        return render(request, 'shell/accessAllData.html', {"allUsers": allUsers, "allCourses": allCourses, "allLabs": allLabs, "assistantAssignments": assistantAssignments, "instructorAssignments": instructorAssignments})
 
 
 class deleteSelect(View):
@@ -179,4 +178,18 @@ class deleteAccount(View):
         userid = request.GET["userid"]  # is this a thing?
         # call model.py's deleteAccount method
         Terminal.deleteAccount(response, userid)
+        return render(request, "/commands/")
+
+class deleteCourse(View):
+    def post(self, request):
+        courseid = request.POST["courseid"]
+        terminalInstance = Terminal()
+        response = terminalInstance.login(username, password)
+
+        # if the UserID exists
+        if USER.objects.filter(databaseID=courseid).count() == 1:
+            Terminal.deleteAccount(response, courseid)
+            return render(request, "/commands/")
+
+        # else go home
         return render(request, "/commands/")
