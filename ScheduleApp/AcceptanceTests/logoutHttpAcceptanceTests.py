@@ -21,3 +21,13 @@ class logoutHttpTest(TestCase):
     def testPostCancelLogout(self):
         ret = self.c.post('/logout/', {'Cancel'}, follow=True)
         self.assertEqual(ret.redirect_chain, [("/commands/", 302)])
+
+    def test_submit_affirm(self):
+        ret = self.c.get('/logout/')
+        self.assertTrue(ret.content.__contains__(b'type="submit"'))
+        self.assertTrue(ret.content.__contains__(b'value="Log out"'))
+
+    def test_submit_cancel(self):
+        ret = self.c.get('/logout/')
+        self.assertTrue(ret.content.__contains__(b'type="submit"'))
+        self.assertTrue(ret.content.__contains__(b'value="Cancel"'))
