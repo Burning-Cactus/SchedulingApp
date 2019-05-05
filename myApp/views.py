@@ -194,10 +194,3 @@ class deleteCourse(View):
         # else go home
         return render(request, "/commands/")
 
-class email(View):
-    def get(self, request):
-        render(request, 'shell/email.html')
-
-    def post(self, request):
-        permission = request.POST["permission"]
-        if permission
