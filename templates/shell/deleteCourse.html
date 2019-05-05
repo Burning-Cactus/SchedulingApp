@@ -7,10 +7,8 @@
     <body>
         <form method="post" action="http://127.0.0.1:8000/commands/">
             {% csrf_token %}
-            Input Course ID: <input type="text" name="userid"></br>
+            Input Course ID: <input type="text" name="courseid"></br>
             <input value="Submit" type="submit"/>
-
-            Placeholder: Goal: make delete commands use only one page, not two.
         </form>
     </body>
 </html>
