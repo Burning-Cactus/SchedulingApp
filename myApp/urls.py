@@ -19,4 +19,5 @@ urlpatterns = [
     path('deleteSelect/', views.deleteSelect.as_view()),
     path('accessAllData/', views.accessAllData.as_view()),
     path('logout/', views.Logout.as_view()),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
