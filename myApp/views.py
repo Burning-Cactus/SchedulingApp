@@ -30,7 +30,7 @@ class Shell(View):
 
     return render(request, 'shell/index.html', {"message": Shell.response, "user": Shell.terminalInstance.username})
 
-#a
+
 class createAccount(View):
 
   def get(self, request):
@@ -55,7 +55,8 @@ class createAccount(View):
             request.method = 'get'
             return render(request, 'shell/commands.html')
         else:
-            return render(request, 'shell/createAccountError.html')
+            return redirect('shell/createAccountError.html')
+
 
 class createAccountError(View):
 
@@ -63,6 +64,7 @@ class createAccountError(View):
       return render(request, 'shell/createAccountError.html')
     def post(self, request):
       return render(request, 'shell/createAccountError.html')
+
 
 class editAccount(View):
 
@@ -88,6 +90,7 @@ class editAccount(View):
         request.session.pop("editID", None)
         return render(request, ['shell/editAccountError.html'])
 
+
 class editSelect(View):
 
   def get(self, request):
@@ -103,6 +106,7 @@ class editSelect(View):
       except USER.DoesNotExist:
           return render(request, 'shell/editAccountError.html')
 
+
 class commands(View):
 
     def get(self, request):
@@ -110,6 +114,7 @@ class commands(View):
 
     def post(self, request):
       return render(request, 'shell/commands.html')
+
 
 class Login(View):
     def get(self, request):
@@ -127,6 +132,7 @@ class Login(View):
             request.session['userid'] = user.id
             return redirect('/commands/')
 
+
 class Logout(View):
     def get(self, request):
         return render(request, 'shell/logout.html')
@@ -136,12 +142,12 @@ class Logout(View):
         return render(request, 'shell/login.html')
 
 
-
 class LoginError(View):
     def get(self, request):
       return render(request, 'shell/loginError.html')
     def post(self, request):
       return render(request, 'shell/loginError.html')
+
 
 class accessAllData(View):
 
@@ -153,22 +159,38 @@ class accessAllData(View):
         users = terminalInstance.accessData()
         return render(request, 'shell/accessAllData.html', {"users": users})
 
+
 class deleteSelect(View):
     def post(self, request):
-        UserID = request.POST["UserID"]
+        userid = request.POST["userid"]
 
         # if the UserID exists
-        if USER.objects.filter(databaseID=UserID).count() == 1:
+        if USER.objects.filter(databaseID=userid).count() == 1:
             return redirect("/deleteAccount/")
 
         # else go home
         return render(request, "/commands/")
 
+
 class deleteAccount(View):
     def get(self, request):
         terminalInstance = Terminal()
         response = terminalInstance.login(username, password)
-        UserID = request.GET["UserID"]  # is this a thing?
+        userid = request.GET["userid"]  # is this a thing?
         # call model.py's deleteAccount method
-        Terminal.deleteAccount(response, UserID)
+        Terminal.deleteAccount(response, userid)
+        return render(request, "/commands/")
+
+class deleteCourse(View):
+    def post(self, request):
+        courseid = request.POST["courseid"]
+        terminalInstance = Terminal()
+        response = terminalInstance.login(username, password)
+
+        # if the UserID exists
+        if USER.objects.filter(databaseID=courseid).count() == 1:
+            Terminal.deleteAccount(response, courseid)
+            return render(request, "/commands/")
+
+        # else go home
         return render(request, "/commands/")

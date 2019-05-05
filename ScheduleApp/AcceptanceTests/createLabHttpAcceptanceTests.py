@@ -1,18 +1,23 @@
 from django.test import Client
 from django.test import TestCase
-from myApp.models import USER, LAB_SECTION
+from myApp.models import USER, LAB_SECTION, COURSE
 
 
 class CreateLabTests(TestCase):
 
-    def setup(self):
+    def setUp(self):
         self.user = USER.objects.create(permission=[1], username="john", password="test", email="john@this.com",
                                         firstName="john", lastName="flupper", contactPhone="2628889765",
                                         officePhone="2624235436", extension="151")
         self.user.save()
 
-        self.lab = LAB_SECTION.objects.create('/createCourse/', {'name': 'TestClass', 'courseNumber': '602', 'classNumber': '401',
-                                             'time': '9:30 am', 'location': 'Test Hall'})
+        self.course = COURSE.objects.create(name='TestClass', courseNumber='602', classNumber='401', time='9:30 am',
+                                            location='Test Hall')
+        self.course.save()
+
+        self.lab = LAB_SECTION.objects.create(name='TestLab', labNumber='602', courseID=self.course.id, time='9:30 am'
+                                              , location='Test Hall')
+        self.lab.save()
 
         self.c = Client()
         session = self.c.session

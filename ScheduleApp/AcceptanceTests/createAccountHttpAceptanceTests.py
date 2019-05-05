@@ -42,92 +42,91 @@ class CreateAccountTest(TestCase):
     def testCreateAccountPost(self):
         ret = self.c.post('/createAccount/', {'username': 'jim', 'password': 'wild', 'permission': '[1]', 'email': 'jim@this.com',
                                                'firstName': 'jim', 'lastName': 'halpert', 'contactPhone': '111-111-1111',
-                                               'officePhone': '111-111-1111', 'extension': '111'})
+                                               'officePhone': '111-111-1111', 'extension': '111'}, follow=True)
 
         self.assertEqual(ret.status_code, 200)
-        self.assertTrue(ret.content.__contains__(b'<title>Account Created</title>'))
-        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/home/"'))
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/shell/commands/"'))
 
     def testCreateAccountPostError1(self):
         ret = self.c.post('/createAccount/',
                           {'username': '', 'password': 'wild', 'permission': '[1]', 'email': 'jim@this.com',
                            'firstName': 'jim', 'lastName': 'halpert', 'contactPhone': '111-111-1111',
-                           'officePhone': '111-111-1111', 'extension': '111'})
+                           'officePhone': '111-111-1111', 'extension': '111'}, follow=True)
 
-        self.assertTrue(ret.content.__contains__(b'<title>Create Account Error</title>'))
-        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccount/"'))
+        self.assertEqual(ret.status_code, 302)
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccountError/"'))
 
     def testCreateAccountPostError3(self):
         ret = self.c.post('/createAccount/',
                           {'username': 'jim', 'password': '', 'permission': '[1]', 'email': 'jim@this.com',
                            'firstName': 'jim', 'lastName': 'halpert', 'contactPhone': '111-111-1111',
-                           'officePhone': '111-111-1111', 'extension': '111'})
+                           'officePhone': '111-111-1111', 'extension': '111'}, follow=True)
 
-        self.assertTrue(ret.content.__contains__(b'<title>Create Account Error</title>'))
-        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccount/"'))
+        self.assertEqual(ret.status_code, 302)
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccountError/"'))
 
     def testCreateAccountPostError4(self):
         ret = self.c.post('/createAccount/',
                           {'username': 'jim', 'password': 'wild', 'permission': '', 'email': 'jim@this.com',
                            'firstName': 'jim', 'lastName': 'halpert', 'contactPhone': '111-111-1111',
-                           'officePhone': '111-111-1111', 'extension': '111'})
+                           'officePhone': '111-111-1111', 'extension': '111'}, follow=True)
 
-        self.assertTrue(ret.content.__contains__(b'<title>Create Account Error</title>'))
-        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccount/"'))
+        self.assertEqual(ret.status_code, 302)
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccountError/"'))
 
     def testCreateAccountPostError5(self):
         ret = self.c.post('/createAccount/',
                           {'username': 'jim', 'password': 'wild', 'permission': '[1]', 'email': '',
                            'firstName': 'jim', 'lastName': 'halpert', 'contactPhone': '111-111-1111',
-                           'officePhone': '111-111-1111', 'extension': '111'})
+                           'officePhone': '111-111-1111', 'extension': '111'}, follow=True)
 
-        self.assertTrue(ret.content.__contains__(b'<title>Create Account Error</title>'))
-        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccount/"'))
+        self.assertEqual(ret.status_code, 302)
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccountError/"'))
 
     def testCreateAccountPostError6(self):
         ret = self.c.post('/createAccount/',
                           {'username': 'jim', 'password': 'wild', 'permission': '[1]', 'email': 'jim@this.com',
                            'firstName': '', 'lastName': 'halpert', 'contactPhone': '111-111-1111',
-                           'officePhone': '111-111-1111', 'extension': '111'})
+                           'officePhone': '111-111-1111', 'extension': '111'}, follow=True)
 
-        self.assertTrue(ret.content.__contains__(b'<title>Create Account Error</title>'))
-        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccount/"'))
+        self.assertEqual(ret.status_code, 302)
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccountError/"'))
 
     def testCreateAccountPostError7(self):
         ret = self.c.post('/createAccount/',
                           {'username': 'jim', 'password': 'wild', 'permission': '[1]', 'email': 'jim@this.com',
                            'firstName': 'jim', 'lastName': '', 'contactPhone': '111-111-1111',
-                           'officePhone': '111-111-1111', 'extension': '111'})
+                           'officePhone': '111-111-1111', 'extension': '111'}, follow=True)
 
-        self.assertTrue(ret.content.__contains__(b'<title>Create Account Error</title>'))
-        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccount/"'))
+        self.assertEqual(ret.status_code, 302)
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccountError/"'))
 
     def testCreateAccountPostError8(self):
         ret = self.c.post('/createAccount/',
                           {'username': 'jim', 'password': 'wild', 'permission': '[1]', 'email': 'jim@this.com',
                            'firstName': 'jim', 'lastName': 'halpert', 'contactPhone': '',
-                           'officePhone': '111-111-1111', 'extension': '111'})
+                           'officePhone': '111-111-1111', 'extension': '111'}, follow=True)
 
-        self.assertTrue(ret.content.__contains__(b'<title>Create Account Error</title>'))
-        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccount/"'))
+        self.assertEqual(ret.status_code, 302)
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccountError/"'))
 
     def testCreateAccountPostError9(self):
         ret = self.c.post('/createAccount/',
                           {'username': 'jim', 'password': 'wild', 'permission': '[1]', 'email': 'jim@this.com',
                            'firstName': 'jim', 'lastName': 'halpert', 'contactPhone': '111-111-1111',
-                           'officePhone': '', 'extension': '111'})
+                           'officePhone': '', 'extension': '111'}, follow=True)
 
-        self.assertTrue(ret.content.__contains__(b'<title>Create Account Error</title>'))
-        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccount/"'))
+        self.assertEqual(ret.status_code, 302)
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccountError/"'))
 
     def testCreateAccountPostError10(self):
         ret = self.c.post('/createAccount/',
                           {'username': 'jim', 'password': 'wild', 'permission': '[1]', 'email': 'jim@this.com',
                            'firstName': 'jim', 'lastName': 'halpert', 'contactPhone': '111-111-1111',
-                           'officePhone': '111-111-1111', 'extension': ''})
+                           'officePhone': '111-111-1111', 'extension': ''}, follow=True)
 
-        self.assertTrue(ret.content.__contains__(b'<title>Create Account Error</title>'))
-        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccount/"'))
+        self.assertEqual(ret.status_code, 302)
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createAccountError/"'))
 
     def testTypes1(self):
         ret = self.c.get('/createAccount/')
@@ -145,10 +144,3 @@ class CreateAccountTest(TestCase):
     def testTypes5(self):
         ret = self.c.get('/createAccount/')
         self.assertTrue(ret.content.__contains__(b'type="number"'))
-
-
-
-
-
-
-##

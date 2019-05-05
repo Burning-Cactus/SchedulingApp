@@ -5,10 +5,10 @@
         <title>Delete Account?</title>
     </head>
     <body>
-        <form method="post" action="/home">
+        <form method="post" action="http://127.0.0.1:8000/deleteAccount/">
             {% csrf_token %}
             Execute account?
-            <input value="Submit" type="submit">
+            <input value="Submit" type="submit"/>
         </form>
     </body>
 </html>

@@ -13,8 +13,10 @@ class loginHttpAcceptanceTests(TestCase):
 
 
     def testGetLogin(self):
-        ret = self.c.get('/login/')
+        with self.assertTemplateUsed('shell/login.html'):
+            ret = self.c.get('/login/')
         self.assertTrue(ret.content.__contains__(b'<title>Log In</title>'))
+
 
     def testLoginPost(self):
 
