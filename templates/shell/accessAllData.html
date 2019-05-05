@@ -6,9 +6,7 @@
 </head>
 <body>
     <h1>Data:</h1><br>
-    <!--{% for user in users %}
-        <li><a>{{ user}}</a></li>
-    {% endfor %}-->
+
     User:<br>
     <table align="center" style="width:100%">
         <tr>
@@ -23,21 +21,19 @@
             <th>Office Phone</th>
             <th>Extension</th>
         </tr>
-        {% for user in users %}
-            {% for i in user %}
-                <tr>
-                    <td>{{ i.id}}</td>
-                    <td>{{ i.permission}}</td>
-                    <td>{{ i.username}}</td>
-                    <td>{{ i.password}}</td>
-                    <td>{{ i.firstName}}</td>
-                    <td>{{ i.lastName}}</td>
-                    <td>{{ i.email}}</td>
-                    <td>{{ i.contactPhone}}</td>
-                    <td>{{ i.officePhone}}</td>
-                    <td>{{ i.extension}}</td>
-                </tr>
-            {% endfor %}
+        {% for i in allUsers %}
+            <tr>
+                <td>{{ i.id}}</td>
+                <td>{{ i.permission}}</td>
+                <td>{{ i.username}}</td>
+                <td>{{ i.password}}</td>
+                <td>{{ i.firstName}}</td>
+                <td>{{ i.lastName}}</td>
+                <td>{{ i.email}}</td>
+                <td>{{ i.contactPhone}}</td>
+                <td>{{ i.officePhone}}</td>
+                <td>{{ i.extension}}</td>
+            </tr>
         {% endfor %}
     </table>
 
@@ -51,17 +47,15 @@
             <th>Time</th>
             <th>Location</th>
         </tr>
-        {% for courses in users %}
-            {% for i in courses %}
-                <tr>
-                    <td>{{ i.id}}</td>
-                    <td>{{ i.name}}</td>
-                    <td>{{ i.courseNumber}}</td>
-                    <td>{{ i.classNumber}}</td>
-                    <td>{{ i.time}}</td>
-                    <td>{{ i.location}}</td>
-                </tr>
-            {% endfor %}
+        {% for i in allCourses %}
+            <tr>
+                <td>{{ i.id}}</td>
+                <td>{{ i.name}}</td>
+                <td>{{ i.courseNumber}}</td>
+                <td>{{ i.classNumber}}</td>
+                <td>{{ i.time}}</td>
+                <td>{{ i.location}}</td>
+            </tr>
         {% endfor %}
     </table>
 
@@ -70,30 +64,50 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Course Number</th>
-            <th>Class Number</th>
+            <th>Lab Number</th>
+            <th>Course ID</th>
             <th>Time</th>
             <th>Location</th>
         </tr>
-        {% for courses in users %}
-            {% for i in courses %}
-                <tr>
-                    <td>{{ i.id}}</td>
-                    <td>{{ i.name}}</td>
-                    <td>{{ i.courseNumber}}</td>
-                    <td>{{ i.classNumber}}</td>
-                    <td>{{ i.time}}</td>
-                    <td>{{ i.location}}</td>
-                </tr>
-            {% endfor %}
+        {% for i in allLabs %}
+            <tr>
+                <td>{{ i.id}}</td>
+                <td>{{ i.name}}</td>
+                <td>{{ i.labNumber}}</td>
+                <td>{{ i.courseID}}</td>
+                <td>{{ i.time}}</td>
+                <td>{{ i.location}}</td>
+            </tr>
         {% endfor %}
     </table>
 
     Assistant Assignments:<br>
-
+    <table align="center" style="width:100%">
+        <tr>
+            <th>Assistant ID</th>
+            <th>Lab ID</th>
+        </tr>
+        {% for i in assistantAssignments %}
+            <tr>
+                <td>{{ i.assistantID}}</td>
+                <td>{{ i.labID}}</td>
+            </tr>
+        {% endfor %}
+    </table>
 
     Instructor Assignments:<br>
-
+    <table align="center" style="width:100%">
+        <tr>
+            <th>Instructor ID</th>
+            <th>Course ID</th>
+        </tr>
+        {% for i in instructorAssignments %}
+            <tr>
+                <td>{{ i.instructorID}}</td>
+                <td>{{ i.courseID}}</td>
+            </tr>
+        {% endfor %}
+    </table>
 
     </body>
 </html>

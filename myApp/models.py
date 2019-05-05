@@ -424,9 +424,7 @@ class Terminal(object):
 
         allData.append("")
 
-        trueAllData = [allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments]
-
-        return trueAllData
+        return allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments
 
     def assignInstructorToCourse(self, courseid, instructorid):
         # Assign an instructor to a course in the database

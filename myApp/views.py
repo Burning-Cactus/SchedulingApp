@@ -156,8 +156,8 @@ class accessAllData(View):
         id = request.session['userid']
         user = USER.objects.get(id=id)
         terminalInstance.login(user.username, user.password)
-        users = terminalInstance.accessData()
-        return render(request, 'shell/accessAllData.html', {"users": users})
+        allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments = terminalInstance.accessData()
+        return render(request, 'shell/accessAllData.html', {"allUsers": allUsers, "allCourses": allCourses, "allLabs": allLabs, "assistantAssignments": assistantAssignments, "instructorAssignments": instructorAssignments})
 
 
 class deleteSelect(View):
