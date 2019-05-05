@@ -6,9 +6,6 @@ from myApp.models import USER, COURSE
 class DeleteAccountHttpAcceptanceTest(TestCase):
 
     def setUp(self):
-        self.userToDelete = USER.objects.create(permission=[4], username="john", password="test", email="john@this.com",
-                                    firstName="john", lastName="flupper", contactPhone="2628889765",
-                                    officePhone="2624235436", extension="151")
         self.userToDelete.save()
         self.course = COURSE.objects.create(name="Intro to CS TEST", courseNumber='150', classNumber='001',
                                             time="MWF 11-11:50", location="EMS 150")
