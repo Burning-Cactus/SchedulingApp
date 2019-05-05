@@ -150,7 +150,6 @@ class LoginError(View):
 
 
 class accessAllData(View):
-
     def get(self, request):
         terminalInstance = Terminal()
         id = request.session['userid']
