@@ -20,12 +20,13 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
 
     # Functionality Tests
     # Tests for deletion being done
+    # todo ###############################################
     def testDeleteCourse(self):
         self.setUp()
-        idToDelete = self.c.session[USER.objects.get(username="john")]
+        course_to_delete = self.c.session[USER.objects.get(username="john")]
 
         # Go to the delete user selection page
-        ro = self.c.post('deleteSelect.html', {'userid': idToDelete})
+        ro = self.c.post('deleteSelect.html', {'userid': course_to_delete})
 
         # Make sure we redirect to the proper page for deleting
         url = ro.redirect_chain
@@ -43,6 +44,7 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
 
     # HTML Tests
         # deleteSelect.html 's tests
+    # todo ###############################################
     def testDeleteSelectPost(self):
         with self.assertTemplateUsed("deleteAccount.html"):
             with self.assertTemplateNotUsed("homepage.html"):
@@ -51,6 +53,7 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
                 self.assertRedirects(res, expected_url)
 
         # deleteAccount.html 's tests
+    # todo ###############################################
     def testDeleteAccountGet(self):
         with self.assertTemplateUsed("commands.html"):
             with self.assertTemplateNotUsed("deleteSelect.html"):
@@ -60,14 +63,17 @@ class DeleteAccountHttpAcceptanceTest(TestCase):
 
     # HTML file tests
     def testFormMethodAction(self):
-        ret = self.c.get('/deleteAccount/')
+        ret = self.c.get('/deleteCourse/')
         self.assertTrue(ret.content.__contains__(b'<form method="post", action="http://127.0.0.1:8000/commands/">'))
 
     def testSubmit(self):
-        ret = self.c.get('/deleteAccount/')
+        ret = self.c.get('/deleteCourse/')
         self.assertTrue(ret.content.__contains__(b'type="submit"'))
         self.assertTrue(ret.content.__contains__(b'value="Submit"'))
 
     def test_title(self):
-        ret = self.c.get('/deleteAccount/')
-        self.assertTrue(ret.content.__contains__(b'<title>Delete Account?</title>'))
+        ret = self.c.get('/deleteCourse/')
+        self.assertTrue(ret.content.__contains__(b'<title>Delete a Course</title>'))
+
+    # todo #################### post redirect stuff ###########################
+
