@@ -460,22 +460,25 @@ class Terminal(object):
             return "You do not have permissions to use this function."
 
         try:
-            COURSE.objects.get(id=courseid)
+            COURSE.objects.get(id=int(courseid))
         except:
             return "Course does not exist"
 
         try:
-            assistant = USER.objects.get(id=assistantid)
+            assistant = USER.objects.get(id=int(assistantid))
         except:
             return "User does not exist"
 
         if assistant.permission.__contains__('4') != True:
             return "This user is not an assistant"
 
-        joiner = I_LIST()
-        joiner.courseID = courseid
-        joiner.instructorID = assistantid
-        joiner.save()
+        try:
+            if I_LIST.objects.get(courseID=int(courseid), instructorID=int(assistantid)):
+                return "Asssistant is already assigned to this course"
+        except I_LIST.DoesNotExist:
+            pass
+
+        I_LIST.objects.create(courseID=int(courseid), instructorID=int(assistantid)).save()
         return "Assistant added to Course"
 
 
