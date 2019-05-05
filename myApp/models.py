@@ -157,6 +157,9 @@ class Terminal(object):
         lab.save()
         return "new Lab Created"
 
+    def deleteLab(self, labID):
+        pass
+
 
     def createAccount(self, permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension):
 
@@ -192,31 +195,31 @@ class Terminal(object):
         except:
             return "User does not exist"
 
-        if permission != ' ':
+        if permission != '':
             userEntry.permission = permission
 
-        if username != ' ':
+        if username != '':
             userEntry.username = username
 
-        if password != ' ':
+        if password != '':
             userEntry.password = password
 
-        if email != ' ':
+        if email != '':
             userEntry.email = email
 
-        if firstName != ' ':
+        if firstName != '':
             userEntry.firstName = firstName
 
-        if lastName != ' ':
+        if lastName != '':
             userEntry.lastName = lastName
 
-        if contactPhone != ' ':
+        if contactPhone != '':
             userEntry.contactPhone = contactPhone
 
-        if officePhone != ' ':
+        if officePhone != '':
             userEntry.officePhone = officePhone
 
-        if extension != ' ':
+        if extension != '':
             userEntry.extension = extension
 
         userEntry.save()

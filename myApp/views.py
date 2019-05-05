@@ -37,24 +37,25 @@ class createAccount(View):
     return render(request, 'shell/createAccount.html')
 
   def post(self, request):
-        username = request.POST['UserName']
-        password = request.POST['Password']
-        permission = request.POST['Permission']
-        email = request.POST['Email']
-        firstName = request.POST['FirstName']
-        lastName = request.POST['LastName']
-        contactPhone = request.POST['ContactPhone']
-        officePhone = request.POST['OfficePhone']
-        extension = request.POST['Extension']
+        username = request.POST['username']
+        password = request.POST['password']
+        permission = request.POST['permission']
+        email = request.POST['email']
+        firstName = request.POST['firstName']
+        lastName = request.POST['lastName']
+        contactPhone = request.POST['contactPhone']
+        officePhone = request.POST['officePhone']
+        extension = request.POST['extension']
         terminalInstance = Terminal()
         id = request.session['userid']
         user = USER.objects.get(id=id)
-        terminalInstance = terminalInstance.login(USER.username, USER.password)
+        terminalInstance.login(user.username, user.password)
         response = terminalInstance.createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
-        if response is not "New user created":
-          return redirect('/createAccountError/')
+        if response.__eq__("New user created"):
+            request.method = 'get'
+            return render(request, 'shell/commands.html')
         else:
-          return redirect('/commands/')
+            return redirect('shell/createAccountError.html')
 
 class createAccountError(View):
 
@@ -70,16 +71,21 @@ class editAccount(View):
 
   def post(self, request):
     terminalInstance = Terminal()
-    userinstance = request.session['userid']
-    response = terminalInstance.editAccount(userinstance, request.POST['Permission'], request.POST['UserName'],
-                                    request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
-                                    request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
-                                    request.POST['Extension'])
+    id = request.session['editID']
+    user = USER.objects.get(id=id)
+    terminalInstance.login(user.username, user.password)
+    response = terminalInstance.editAccount(id, request.POST['Permission'], request.POST['UserName'],
+                                                request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
+                                                request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
+                                                request.POST['Extension'])
     if response == "User account updated":
-        return render(request, ['http://127.0.0.1:8000/home'])
+        request.session.pop("editID", None)
+        return render(request, ['shell/commands.html'])
     if response == "User does not exist":
+        request.session.pop("editID", None)
         return render(request, ['shell/editAccountError.html'])
     else:
+        request.session.pop("editID", None)
         return render(request, ['shell/editAccountError.html'])
 
 class editSelect(View):
@@ -88,10 +94,10 @@ class editSelect(View):
       return render(request, 'shell/editSelect.html')
 
   def post(self, request):
-      terminalInstance = Terminal()
-      userinstance = request.session['userid']
+      #terminalInstance = Terminal()
+      #userinstance = request.session['userid']
       try:
-          if USER.objects.get(request.POST['userid']):
+          if USER.objects.get(id=request.POST['userid']):
               request.session['editID'] = request.POST['userid']
               return render(request, 'shell/editAccount.html')
       except USER.DoesNotExist:
