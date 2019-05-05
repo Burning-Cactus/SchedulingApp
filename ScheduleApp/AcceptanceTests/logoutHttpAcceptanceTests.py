@@ -8,7 +8,11 @@ class logoutHttpTest(TestCase):
         self.user = USER.objects.create(permission=[4], username="john", password="test", email="john@this.com",
                                         firstName="john", lastName="flupper", contactPhone="2628889765",
                                         officePhone="2624235436", extension="151")
+        self.user.save()
         self.c = Client()
+        session = self.c.session
+        session['userid'] = self.user.id
+        session.save()
 
     def testGetLogout(self):
         ret = self.c.get('/logout/')
