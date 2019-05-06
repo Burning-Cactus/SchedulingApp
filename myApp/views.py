@@ -4,7 +4,7 @@ from myApp.models import Terminal
 from django.http import HttpRequest, HttpResponse
 from .forms import InputForm, LoginForm
 from .models import USER
-
+from django.core.mail import send_mail
 
 # Create your views here.
 class Shell(View):
@@ -193,4 +193,15 @@ class deleteCourse(View):
 
         # else go home
         return render(request, "/commands/")
+
+class Email(View):
+    def get(self, request):
+        return render(request, 'shell/email.html')
+
+    def post(self, request):
+       # terminal = Terminal()
+       # subject = request.POST["Subject"]
+      #message = request.POST["Message"]
+
+        send_mail("fgu", "hi", 'johnaponte123@gmail.com', ['japonte@uwm.edu'], fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message="hi")
 

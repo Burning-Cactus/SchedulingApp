@@ -1,56 +1,22 @@
-<!DOCTYPE html>
+{% load staticfiles %}
+        <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Send an Email</title>
+    <title>Hello Django</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
-<body>
-    <table align="center" border="1" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;" >
-        <tr>
-            <td bgcolor="#70bbd9" align="center" >
-                <img src="https://data.whicdn.com/images/19378197/original.gif"
-                alt="OOPLA" width="500" height="300" style="display: block;">
-            </td>
-        </tr>
+<body style="background-color: #191919; font-family: 'Lucida Console'; color: #54a024">
+    {% block content %}
 
-        <tr>
-            <td bgcolor="#ffffff" style="padding: 0px 30px 40px 30px;">
-                <table cellpadding="0" cellspacing="0" width="100%">
-                    <tr>
-                        <td style="padding: 0px 50px 30px 0;">
-                            <form action="" method="post">
-                                  Subject: <input type="text" name="Subject" style="width: 400px">
-                            </form>
-
-                        </td>
-                    </tr>
-                    <table border="1" cellpadding="0" cellspacing="0" width="100%">
-                    <tr>
-                        <td style="padding: 0px 50px 30px 0;" >
-                            <form action="" method="post">
-                                 Message: <input type="text" name="Message" id="Message" style="width: 500px; height: 500px">
-                            </form>
-
-                        </td>
-                    </tr>
-                   <tr>
-                        <td>
-                            <form action="" method="post">
-                                  <input type="submit" value="SEND!">
-                            </form>
-
-                        </td>
-                    </tr>
-                    </table>
-
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td bgcolor="#ee4c50">
-                <a href="commands.html">Back to HomePage</a>
-            </td>
-        </tr>
-    </table>
+        <form action="#" method="post">
+            {% csrf_token %}
+        Subject: <input type="text" name="Subject" style="width: 400px"><br>
+        Message: <input type="text" name="Message"  style="width: 500px; height: 500px"><br>
+        <input type="submit" value="SEND!">
+        </form>
+    {% endblock content %}
 </body>
 </html>
