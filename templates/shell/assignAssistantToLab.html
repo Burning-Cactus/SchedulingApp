@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Assistant To Lab</title>
+</head>
+<body>
+<form method="post" action="/assignAssistantToLab/">
+        {% csrf_token %}
+        Lab Id:<br><input type="number" name="LabId"></br>
+        Assistant Id:<br><input type="number" name="AssistantId"></br>
+        <input type="submit" value="Assign Assistant">
+</form>
+</body>
+</html>

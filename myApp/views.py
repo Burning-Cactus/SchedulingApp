@@ -205,3 +205,27 @@ class Email(View):
 
         send_mail("fgu", "hi", 'johnaponte123@gmail.com', ['japonte@uwm.edu'], fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message="hi")
 
+class assignAssistantToLab(View):
+    def get(self, request):
+        return render(request, 'shell/assignAssistantToLab.html')
+
+    def post(self,request):
+        terminalInstance = Terminal()
+        labid = request.POST['LabId']
+        assistantid = request.POST['AssistantId']
+        terminalInstance.assignAssistantToLab(labid,assistantid)
+        return render(request, 'shell/commands.html')
+
+
+class assignAssistantToCourse(View):
+    def get(self, request):
+        return render(request, 'shell/assignAssistantToCourse.html')
+
+    def post(self, request):
+        terminalInstance = Terminal()
+        Courseid = request.POST['CourseId']
+        assistantid = request.POST['AssistantId']
+        terminalInstance.assignAssistantToCourse(Courseid,assistantid)
+
+        return render(request, 'shell/commands.html')
+

@@ -51,4 +51,4 @@ class AssignAssistantToLab(TestCase):
 
     def testSubmitButton(self):
         ret = self.c.get('/assignAssistantToLab/')
-        self.assertTrue(ret.content.__contains__(b'type="submit"'))
+        self.assertTrue(ret.content.__contains__(b'type="Assign Assistant"'))
