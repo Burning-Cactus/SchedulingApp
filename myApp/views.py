@@ -3,7 +3,7 @@ from django.views import View
 from myApp.models import Terminal
 from django.http import HttpRequest, HttpResponse
 from .forms import InputForm, LoginForm
-from .models import USER
+from .models import USER, I_LIST
 from django.core.mail import send_mail
 
 # Create your views here.
@@ -110,10 +110,11 @@ class editSelect(View):
 class commands(View):
 
     def get(self, request):
-      return render(request, 'shell/commands.html')
+        print(request.session['userid'])
+        return render(request, 'shell/commands.html')
 
     def post(self, request):
-      return render(request, 'shell/commands.html')
+        return render(request, 'shell/commands.html')
 
 
 class Login(View):
@@ -124,8 +125,8 @@ class Login(View):
         terminalInstance = Terminal()
         username = request.POST['UserName']
         password = request.POST['Password']
-        response = terminalInstance.login(username, password)
-        if not response.__eq__("Logged in as: " + username):
+        response, isValidated = terminalInstance.login(username, password)
+        if not isValidated:
             return render(request, 'shell/loginError.html', {'res': response})
         else:
             user = USER.objects.get(username=username)
@@ -194,26 +195,17 @@ class deleteCourse(View):
         # else go home
         return render(request, "/commands/")
 
-class Email(View):
-    def get(self, request):
-        return render(request, 'shell/email.html')
-
-    def post(self, request):
-       # terminal = Terminal()
-       # subject = request.POST["Subject"]
-      #message = request.POST["Message"]
-
-        send_mail("fgu", "hi", 'johnaponte123@gmail.com', ['japonte@uwm.edu'], fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message="hi")
-
 class assignAssistantToLab(View):
     def get(self, request):
         return render(request, 'shell/assignAssistantToLab.html')
 
     def post(self,request):
         terminalInstance = Terminal()
+        print(terminalInstance.user)
         labid = request.POST['LabId']
         assistantid = request.POST['AssistantId']
-        terminalInstance.assignAssistantToLab(labid,assistantid)
+        res, isAssign = terminalInstance.assignAssistantToLab(labid,assistantid)
+        print("%s :: %s" % (res, isAssign))
         return render(request, 'shell/commands.html')
 
 
@@ -229,3 +221,16 @@ class assignAssistantToCourse(View):
 
         return render(request, 'shell/commands.html')
 
+
+class viewCourseAssignments(View):
+    def get(self, request):
+        # check permission
+        id = request.session['userid']
+        user = USER.objects.get(id = id)
+        # if '3' not in user.permission:
+
+
+
+
+        assignments = I_LIST.objects.all()
+        return render(request, 'shell/viewCourseAssignments.html', {'assignments': assignments})
