@@ -7,7 +7,8 @@
 <body>
     <form method="post" action="http://127.0.0.1:8000/editAccount/">
         {% csrf_token %}
-        User Name<input type="text" name="UserName"></br>
+
+        request.session['editID'].userName<input type="text" name="UserName"></br>
         Password<input type="password" name="Password"></br>
         Permission<input type="number" name="Permission"></br>
         Email<input type="email" name="Email"></br>

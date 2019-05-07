@@ -77,9 +77,9 @@ class editAccount(View):
     user = USER.objects.get(id=id)
     terminalInstance.login(user.username, user.password)
     response = terminalInstance.editAccount(id, request.POST['Permission'], request.POST['UserName'],
-                                                request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
-                                                request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
-                                                request.POST['Extension'])
+                                            request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
+                                            request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
+                                            request.POST['Extension'])
     if response == "User account updated":
         request.session.pop("editID", None)
         return render(request, ['shell/commands.html'])
@@ -229,3 +229,8 @@ class assignAssistantToCourse(View):
 
         return render(request, 'shell/commands.html')
 
+class assignInstructorToCourse(View):
+    def get(self, request):
+        return render(request, 'shell/assignInstructor.html')
+    def post(self, request):
+        Terminal().assignInstructorToCourse(request.POST['courseID'], request.POST['instructorID'])

@@ -27,11 +27,12 @@ class assignInstuctorToCourseHttpTests(TestCase):
     def testAssignInstructorToCourseTable(self):
         ret = self.c.get('/assignInstructor/')
         self.assertTrue(ret.content.__contains__(b'<table>'))
-        self.assertTrue(ret.content.__contains__(b'<tr><th>Permission</th> <th>User Name</th> <th>Password</th> '
-                                                 b'<th>Email</th> <th>First Name</th> <th>Last Name</th> '
-                                                 b'<th>ContactPhone</th> <th>OfficePhone</th> <th>Extension</th></tr>'))
-        self.assertTrue(ret.content.__contains__(b'<tr><th>Name</th> <th>Course Number</th> <th>Class Number</th> '
-                                                 b'<th>time</th> <th>location</th></tr>'))
+        self.assertTrue(ret.content.__contains__(b'<tr><th>ID</th><th>Permission</th> <th>User Name</th> '
+                                                 b'<th>Password</th> ' b'<th>Email</th> <th>First Name</th> '
+                                                 b'<th>Last Name</th> 'b'<th>ContactPhone</th> <th>OfficePhone</th> '
+                                                 b'<th>Extension</th></tr>'))
+        self.assertTrue(ret.content.__contains__(b'<tr><th>ID</th><th>Name</th> <th>Course Number</th> '
+                                                 b'<th>Class Number</th> 'b'<th>time</th> <th>location</th></tr>'))
         self.assertTrue(ret.content.__contains__(b'</table>'))
 
     def TestAssignInstructorToCourseGet(self):
