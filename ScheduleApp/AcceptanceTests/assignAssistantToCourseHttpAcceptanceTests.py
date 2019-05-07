@@ -27,8 +27,8 @@ class AssignAssistantToCourseTest(TestCase):
 
     def testFormFields(self):
         ret = self.c.get('/assignAssistantToCourse/')
-        self.assertTrue(ret.content.__contains__(b'name="userId"'))
-        self.assertTrue(ret.content.__contains__(b'name="courseId"'))
+        self.assertTrue(ret.content.__contains__(b'name="AssistantId"'))
+        self.assertTrue(ret.content.__contains__(b'name="CourseId"'))
 
     def testAssignAssistantToCoursePost(self):
         user = USER.objects.create(permission=[1], username="pablo", password="test", email="john@this.com",
@@ -51,4 +51,4 @@ class AssignAssistantToCourseTest(TestCase):
 
     def testSubmitButton(self):
         ret = self.c.get('/assignAssistantToCourse/')
-        self.assertTrue(ret.content.__contains__(b'type="Assign Assistant"'))
+        self.assertTrue(ret.content.__contains__(b'value="Assign Assistant"'))

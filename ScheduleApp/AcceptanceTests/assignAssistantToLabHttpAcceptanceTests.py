@@ -18,17 +18,17 @@ class AssignAssistantToLab(TestCase):
 
     def testAssignAssistantToLabGet(self):
         ret = self.c.get('/assignAssistantToLab/')
-        self.assertTrue(ret.content.__contains__(b'<title>Create Account</title>'))
+        self.assertTrue(ret.content.__contains__(b'<title>Assign Assistant To Lab</title>'))
 
     def testFormMethodAction(self):
-        ret = self.c.get('/createAccount/')
+        ret = self.c.get('/assignAssistantToLab/')
         self.assertTrue(ret.content.__contains__(b'<form method="post"'))
         self.assertTrue(ret.content.__contains__(b'action="/assignAssistantToLab/">'))
 
     def testFormFields(self):
         ret = self.c.get('/assignAssistantToLab/')
-        self.assertTrue(ret.content.__contains__(b'name="userId"'))
-        self.assertTrue(ret.content.__contains__(b'name="labId"'))
+        self.assertTrue(ret.content.__contains__(b'name="AssistantId"'))
+        self.assertTrue(ret.content.__contains__(b'name="LabId"'))
 
     def testAssignAssistantToLabPost(self):
             user = USER.objects.create(permission=[1], username="pablo", password="test", email="john@this.com",
@@ -51,4 +51,4 @@ class AssignAssistantToLab(TestCase):
 
     def testSubmitButton(self):
         ret = self.c.get('/assignAssistantToLab/')
-        self.assertTrue(ret.content.__contains__(b'type="Assign Assistant"'))
+        self.assertTrue(ret.content.__contains__(b'value="Assign Assistant"'))
