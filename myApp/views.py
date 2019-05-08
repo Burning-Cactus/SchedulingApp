@@ -3,7 +3,7 @@ from django.views import View
 from myApp.models import Terminal
 from django.http import HttpRequest, HttpResponse
 from .forms import InputForm, LoginForm
-from .models import USER, I_LIST
+from .models import USER, I_LIST, COURSE
 from django.core.mail import send_mail
 
 # Create your views here.
@@ -227,10 +227,16 @@ class viewCourseAssignments(View):
         # check permission
         id = request.session['userid']
         user = USER.objects.get(id = id)
-        # if '3' not in user.permission:
-
-
-
-
-        assignments = I_LIST.objects.all()
-        return render(request, 'shell/viewCourseAssignments.html', {'assignments': assignments})
+        Name=user.firstName
+       # if '3' not in user.permission:
+         #   return HttpResponse("Access Denied")
+        c= I_LIST.courseID
+        course= COURSE.objects.get(id=c.id)
+        courseName= course.name
+        courseSection= course.courseNumber
+        context= {
+            'Name': Name,
+            'CourseName': courseName,
+            'courseSection': courseSection
+        }
+        return render(request, 'shell/viewCourseAssignments.html', context)

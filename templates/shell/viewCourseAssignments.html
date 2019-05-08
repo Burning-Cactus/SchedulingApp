@@ -1,8 +1,6 @@
 {% extends "shell/base.html" %}
 {% block content %}
 <ul>
-{% for i in assignments %}
-    <li>{{ i.instructorID }} {{ i.courseID }}</li>
-{% endfor %}
+    <li>{{ user }} {{ course }}</li>
 </ul>
 {% endblock %}
