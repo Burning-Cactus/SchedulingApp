@@ -331,11 +331,30 @@ class createCourse(View):
         user = USER.objects.get(id=request.session['userid'])
         terminalInstance.login(user.username, user.password)
 
-        ret, bool = terminalInstance.createCourse(request.POST['name'], request.POST['courseNumber'],
-                                                  request.POST['classNumber'], request.POST['time'],
-                                                  request.POST['location'],)
+        ret, success = terminalInstance.createCourse(request.POST['name'], request.POST['courseNumber'],
+                                                     request.POST['classNumber'], request.POST['time'],
+                                                     request.POST['location'])
 
-        if bool is False:
+        if success is False:
+            return render(request, 'shell/error.html', {"message": ret})
+
+        return redirect('/commands/')
+
+
+class createLab(View):
+    def get(self, request):
+        return render(request, 'shell/createLab.html')
+
+    def post(self, request):
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
+        ret, success = terminalInstance.createLab(request.POST['name'], int(request.POST['courseID']),
+                                                  request.POST['labNumber'], request.POST['time'],
+                                                  request.POST['location'])
+
+        if success is False:
             return render(request, 'shell/error.html', {"message": ret})
 
         return redirect('/commands/')

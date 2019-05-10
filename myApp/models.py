@@ -118,7 +118,7 @@ class Terminal(object):
             return "You are not logged in", False
 
         if (name == "" or None) or (courseid == "" or None) or (labnr == "" or None) or (time == "" or None) or (location == "" or None):
-            return None, False
+            return "Fields Missing", False
 
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
             return "User: " + self.username + ", does not have permission to preform this action", False
@@ -132,7 +132,7 @@ class Terminal(object):
         try:
             COURSE.objects.get(id=courseid)
         except COURSE.DoesNotExist:
-            return None, False
+            return "Course Does not exist", False
 
         newLab=LAB_SECTION()
         newLab.name = name
