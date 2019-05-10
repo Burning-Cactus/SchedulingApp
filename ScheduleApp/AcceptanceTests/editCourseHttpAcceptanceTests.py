@@ -19,45 +19,45 @@ class EditCourseTest(TestCase):
         session.save()
 
     def test_editCourseSelect_get(self):
-        ret = self.c.get('/editcourseselect/')
+        ret = self.c.get('/editCourseSelect/')
         self.assertTrue(ret.content.__contains__(b'<title>Select Course</title>'))
 
     def test_editCourseSelect_post(self):
-        ret = self.c.post('/editcourseselect/', {'userid': 2}, follow=True)
+        ret = self.c.post('/editCourseSelect/', {'userid': 2}, follow=True)
         self.assertTrue(ret.content.__contains__(b'<title>Edit Course Data</title>'))
         self.assertEqual(self.userToEdit.id, self.c.session['editID'])
 
     def test_editCourse_get(self):
-        ret = self.c.get('/editcourse/')
+        ret = self.c.get('/editCourse/')
         self.assertTrue(ret.content.__contains__(b'<title>Edit Course</title>'))
 
     def test_editCourse_fields_1(self):
-        ret = self.c.get('/editcourse/')
+        ret = self.c.get('/editCourse/')
         self.assertTrue(ret.content.__contains__(b'name="coursename"'))
 
     def test_editCourse_fields_2(self):
-        ret = self.c.get('/editcourse/')
+        ret = self.c.get('/editCourse/')
         self.assertTrue(ret.content.__contains__(b'name="coursenumber"'))
 
     def test_editCourse_fields_3(self):
-        ret = self.c.get('/editcourse/')
+        ret = self.c.get('/editCourse/')
         self.assertTrue(ret.content.__contains__(b'name="classnumber"'))
 
     def test_editCourse_fields_4(self):
-        ret = self.c.get('/editcourse/')
+        ret = self.c.get('/editCourse/')
         self.assertTrue(ret.content.__contains__(b'name="time"'))
 
     def test_editCourse_fields_5(self):
-        ret = self.c.get('/editcourse/')
+        ret = self.c.get('/editCourse/')
         self.assertTrue(ret.content.__contains__(b'name="location"'))
 
     def test_editCourse_fields_6(self):
-        ret = self.c.get('/editcourse/')
+        ret = self.c.get('/editCourse/')
         self.assertTrue(ret.content.__contains__(b'type="submit"'))
         self.assertTrue(ret.content.__contains__(b'value="Apply"'))
 
     def test_editCourse_post(self):
-        ret = self.c.post('/editcourse/',
+        ret = self.c.post('/editCourse/',
                           {'coursename': "CS Principles", 'coursenumber': "101", 'classnumber': "002",
                            'time': "MW 2:00-2:50", 'location': "Lubar S263"}, follow=True)
 
