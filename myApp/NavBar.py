@@ -75,7 +75,7 @@ class NavBar:
                             'View Assistants',
                             'View Contacts',
                             'Edit Contact Info',
-                            'Email'
+                            'Email',
                             'Logout']
             else:
                 navHtml = ['Assign Assistant',
@@ -83,7 +83,7 @@ class NavBar:
                             'View Assistants',
                             'View Contacts',
                             'Edit Contact Info',
-                            'Email'
+                            'Email',
                             'Switch Permission',
                             'Logout']
 

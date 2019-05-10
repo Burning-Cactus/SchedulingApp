@@ -297,3 +297,26 @@ class EditCourse(View):
         classtime = request.POST['time']
         location = request.POST['location']
         Terminal().editCourse(id, name, coursenumber, classnumber, classtime, location)
+
+class switchPermission(View):
+    def get(self, request):
+        activePermission = request.session["activePermission"]
+        user = USER.objects.get(id=request.session["userid"])
+        permissions = []
+
+        if user.permission.__contains__('1'):
+            permissions.append('1')
+        if user.permission.__contains__('2'):
+            permissions.append('2')
+        if user.permission.__contains__('3'):
+            permissions.append('3')
+        if user.permission.__contains__('4'):
+            permissions.append('4')
+
+        if activePermission == permissions[0]:
+            request.session["activePermission"] = permissions[1]
+        if activePermission == permissions[1]:
+            request.session["activePermission"] = permissions[0]
+
+        return redirect('/commands/')
+
