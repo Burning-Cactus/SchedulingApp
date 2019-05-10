@@ -1,0 +1,16 @@
+<html>
+
+    <title>Create Course</title>
+
+    <head></head>
+
+    <form method="post" action="/createLab/">
+        {% csrf_token %}
+        <input type="text" name="name"> Lab Name<br><br>
+        <input type="text" name="labName">Lab Number<br><br>
+        <input type="text" name="courseID">Course ID<br><br>
+        <input type="text" name="time">Time<br><br>
+        <input type="text" name="location">Location<br><br>
+        <input type="submit" value="Create">
+    </form>
+</html>
