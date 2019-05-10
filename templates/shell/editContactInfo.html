@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Contact Info</title>
+</head>
+<body>
+    <form method="post" action="/createAccount/">
+        {% csrf_token %}
+        Email:<br><input type="email" name="email"></br>
+        Contact Phone:<br><input type="tel" name="contactPhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></br>
+        Office Phone:<br><input type="tel" name="officePhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></br>
+        Extension:<br><input type="number" name="extension"></br>
+        <input type="submit" value="Create">
+    </form>
+</body>
+</html>

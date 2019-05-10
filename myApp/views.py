@@ -234,3 +234,25 @@ class assignInstructorToCourse(View):
         return render(request, 'shell/assignInstructor.html')
     def post(self, request):
         Terminal().assignInstructorToCourse(request.POST['courseID'], request.POST['instructorID'])
+class editContactInfo(View):
+
+  def get(self, request):
+    return render(request, 'shell/editContactInfo.html')
+
+  def post(self, request):
+
+        email = request.POST['email']
+        contactPhone = request.POST['contactPhone']
+        officePhone = request.POST['officePhone']
+        extension = request.POST['extension']
+        terminalInstance = Terminal()
+        id = request.session['userid']
+        user = USER.objects.get(id=id)
+        terminalInstance.login(user.username, user.password)
+        response = terminalInstance.editContactInfo(email,contactPhone, officePhone, extension)
+        if response.__eq__("Contact information updated"):
+            request.method = 'get'
+            return render(request, 'shell/commands.html')
+        else:
+            return redirect('shell/createAccountError.html')
+
