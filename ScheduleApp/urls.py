@@ -24,6 +24,7 @@ from django.urls import path
 urlpatterns = [
 
     path("", include('myApp.urls'))
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

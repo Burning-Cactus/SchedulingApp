@@ -9,7 +9,7 @@ from .Parser import *
 class USER(models.Model):
     username = models.CharField(max_length=60)
     password = models.CharField(max_length=60)
-    permission = models.CharField(max_length=5)
+    permission = models.CharField(max_length=10)
     email = models.CharField(max_length=60)
     firstName = models.CharField(max_length=60)
     lastName = models.CharField(max_length=60)
@@ -492,7 +492,7 @@ class Terminal(object):
 
         allData.append("")
 
-        return [allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments], False
+        return [allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments], True
 
     def assignInstructorToCourse(self, courseid, instructorid):
         # Assign an instructor to a course in the database
