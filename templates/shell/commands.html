@@ -5,16 +5,8 @@
         <title>Commands</title>
     </head>
     <body>
-        <h1>Commands:</h1>
-        <a href="/createAccount/">Create Account</a><br>
-        <a href="/editSelect/">Edit Account</a><br>
-        <a href="/deleteSelect/">Delete Account</a><br>
-        <a href="/accessAllData/">Access All Data</a><br>
-        <a href="/logout/">Log out</a><br>
-        <a href="/email">Send an Email</a><br>
-        <a href="/assignAssistantToLab">Assign an Assistant to a Lab</a><br>
-        <a href="/assignAssistantToCourse">Assign an Assistant to a Course</a><br>
-        <a href="/viewCourseAssignment">View Course Assignment</a><br>
-        <a href="/viewAssistantAssignment">View Assistant Assignment</a>
+        {% for line in nav %}
+            <a href="/accessAllData/">{{ line }}</a>
+        {% endfor %}
     </body>
 </html>

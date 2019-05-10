@@ -9,7 +9,7 @@ from .Parser import *
 class USER(models.Model):
     username = models.CharField(max_length=60)
     password = models.CharField(max_length=60)
-    permission = models.CharField(max_length=5)
+    permission = models.CharField(max_length=10)
     email = models.CharField(max_length=60)
     firstName = models.CharField(max_length=60)
     lastName = models.CharField(max_length=60)
@@ -492,7 +492,7 @@ class Terminal(object):
 
         allData.append("")
 
-        return [allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments], False
+        return [allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments], True
 
     def assignInstructorToCourse(self, courseid, instructorid):
         # Assign an instructor to a course in the database
@@ -622,7 +622,7 @@ class Terminal(object):
             entry = []
 
             if A_LIST.objects.count() == 0:
-                return "No Assignments"
+                pass
             else:
                 entry = A_LIST.objects.all()
 
@@ -630,10 +630,10 @@ class Terminal(object):
             assistantAssignments.extend(["A_LIST", "", "assistant ID  |  lab ID"])
             assistantAssignments.append("")
 
-            for i in entry:
-                aid = i.assistantID
-                lid = i.labID
-                assistantAssignments.append(str(aid) + " " + str(lid))
+            for entry in assistantAssignments:
+                line = str(entry.assistantID) + "  |  " + str(entry.labID)
+
+                assistantAssignments.append(line)
                 assistantAssignments.append("")
 
             return assistantAssignments, True
@@ -654,8 +654,7 @@ class Terminal(object):
                 try:
                     assistant = I_LIST.objects.filter(courseID=element)
                     if assistant:
-                        assistantAssignments.append(
-                            assistant.instructorID + ": " + USER.objects.get(id=assistant.instructorID).lastName)
+                        assistantAssignments.append(assistant.instructorID + ": " + USER.objects.get(id=assistant.instructorID).lastName)
                 except:
                     pass
 
@@ -663,6 +662,8 @@ class Terminal(object):
                 return "You do not have any Assistants", False
 
             return assistantAssignments, True
+
+
 
     def viewContactInfo(self):
         # Return the contact info of the user.

@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from myApp.models import Terminal
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from .forms import InputForm, LoginForm
 from .models import USER
 from django.core.mail import send_mail
+from myApp.NavBar import *
 
 # Create your views here.
 class Shell(View):
@@ -110,7 +111,11 @@ class editSelect(View):
 class commands(View):
 
     def get(self, request):
-      return render(request, 'shell/commands.html')
+        activePermission = request.session['activePermission']
+        permissions = request.session['permissions']
+        navBar = NavBar()
+        nav = navBar.getNavBar(activePermission, permissions)
+        return render(request, 'shell/commands.html', {"nav": nav})
 
     def post(self, request):
       return render(request, 'shell/commands.html')
@@ -130,7 +135,13 @@ class Login(View):
         else:
             user = USER.objects.get(username=username)
             request.session['userid'] = user.id
-            return redirect('/commands/')
+            userPermissions = []
+            for i in user.permission:
+                if i.__eq__("1") or i.__eq__("2") or i.__eq__("3") or i.__eq__("4"):
+                    userPermissions.append(i)
+            request.session['permissions'] = userPermissions
+            request.session['activePermission'] = userPermissions[0]
+            return HttpResponseRedirect('/commands/')
 
 
 class Logout(View):
@@ -138,6 +149,8 @@ class Logout(View):
         return render(request, 'shell/logout.html')
     def post(self, request):
         request.session.pop("userid", None)
+        request.session.pop("permissions", None)
+        request.session.pop("activePermission", None)
         del request.session
         return render(request, 'shell/login.html')
 
@@ -155,7 +168,15 @@ class accessAllData(View):
         id = request.session['userid']
         user = USER.objects.get(id=id)
         terminalInstance.login(user.username, user.password)
-        allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments = terminalInstance.accessData()
+        ret, bool = terminalInstance.accessData()
+        if(bool == False):
+            render(request, 'shell/error.html')
+
+        allUsers = ret[0]
+        allCourses = ret[1]
+        allLabs = ret[2]
+        assistantAssignments = ret[3]
+        instructorAssignments = ret[4]
         return render(request, 'shell/accessAllData.html', {"allUsers": allUsers, "allCourses": allCourses, "allLabs": allLabs, "assistantAssignments": assistantAssignments, "instructorAssignments": instructorAssignments})
 
 
@@ -256,14 +277,6 @@ class editContactInfo(View):
         else:
             return redirect('shell/createAccountError.html')
 
-class viewCourseAssignments(View):
-    def get(self, request):
-        # check permission
-        uid = request.session['userid']
-        self.user = USER.objects.get(id = uid)
-        self.user.databaseID = uid
-        courseAssignments= Terminal.viewCourseAssignments(self)
-        return render(request, 'shell/viewCourseAssignments.html', {"assignments": courseAssignments})
 
 class viewAssistantAssignments(View):
     def get(self, request):
