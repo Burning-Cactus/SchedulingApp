@@ -225,18 +225,16 @@ class assignAssistantToCourse(View):
 class viewCourseAssignments(View):
     def get(self, request):
         # check permission
-        id = request.session['userid']
-        user = USER.objects.get(id = id)
-        Name=user.firstName
-       # if '3' not in user.permission:
-         #   return HttpResponse("Access Denied")
-        c= I_LIST.courseID
-        course= COURSE.objects.get(id=c.id)
-        courseName= course.name
-        courseSection= course.courseNumber
-        context= {
-            'Name': Name,
-            'CourseName': courseName,
-            'courseSection': courseSection
-        }
-        return render(request, 'shell/viewCourseAssignments.html', context)
+        uid = request.session['userid']
+        self.user = USER.objects.get(id = uid)
+        self.user.databaseID = uid
+        courseAssignments= Terminal.viewCourseAssignments(self)
+        return render(request, 'shell/viewCourseAssignments.html', {"assignments": courseAssignments})
+
+class viewAssistantAssignments(View):
+    def get(self, request):
+        aid = request.session['userid']
+        self.user = USER.objects.get(id=aid)
+        self.user.databaseID = aid
+        assistantAssignments = Terminal.viewAssistantAssignments(self)
+        return render(request, 'shell/viewCourseAssignments.html', {"assignments": assistantAssignments})

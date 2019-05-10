@@ -24,6 +24,6 @@ class viewCourseAssignmentsHttpAcceptanceTests(TestCase):
     def testDisplay(self):
         with self.assertTemplateUsed('shell/viewCourseAssignments.html'):
             response = self.c.get('/viewCourseAssignments/')
-            # response.context['Instructor'] == [self.firstName]
-            # response.context['Course'] == [self.course.name + ' ' + self.course.courseNumber]
+            response.context['Instructor'] == [self.firstName]
+            response.context['Course'] == [self.course.name + ' ' + self.course.courseNumber]
 

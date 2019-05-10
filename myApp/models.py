@@ -630,10 +630,10 @@ class Terminal(object):
             assistantAssignments.extend(["A_LIST", "", "assistant ID  |  lab ID"])
             assistantAssignments.append("")
 
-            for entry in assistantAssignments:
-                line = str(entry.assistantID) + "  |  " + str(entry.labID)
-
-                assistantAssignments.append(line)
+            for i in entry:
+                aid = i.assistantID
+                lid = i.labID
+                assistantAssignments.append(str(aid)+" "+str(lid))
                 assistantAssignments.append("")
 
             return assistantAssignments, True
