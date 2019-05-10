@@ -320,3 +320,22 @@ class switchPermission(View):
 
         return redirect('/commands/')
 
+
+class createCourse(View):
+    def get(self, request):
+        return render(request, 'shell/createCourse.html')
+
+    def post(self, request):
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
+        ret, bool = terminalInstance.createCourse(request.POST['name'], request.POST['courseNumber'],
+                                                  request.POST['classNumber'], request.POST['time'],
+                                                  request.POST['location'],)
+
+        if bool is False:
+            return render(request, 'shell/error.html', {"message": ret})
+
+        return redirect('/commands/')
+
