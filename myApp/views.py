@@ -297,3 +297,4 @@ class EditCourse(View):
         classtime = request.POST['time']
         location = request.POST['location']
         Terminal().editCourse(id, name, coursenumber, classnumber, classtime, location)
+        return render(request, 'shell/commands.html')
