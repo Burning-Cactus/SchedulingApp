@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Course</title>
+</head>
+<body>
+    <form method="post" action="http://127.0.0.1:8000/editCourse/">
+        {% csrf_token %}
+
+        Password<input type="password" name="Password"></br>
+        courseid<input type="number" name="courseid"></br>
+        Course Name<input type="text" name="coursename"></br>
+        Course Number<input type="number" name="coursenumber"></br>
+        Class Number<input type="number" name="classnumber"></br>
+        Class Time<input type="text" name="time"></br>
+        Class Location<input type="text" name="location"></br>
+        <input value="Apply" type="submit">
+    </form>
+</body>
+</html>

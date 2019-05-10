@@ -277,3 +277,23 @@ class editContactInfo(View):
         else:
             return redirect('shell/createAccountError.html')
 
+
+class viewAssistantAssignments(View):
+    def get(self, request):
+        aid = request.session['userid']
+        self.user = USER.objects.get(id=aid)
+        self.user.databaseID = aid
+        assistantAssignments = Terminal.viewAssistantAssignments(self)
+        return render(request, 'shell/viewAssistantAssignments.html', {"assignments": assistantAssignments})
+
+class EditCourse(View):
+    def get(self, request):
+        return render(request, 'shell/editCourse.html')
+    def post(self, request):
+        id = request.POST['courseid']
+        name = request.POST['coursename']
+        coursenumber = request.POST['coursenumber']
+        classnumber = request.POST['classnumber']
+        classtime = request.POST['time']
+        location = request.POST['location']
+        Terminal().editCourse(id, name, coursenumber, classnumber, classtime, location)
