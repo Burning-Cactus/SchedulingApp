@@ -256,3 +256,19 @@ class editContactInfo(View):
         else:
             return redirect('shell/createAccountError.html')
 
+class viewCourseAssignments(View):
+    def get(self, request):
+        # check permission
+        uid = request.session['userid']
+        self.user = USER.objects.get(id = uid)
+        self.user.databaseID = uid
+        courseAssignments= Terminal.viewCourseAssignments(self)
+        return render(request, 'shell/viewCourseAssignments.html', {"assignments": courseAssignments})
+
+class viewAssistantAssignments(View):
+    def get(self, request):
+        aid = request.session['userid']
+        self.user = USER.objects.get(id=aid)
+        self.user.databaseID = aid
+        assistantAssignments = Terminal.viewAssistantAssignments(self)
+        return render(request, 'shell/viewAssistantAssignments.html', {"assignments": assistantAssignments})

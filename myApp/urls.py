@@ -19,8 +19,10 @@ urlpatterns = [
     path('deleteSelect/', views.deleteSelect.as_view()),
     path('accessAllData/', views.accessAllData.as_view()),
     path('logout/', views.Logout.as_view()),
-    path('email/', views.Email.as_view()),
     path('assignAssistantToLab/', views.assignAssistantToLab.as_view()),
     path('assignAssistantToCourse/', views.assignAssistantToCourse.as_view()),
+    path('viewCourseAssignment/', views.viewCourseAssignments.as_view()),
+    path('viewAssistantAssignment/', views.viewAssistantAssignments.as_view())
+
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

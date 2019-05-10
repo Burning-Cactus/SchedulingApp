@@ -622,7 +622,7 @@ class Terminal(object):
             entry = []
 
             if A_LIST.objects.count() == 0:
-                pass
+                return "No Assignments"
             else:
                 entry = A_LIST.objects.all()
 
@@ -630,10 +630,10 @@ class Terminal(object):
             assistantAssignments.extend(["A_LIST", "", "assistant ID  |  lab ID"])
             assistantAssignments.append("")
 
-            for entry in assistantAssignments:
-                line = str(entry.assistantID) + "  |  " + str(entry.labID)
-
-                assistantAssignments.append(line)
+            for i in entry:
+                aid = i.assistantID
+                lid = i.labID
+                assistantAssignments.append(str(aid) + " " + str(lid))
                 assistantAssignments.append("")
 
             return assistantAssignments, True
@@ -654,7 +654,8 @@ class Terminal(object):
                 try:
                     assistant = I_LIST.objects.filter(courseID=element)
                     if assistant:
-                        assistantAssignments.append(assistant.instructorID + ": " + USER.objects.get(id=assistant.instructorID).lastName)
+                        assistantAssignments.append(
+                            assistant.instructorID + ": " + USER.objects.get(id=assistant.instructorID).lastName)
                 except:
                     pass
 
@@ -662,8 +663,6 @@ class Terminal(object):
                 return "You do not have any Assistants", False
 
             return assistantAssignments, True
-
-
 
     def viewContactInfo(self):
         # Return the contact info of the user.
