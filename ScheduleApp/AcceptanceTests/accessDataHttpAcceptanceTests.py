@@ -26,22 +26,26 @@ class AccessDataTests(TestCase):
 
     def testAccessDataGet2(self):
         ret = self.c.get('/accessAllData/')
-        self.assertTrue(ret.content.__contains__(b'USER'))
+        self.assertTrue(ret.content.__contains__(b'User:'))
 
     def testAccessDataGet3(self):
         ret = self.c.get('/accessAllData/')
-        self.assertTrue(ret.content.__contains__(b'COURSE'))
+        self.assertTrue(ret.content.__contains__(b'Courses:'))
 
     def testAccessDataGet4(self):
         ret = self.c.get('/accessAllData/')
-        self.assertTrue(ret.content.__contains__(b'A_LIST'))
+        self.assertTrue(ret.content.__contains__(b'Assistant Assignments:'))
 
     def testAccessDataGet5(self):
         ret = self.c.get('/accessAllData/')
-        self.assertTrue(ret.content.__contains__(b'I_LIST'))
+        self.assertTrue(ret.content.__contains__(b'Instructor Assignments:'))
 
     def testAccessDataGet6(self):
         ret = self.c.get('/accessAllData/')
-        self.assertTrue(ret.content.__contains__(b'LAB_SECTION'))
+        self.assertTrue(ret.content.__contains__(b'Labs:'))
+
+    def test_AccessData_Table(self):
+        ret = self.c.get('/accessAllData/')
+        self.assertTrue(ret.content.__contains__(b'<table'))
 
 
