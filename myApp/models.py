@@ -436,62 +436,6 @@ class Terminal(object):
         else:
             instructorAssignments = I_LIST.objects.all()
 
-        allData = ["USER", "", "ID  |  permission  |  username  |  password  |  first name  |  "
-                               "last name  |  email  |  contact phone  |  office phone  |  extension"]
-
-        for entry in allUsers:
-            line = str(entry.id) + "  |  " + str(entry.permission) + "  |  " + str(entry.username) + "  |  " + \
-                   str(entry.password) + "  |  " + str(entry.firstName) + "  |  " + str(entry.lastName) + "  |  " + \
-                   str(entry.email) + "  |  " + str(entry.contactPhone) + "  |  " + str(entry.officePhone) + "  |  " + \
-                   str(entry.extension)
-
-            allData.append(line)
-            allData.append("")
-
-        allData.append("")
-        allData.extend(["COURSE", "", "ID  |  name  |  course number  |  class number  |  time  |  location"])
-        allData.append("")
-
-        for entry in allCourses:
-            line = str(entry.id) + "  |  " + str(entry.name) + "  |  " + str(entry.courseNumber) + "  |  " + \
-                   str(entry.classNumber) + "  |  " + str(entry.time) + "  |  " + str(entry.location)
-
-            allData.append(line)
-            allData.append("")
-
-        allData.append("")
-        allData.extend(["LAB_SECTION", "", "ID  |  name  |  lab number  |  course ID  |  time  |  location"])
-        allData.append("")
-
-        for entry in allLabs:
-            line = str(entry.id) + "  |  " + str(entry.name) + "  |  " + str(entry.labNumber) + "  |  " + \
-                   str(entry.courseID) + "  |  " + str(entry.time) + "  |  " + str(entry.location)
-
-            allData.append(line)
-            allData.append("")
-
-        allData.append("")
-        allData.extend(["A_LIST", "", "assistant ID  |  lab ID"])
-        allData.append("")
-
-        for entry in assistantAssignments:
-            line = str(entry.assistantID) + "  |  " + str(entry.labID)
-
-            allData.append(line)
-            allData.append("")
-
-        allData.append("")
-        allData.extend(["I_LIST", "", "user ID  |  course ID"])
-        allData.append("")
-
-        for entry in instructorAssignments:
-            line = str(entry.instructorID) + "  |  " + str(entry.courseID)
-
-            allData.append(line)
-            allData.append("")
-
-        allData.append("")
-
         return [allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments], True
 
     def assignInstructorToCourse(self, courseid, instructorid):
@@ -677,17 +621,9 @@ class Terminal(object):
         except user.DoesNotExist:
             return "User does not exist", False
         # Assign the data to local variables
-        publicInfo = []
-        for entry in user:
-            fname = entry.firstName
-            lname = entry.lastName
-            email = entry.email
-            phone = entry.contactPhone
-            ext = entry.extension
-            publicInfo.append(fname + " " + " " + lname + " " + email + " " + phone + " " + ext)
-            publicInfo.append("")
+        allUsers = USER.objects.all()
 
-        return publicInfo, True
+        return allUsers, True
 
     def help(self):
         helpManual = ["","Possible Commands:", "", "",
