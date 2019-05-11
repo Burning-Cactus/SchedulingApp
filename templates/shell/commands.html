@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Commands</title>
+        <style>{% include 'shell/staticfiles/style.css' %}</style>
+    </head>
+    <body>
+        <ul>
+            <li><a class="active">{{ userTitle }}</a></li>
+        {% for line in nav %}
+            {% if line == "Database" %}
+                <li><a href="/accessAllData/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Create Account" %}
+                <li><a href="/createAccount/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Create Course" %}
+                <li><a href="/createCourse/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Create Lab" %}
+                <li><a href="/createLab/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Edit Account" %}
+                <li><a href="/editSelect/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Edit Course" %}
+                <li><a href="/editCourse/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Edit Lab" %}
+                <li><a href="/editLab/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Instructor To Course" %}
+                <li><a href="/assignInstructorToCourse/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Assistant To Course" %}
+                <li><a href="/assignAssistantToCourse/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Assistant To Lab" %}
+                <li><a href="/assignAssistantToLab/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Delete Account" %}
+                <li><a href="/deleteAccount/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Delete Course" %}
+                <li><a href="/deleteCourse/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Delete Lab" %}
+                <li><a href="/deleteLab/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Email" %}
+                <li><a href="/email/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Logout" %}
+                <li><a href="/logout/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Assign Assistant" %}
+                <li><a href="/instructorAssignAssistant/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "View Courses" %}
+                <li><a href="/viewCourses/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "View Assistants" %}
+                <li><a href="/viewAssistants/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "View Contacts" %}
+                <li><a href="/viewContactInfo/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "Edit Contact Info" %}
+                <li><a href="/editContactInfo/">{{ line }}</a></li>
+            {% endif %}
+            {% if line == "View Other Assistants" %}
+                <li><a href="/viewOtherAssistants/">{{ line }}</a></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+        {% for line in nav %}
+                {% if line == "Switch Permission" %}
+                    <button class="button button2" onclick="window.location.href='/switchPermission/'">{{ line }}</button>
+                {% endif %}
+        {% endfor %}
+    </body>
+</html>

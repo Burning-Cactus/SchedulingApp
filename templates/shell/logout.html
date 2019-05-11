@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log Out</title>
+    <style>{% include 'shell/staticfiles/style.css' %}
+        .container {
+          position: relative;
+          width: 50%;
+        }
+
+        .container img {
+          width: 100%;
+          height: auto;
+        }
+
+        .container input {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          background-color: #555;
+          color: white;
+          font-size: 16px;
+          padding: 12px 24px;
+          border: none;
+          cursor: pointer;
+          border-radius: 5px;
+        }
+
+        .container input:hover {
+          background-color: black;
+        }
+    </style>
+</head>
+<body>
+<a href="/commands/">Home</a></br>
+
+    <form method="get" action="/login/">
+            <div class="container">
+      <img src="https://vignette.wikia.nocookie.net/spongebob/images/d/d7/HD_Hoopla_Fish.jpeg/revision/latest?cb=20181004130545" alt="Desire 4 Learn">
+        {% csrf_token %}
+        <input type="submit" value="Desire 4 Logout">
+        </div>
+    </form>
+</body>
+</html>

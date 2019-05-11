@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Info</title>
+    <style>{% include 'shell/staticfiles/style.css' %}</style>
+</head>
+<body>
+<button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+
+    <br><label>Contact Info</label>
+    <table align="center" style="width:100%">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Contact Phone</th>
+            <th>Office Phone</th>
+            <th>Extension</th>
+        </tr>
+        {% for i in allUsers %}
+            <tr>
+                <td>{{ i.firstName}}</td>
+                <td>{{ i.lastName}}</td>
+                <td>{{ i.email}}</td>
+                <td>{{ i.contactPhone}}</td>
+                <td>{{ i.officePhone}}</td>
+                <td>{{ i.extension}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </body>
+</html>

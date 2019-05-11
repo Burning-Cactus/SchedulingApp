@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Course</title>
+    <style>{% include 'shell/staticfiles/style.css' %}</style>
+</head>
+<body>
+<button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+    <br><label>Course:</label>
+    <table align="center" style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for i in allCourses %}
+            <tr>
+                <td>{{ i.id}}</td>
+                <td>{{ i.name}}</td>
+                <td>{{ i.courseNumber}}</td>
+                <td>{{ i.classNumber}}</td>
+                <td>{{ i.time}}</td>
+                <td>{{ i.location}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div>
+        <label>Edit Course</label>
+    <form method="post" action="http://127.0.0.1:8000/editCourse/">
+        {% csrf_token %}
+
+        Course ID:<br><input type="number" name="courseid"></br>
+        Course Name:<br><input type="text" name="coursename"></br>
+        Course Number:<br><input type="number" name="coursenumber"></br>
+        Class Number:<br><input type="number" name="classnumber"></br>
+        Class Time:<br><input type="text" name="time"></br>
+        Class Location:<br><input type="text" name="location"></br>
+        <input value="Apply" type="submit">
+    </form>
+    </div>
+</body>
+</html>

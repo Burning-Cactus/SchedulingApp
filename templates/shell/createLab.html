@@ -1,0 +1,41 @@
+<html>
+
+    <head>
+    <title>Create Lab</title>
+        <style>{% include 'shell/staticfiles/style.css' %}</style>
+    </head>
+<button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+    <div>
+        <label>Create Lab</label>
+    <form method="post" action="/createLab/">
+        {% csrf_token %}
+        Lab Name:<br><input type="text" name="name"><br><br>
+        Course ID:<br><input type="text" name="courseID"><br><br>
+        Lab Number:<br><input type="text" name="labNumber"><br><br>
+        Time:<br><input type="text" name="time"><br><br>
+        Location:<br><input type="text" name="location"><br><br>
+        <input type="submit" value="Create">
+    </form>
+    </div>
+    Courses:<br>
+    <table align="center" style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for i in allCourses %}
+            <tr>
+                <td>{{ i.id}}</td>
+                <td>{{ i.name}}</td>
+                <td>{{ i.courseNumber}}</td>
+                <td>{{ i.classNumber}}</td>
+                <td>{{ i.time}}</td>
+                <td>{{ i.location}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</html>

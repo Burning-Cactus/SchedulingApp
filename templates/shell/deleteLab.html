@@ -1,0 +1,39 @@
+<html>
+
+    <title>Delete Lab</title>
+
+    <head>
+        <style>{% include 'shell/staticfiles/style.css' %}</style>
+    </head>
+<button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+    <br><label>Lab:</label>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course ID</th>
+            <th>Lab Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for lab in labs %}
+            <tr>
+                <td>{{ lab.0 }}</td>
+                <td>{{ lab.1 }}</td>
+                <td>{{ lab.2 }}</td>
+                <td>{{ lab.3 }}</td>
+                <td>{{ lab.4 }}</td>
+                <td>{{ lab.5 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div>
+        <label>Delete Lab</label>
+    <form method="post" action="/deleteLab/">
+        {% csrf_token %}
+        Lab ID:<br><input type="text" name="labID"><br><br>
+        <input type="submit" value="Delete">
+    </form>
+    </div>
+</html>

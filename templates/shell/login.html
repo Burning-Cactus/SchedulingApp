@@ -1,9 +1,147 @@
-{% extends "shell/base.html" %}
-{% block content %}
-  <form method="post" action="/">
-  {% csrf_token %}
-    {{ form }}
-    <input type="submit">
-  </form>
-  <p>{{message}}</p>
-{% endblock content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log In</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    <style type="text/css">{% include 'shell/staticfiles/style.css' %}
+            * {
+                font-family: -apple-system, BlinkMacSystemFont, "San Francisco", Helvetica, Arial, sans-serif;
+                font-weight:  300;
+                margin:  0;
+            }
+            html, body {
+              height:  100vh;
+              width:  100vw;
+              margin:  0 0;
+              display:  flex;
+              align-items:  flex-start;
+              justify-content:  flex-start;
+              background:  #f3f2f2;
+            }
+            h4 {
+              font-size:  24px;
+              font-weight:  600;
+              color:  #000;
+              opacity:  .85;
+            }
+            label {
+              font-size:  12.5px;
+              color:  #000;
+              opacity:  .8;
+              font-weight:  400;
+            }
+            form {
+                padding: 40px 40px;
+                background: #fefefe;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding-bottom: 20px;
+                width: 300px;
+            }
+              h4 {
+                  margin-bottom: 20px;
+                  color: rgba(0, 0, 0, .5);
+              }
+                span {
+                  color:  rgba(0, 0, 0, 1);
+                  font-weight:  700;
+                }
+
+              p {
+                line-height:  155%;
+                margin-bottom:  5px;
+                font-size:  14px;
+                color:  #000;
+                opacity:  .65;
+                font-weight:  400;
+                max-width:  200px;
+                margin-bottom:  40px;
+              }
+
+            button {
+              -webkit-appearance:  none;
+              width:  auto;
+              min-width:  100px;
+              border-radius:  24px;
+              text-align:  center;
+              padding:  15px 40px;
+              margin-top:  5px;
+              color:  #fff;
+              font-size:  14px;
+              margin-left:  auto;
+              font-weight:  500;
+              box-shadow:  0px 2px 6px -1px rgba(0,0,0,.13);
+              border:  none;
+              transition:  all .3s ease;
+              outline: 0;
+            }
+            input {
+              font-size:  16px;
+              padding:  20px 0px;
+              height:  56px;
+              border:  none;
+              border-bottom:  solid 1px rgba(0,0,0,.1);
+              background:  #fff;
+              width:  280px;
+              box-sizing:  border-box;
+              transition:  all .3s linear;
+              color:  #000;
+              font-weight:  400;
+              -webkit-appearance:  none;
+            }
+              label {
+                position:  absolute;
+                top: calc(50% - 7px);
+                left:  0;
+                opacity:  0;
+                transition:  all .3s ease;
+                padding-left:  44px;
+              }
+              input {
+                width:  calc(100% - 44px);
+                margin-left:  auto;
+                display:  flex;
+              }
+
+              input:not(:placeholder-shown) {
+                padding:  28px 0px 12px 0px;
+              }
+              input:not(:placeholder-shown) + label {
+                transform:  translateY(-10px);
+                opacity:  .7;
+              }
+              input:valid:not(:placeholder-shown) + label + .icon {}
+                svg {
+                    opacity: 1;
+                }
+                  path {
+                    fill:  rgb(182,157,230);
+                  }
+
+              input:not(:valid):not(:focus) + label + .icon {
+                animation-name: shake-shake;
+                animation-duration: .3s;
+              }
+              svg {
+                height:  40px;
+                width:  auto;
+                margin:  0px;
+              }
+
+    </style>
+</head>
+<body style="background-color:#333333;">
+
+    <div style="margin: 0 auto;">
+    <form method="post" action="">
+        <img src="https://i.imgur.com/FSxaaO1.png" alt="Desire 4 Learn" style="alignment: top"/>
+        {% csrf_token %}
+        User Name:<br><input type="text" name="UserName"></br>
+        Password:<br><input type="password" name="Password"></br>
+        <input style="width:100%;" type="submit" value="Desire 4 Login">
+    </form>
+    </div>
+</body>
+</html>

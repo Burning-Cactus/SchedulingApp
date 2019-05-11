@@ -1,0 +1,30 @@
+<html>
+
+    <title>My Course</title>
+
+    <head>
+        <style>{% include 'shell/staticfiles/style.css' %}</style>
+    </head>
+<button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+    <br><label>Course:</label>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for course in courseList %}
+            <tr>
+                <td>{{ course.0 }}</td>
+                <td>{{ course.1 }}</td>
+                <td>{{ course.2 }}</td>
+                <td>{{ course.3 }}</td>
+                <td>{{ course.4 }}</td>
+                <td>{{ course.5 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</html>

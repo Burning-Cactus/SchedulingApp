@@ -9,7 +9,7 @@ from .Parser import *
 class USER(models.Model):
     username = models.CharField(max_length=60)
     password = models.CharField(max_length=60)
-    permission = models.CharField(max_length=5)
+    permission = models.CharField(max_length=10)
     email = models.CharField(max_length=60)
     firstName = models.CharField(max_length=60)
     lastName = models.CharField(max_length=60)
@@ -83,19 +83,20 @@ class Terminal(object):
         argumentList = parser.argumentList
 
         if commandLabelOptions.__contains__(commandLabel) is False:
-            return ["Command not found: " + inStr, "Try: help"]
+            return ["Command not found: " + inStr, "Try: help"], False
 
         if len(argumentList) == commandLabelOptions[commandLabel][1]:
-            return self.callCommand(commandLabelOptions[commandLabel][0], argumentList)
+            ret, bool = self.callCommand(commandLabelOptions[commandLabel][0], argumentList)
+            return ret, bool
         else:
-            return ["Command argument mismatch: " + inStr, "Try: help", commandLabel, argumentList]
+            return ["Command argument mismatch: " + inStr, "Try: help", commandLabel, argumentList], False
 
     def login(self, xName, xPassword):
 
         try:
             userData = USER.objects.get(username=xName)
         except USER.DoesNotExist:
-            return "Invalid username or password"
+            return "Invalid username or password", False
 
         if(userData.password == xPassword):
             self.user = User.User(userData.permission, userData.username, userData.password,
@@ -103,21 +104,36 @@ class Terminal(object):
                                   userData.contactPhone, userData.officePhone, userData.extension)
             self.username = self.user.username
         else:
-            return "Invalid username or password"
-        return "Logged in as: " + self.username
+            return "Invalid username or password", False
+        return "Logged in as: " + self.username, True
 
     def logout(self):
         username = self.username
         self.user = None
         self.username = ""
-        return username + " has been logged out"
+        return username + " has been logged out", True
 
     def createLab(self, name, courseid, labnr, time, location):
         if self.user is None:
-            return "You are not logged in"
+            return "You are not logged in", False
+
+        if (name == "" or None) or (courseid == "" or None) or (labnr == "" or None) or (time == "" or None) or (location == "" or None):
+            return "Fields Missing", False
 
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
-            return "User: " + self.username + ", does not have permission to preform this action"
+            return "User: " + self.username + ", does not have permission to preform this action", False
+
+        try:
+            if LAB_SECTION.objects.get(labNumber=labnr):
+                return 'Lab Number Already Used', False
+        except LAB_SECTION.DoesNotExist:
+            pass
+
+        try:
+            COURSE.objects.get(id=courseid)
+        except COURSE.DoesNotExist:
+            return "Course Does not exist", False
+
         newLab=LAB_SECTION()
         newLab.name = name
         newLab.courseID=courseid
@@ -125,46 +141,79 @@ class Terminal(object):
         newLab.location=location
         newLab.labNumber=labnr
         newLab.save()
-        return "new Lab Created"
+        return "new Lab Created", True
 
     def editLab(self, labid, name, courseid, labnr, time, location):
         if self.user is None:
-            return "You are not logged in"
+            return "You are not logged in", False
 
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
-            return "User: " + self.username + ", does not have permission to preform this action"
+            return "User: " + self.username + ", does not have permission to preform this action", False
 
         try:
             lab = LAB_SECTION.objects.get(id=labid)
         except:
-            return "Lab does not exist"
+            return "Lab does not exist", False
 
-        if name != '~':
+        if name != '' or None:
             lab.name = name
 
-        if courseid != '~':
-            lab.courseid = courseid
-
-        if labnr != '~':
+        if labnr != '' or None:
             lab.labnr = labnr
 
-        if time != '~':
+        if time != '' or None:
             lab.time = time
 
-        if location != '~':
+        if location != '' or None:
             lab.location = location
 
         lab.save()
-        return "new Lab Created"
+        return "new Lab Created", True
+
+    def deleteLab(self, labID):
+
+        if labID == None:
+            return None, False
+
+        if self.user.permission.__contains__("1") is False and self.user.permission.__contains__("2") is False:
+            return None, False
+
+        try:
+            lab = LAB_SECTION.objects.get(id=int(labID))
+        except LAB_SECTION.DoesNotExist:
+            return None, False
+
+        try:
+            A_LIST.objects.filter(labID=int(labID)).delete()
+        except A_LIST.DoesNotExist:
+            pass
+
+        lab.delete()
+
+        return "Lab deleted", True
 
 
     def createAccount(self, permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension):
 
         if self.user is None:
-            return "You are not logged in"
+            return "You are not logged in", False
 
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
-            return "User: " + self.username + ", does not have permission to preform this action"
+            return "User: " + self.username + ", does not have permission to preform this action", False
+
+        if (permission == "" or None) or (username == "" or None) or (password == "" or None) or (email == "" or None):
+            return None, False
+        if (firstName == "" or None) or (lastName == "" or None) or (contactPhone == "" or None):
+            return None, False
+        if (officePhone == "" or None) or (extension == "" or None):
+            return None, False
+
+        try:
+            if USER.objects.get(username=username):
+                return None, False
+        except USER.DoesNotExist:
+            pass
+
 
         newUser = USER()
         newUser.permission = permission
@@ -177,67 +226,73 @@ class Terminal(object):
         newUser.officePhone = officePhone
         newUser.extension = extension
         newUser.save()
-        return "New user created"
+        return "New user created", True
 
     def editAccount(self, userid, permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension):
 
         if self.user is None:
-            return "You are not logged in"
+            return "You are not logged in", False
 
         if self.user.permission.__contains__('1')is False and self.user.permission.__contains__('2') is False:
-            return "You do not have the permission to preform this action"
+            return "You do not have the permission to preform this action", False
 
         try:
             userEntry = USER.objects.get(id=userid)
         except:
-            return "User does not exist"
+            return "User does not exist", False
 
-        if permission != '~':
+        try:
+            if len(USER.objects.filter(username=username)) > 0:
+                return None, False
+        except USER.DoesNotExist:
+            pass
+
+        if permission != '':
             userEntry.permission = permission
 
-        if username != '~':
+        if username != '':
             userEntry.username = username
 
-        if password != '~':
+        if password != '':
             userEntry.password = password
 
-        if email != '~':
+        if email != '':
             userEntry.email = email
 
-        if firstName != '~':
+        if firstName != '':
             userEntry.firstName = firstName
 
-        if lastName != '~':
+        if lastName != '':
             userEntry.lastName = lastName
 
-        if contactPhone != '~':
+        if contactPhone != '':
             userEntry.contactPhone = contactPhone
 
-        if officePhone != '~':
+        if officePhone != '':
             userEntry.officePhone = officePhone
 
-        if extension != '~':
+        if extension != '':
             userEntry.extension = extension
 
         userEntry.save()
 
-        return "User account updated"
+        return "User account updated", True
 
     def deleteAccount(self, userid):
         # Delete a user model in the database.
         if self.user is None:
-            return "You are not logged in."
+            return "You are not logged in.", False
 
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
-            return "User: " + self.username + ", does not have permission to preform this action."
+            return "User: " + self.username + ", does not have permission to preform this action.", False
 
         try:
             toDelete = USER.objects.get(id=userid)
         except USER.DoesNotExist:
-            return "User does not exist"
+            return "User does not exist", False
 
         if toDelete.id == self.user.databaseID:
-            return "You cannot delete your own account"
+            return "You cannot delete your own account", False
 
         try:
             A_LIST.objects.filter(assistantID=userid).delete()
@@ -248,91 +303,107 @@ class Terminal(object):
             I_LIST.objects.filter(instructorID=userid).delete()
         except I_LIST.DoesNotExist:
             pass
-
         toDelete.delete()
 
-        return "User Deleted"
+        return "User Deleted", True
 
     def createCourse(self, name, coursenumber, classnumber, time, location):
         if self.user is None:
-            return "You must be logged in."
+            return "You must be logged in.", False
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
-            return "You do not have permissions to use this function."
-        course = COURSE()
-        course.name = name
-        course.courseNumber = coursenumber
-        course.classNumber = classnumber
-        course.time = time
-        course.location = location
-        course.save()
-        return "Course successfully created."
+            return "You do not have permissions to use this function.", False
+
+        if (name == "" or None) or (coursenumber == "" or None) or (classnumber == "" or None) or (time == "" or None) or (location == "" or None):
+            return None, False
+
+        try:
+            if COURSE.objects.get(courseNumber=coursenumber, classNumber=classnumber):
+                return None, False
+        except COURSE.DoesNotExist:
+            pass
+
+        COURSE.objects.create(name=name, courseNumber=coursenumber, classNumber=classnumber, time=time,
+                              location=location).save()
+
+        return "Course successfully created.", True
 
     def editCourse(self, courseid, name, coursenumber, classnumber, time, location):
 
         if self.user is None:
-            return "You must be logged in."
+            return "You must be logged in.", False
         if self.user.permission.__contains__('1')is False and self.user.permission.__contains__('2') is False:
-            return "You do not have the permission to preform this action"
+            return "You do not have the permission to preform this action", False
         try:
-            current = COURSE.objects.filter(courseid=courseid)
+            current = COURSE.objects.get(id=courseid)
         except COURSE.DoesNotExist:
-            return "Course Not Found"
+            return "Course Not Found", False
 
-        if name != '~':
+        if name != '' or None:
             current.name = name
-        if coursenumber != '~':
-            current.courseNumber = coursenumber
-        if classnumber != '~':
+        if classnumber != '' or None:
+            current.classNumber = classnumber
+        if time != '' or None:
             current.time = time
-        if location != '~':
-            location.location = location
+        if location != '' or None:
+            current.location = location
 
-        return "Course successfully edited."
+        current.save()
+
+        return "Course successfully edited.", True
 
     def deleteCourse(self, courseid):
         # Delete a course from the database
         if self.user is None:
-            return "You must be logged in."
+            return "You must be logged in.", False
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
-            return "You do not have permissions to use this function."
+            return "You do not have permissions to use this function.", False
         try:
-            A_LIST.objects.get(labID=LAB_SECTION.objects.get(courseID=courseid))
+            labs = LAB_SECTION.objects.filter(courseID=courseid)
+            for lab in labs:
+                A_LIST.objects.get(labID=lab.id).delete()
         except A_LIST.DoesNotExist:
             pass
         except LAB_SECTION.DoesNotExist:
             pass
         try:
-            I_LIST.objects.get(courseID=courseid).delete()
+            I_LIST.objects.filter(courseID=courseid).delete()
+            LAB_SECTION.objects.filter(courseID=courseid).delete()
             COURSE.objects.get(id=courseid).delete()
-            LAB_SECTION.objects.get(courseID=courseid).delete()
         except COURSE.DoesNotExist:
-            return "Course Not Found"
+            return "Course Not Found", False
         except I_LIST.DoesNotExist:
             pass
         except LAB_SECTION.DoesNotExist:
             pass
-        return "Course successfully deleted"
+
+        return "Course successfully deleted", True
 
 
     def email(self, subject, message):
         # Send out an email to notify all recipients.
         if self.user is None:
-            return "You must be logged in"
+            return "You must be logged in", False
         if self.user.permission.__contains__('2') or self.user.permission.__contains__('1'):
-            emails = USER.objects.all().values_list('email')
+            try:
+                emails = USER.objects.all().values_list('email')
+            except USER.DoesNotExistL:
+                pass
         elif self.user.permission.__contains__('3'):
-            emails = USER.objects.all().filter(User.User.permission.__contains__('4')).values_list('email')
+            try:
+                emails = USER.objects.all().filter(USER.permission.__contains__('4')).values_list('email')
+            except USER.DoesNotExist:
+                pass
         else:
             return 'You do not have the permissions for this command'
-        return list(emails)
+        return list(emails), True
 
     def accessData(self):
 
         if self.user is None:
-            return "You must be logged in"
+            return "You must be logged in", False
 
         if self.user.permission.__contains__('1') is False and self.user.permission.__contains__('2') is False:
-            return "User: " + self.username + ", does not have permission to preform this action"
+            return "User: " + self.username + ", does not have permission to preform this action", False
 
         allUsers = []
         allCourses = []
@@ -365,152 +436,106 @@ class Terminal(object):
         else:
             instructorAssignments = I_LIST.objects.all()
 
-        allData = ["USER", "", "ID  |  permission  |  username  |  password  |  first name  |  "
-                               "last name  |  email  |  contact phone  |  office phone  |  extension"]
-
-        for entry in allUsers:
-            line = str(entry.id) + "  |  " + str(entry.permission) + "  |  " + str(entry.username) + "  |  " + \
-                   str(entry.password) + "  |  " + str(entry.firstName) + "  |  " + str(entry.lastName) + "  |  " + \
-                   str(entry.email) + "  |  " + str(entry.contactPhone) + "  |  " + str(entry.officePhone) + "  |  " + \
-                   str(entry.extension)
-
-            allData.append(line)
-            allData.append("")
-
-        allData.append("")
-        allData.extend(["COURSE", "", "ID  |  name  |  course number  |  class number  |  time  |  location"])
-        allData.append("")
-
-        for entry in allCourses:
-            line = str(entry.id) + "  |  " + str(entry.name) + "  |  " + str(entry.courseNumber) + "  |  " + \
-                   str(entry.classNumber) + "  |  " + str(entry.time) + "  |  " + str(entry.location)
-
-            allData.append(line)
-            allData.append("")
-
-        allData.append("")
-        allData.extend(["LAB_SECTION", "", "ID  |  name  |  lab number  |  course ID  |  time  |  location"])
-        allData.append("")
-
-        for entry in allLabs:
-            line = str(entry.id) + "  |  " + str(entry.name) + "  |  " + str(entry.labNumber) + "  |  " + \
-                   str(entry.courseID) + "  |  " + str(entry.time) + "  |  " + str(entry.location)
-
-            allData.append(line)
-            allData.append("")
-
-        allData.append("")
-        allData.extend(["A_LIST", "", "assistant ID  |  lab ID"])
-        allData.append("")
-
-        for entry in assistantAssignments:
-            line = str(entry.assistantID) + "  |  " + str(entry.labID)
-
-            allData.append(line)
-            allData.append("")
-
-        allData.append("")
-        allData.extend(["I_LIST", "", "user ID  |  course ID"])
-        allData.append("")
-
-        for entry in instructorAssignments:
-            line = str(entry.instructorID) + "  |  " + str(entry.courseID)
-
-            allData.append(line)
-            allData.append("")
-
-        allData.append("")
-
-        return allData
+        return [allUsers, allCourses, allLabs, assistantAssignments, instructorAssignments], True
 
     def assignInstructorToCourse(self, courseid, instructorid):
         # Assign an instructor to a course in the database
         if self.user is None:
-            return "You must be logged in."
+            return "You must be logged in.", False
         if self.user.permission.__contains__('1') is False:
-            return "You do not have permissions to use this function."
+            return "You do not have permissions to use this function.", False
 
         try:
-            COURSE.objects.get(id=courseid)
+            COURSE.objects.get(id=int(courseid))
         except:
-            return "Course does not exist"
+            return "Course does not exist", False
 
         try:
-            instructor = USER.objects.get(id=instructorid)
+            instructor = USER.objects.get(id=int(instructorid))
         except:
-            return "User does not exist"
+            return "User does not exist", False
+
+        try:
+            if I_LIST.objects.get(courseID=int(courseid), instructorID=int(instructorid)):
+                return None, False
+        except I_LIST.DoesNotExist:
+            pass
 
         if instructor.permission.__contains__('3') != True:
-            return "This user is not an instructor"
+            return "This user is not an instructor", False
 
-        joiner = I_LIST()
-        joiner.courseID = courseid
-        joiner.instructorID = instructorid
-        joiner.save()
-        return "Instructor added to Course"
+        I_LIST.objects.create(courseID=courseid, instructorID=instructorid).save()
+
+        return "Instructor added to Course", True
 
     def assignAssistantToCourse(self, courseid, assistantid):
-        # Assign an instructor to a course in the database
+
         if self.user is None:
-            return "You must be logged in."
+            return "You must be logged in.", False
         if self.user.permission.__contains__('1') is False:
-            return "You do not have permissions to use this function."
+            return "You do not have permissions to use this function.", False
 
         try:
-            COURSE.objects.get(id=courseid)
+            COURSE.objects.get(id=int(courseid))
         except:
-            return "Course does not exist"
+            return "Course does not exist", False
 
         try:
-            assistant = USER.objects.get(id=assistantid)
+            assistant = USER.objects.get(id=int(assistantid))
         except:
-            return "User does not exist"
+            return "User does not exist", False
 
         if assistant.permission.__contains__('4') != True:
-            return "This user is not an assistant"
+            return "This user is not an assistant", False
 
-        joiner = I_LIST()
-        joiner.courseID = courseid
-        joiner.instructorID = assistantid
-        joiner.save()
-        return "Assistant added to Course"
+        try:
+            if I_LIST.objects.get(courseID=int(courseid), instructorID=int(assistantid)):
+                return "Asssistant is already assigned to this course", False
+        except I_LIST.DoesNotExist:
+            pass
+
+        I_LIST.objects.create(courseID=int(courseid), instructorID=int(assistantid)).save()
+        return "Assistant added to Course", True
 
 
     def assignAssistantToLab(self, labid, assistantid):
 
         if self.user is None:
-            return "You must be logged in"
+            return "You must be logged in", False
 
-        if self.user.permission.__contains__("1") is False:
-            return "You do not have the permissions to preform this action"
-
-        try:
-            lab = COURSE.objects.get(id=labid)
-        except:
-            return "Course does not exist"
+        if self.user.permission.__contains__("1") is False and self.user.permission.__contains__("3") is False:
+            return "You do not have the permissions to preform this action", False
 
         try:
-            assistant = USER.objects.get(id=assistantid)
+            lab = LAB_SECTION.objects.get(id=int(labid))
         except:
-            return "User does not exist"
+            return "Lab does not exist", False
+
+        try:
+            assistant = USER.objects.get(id=int(assistantid))
+        except:
+            return "User does not exist", False
 
         if assistant.permission.__contains__('4') != True:
-            return "This user is not an assistant"
+            return "This user is not an assistant", False
 
-        entry = A_LIST()
-        entry.labID = lab.id
-        entry.assistantID = assistant.id
-        entry.save()
+        try:
+            if A_LIST.objects.get(labID=int(labid), assistantID=int(assistantid)):
+                return "Assistant already assigned to lab", False
+        except A_LIST.DoesNotExist:
+            pass
 
-        return "Assistant assigned to lab"
+        A_LIST.objects.create(labID=int(labid), assistantID=int(assistantid)).save()
+
+        return "Assistant assigned to lab", True
 
     def viewCourseAssignments(self):
 
         if self.user is None:
-            return "You must be logged in"
+            return "You must be logged in", False
 
         if self.user.permission.__contains__('3') is False:
-            return "You don't have permission for this command."
+            return "You don't have permission for this command.", False
 
         output = []
 
@@ -520,7 +545,7 @@ class Terminal(object):
         #    return "No courses assigned yet."
 
         if I_LIST.objects.filter(instructorID=self.user.databaseID).exists() is False:
-            return "No courses assigned yet."
+            return "No courses assigned yet.", False
 
         instructorAssignments = I_LIST.objects.filter(instructorID=self.user.databaseID)
 
@@ -528,13 +553,13 @@ class Terminal(object):
             course = COURSE.objects.get(id=temp.courseID)
             output.append(str(course.id) + "-" + course.name)
 
-        return output
+        return output, True
 
 
     def viewAssistantAssignments(self):
 
         if self.user is None:
-            return "You must be logged in"
+            return "You must be logged in", False
 
         if self.user.permission.__contains__('4'):
             assistantAssignments = []
@@ -555,7 +580,7 @@ class Terminal(object):
                 assistantAssignments.append(line)
                 assistantAssignments.append("")
 
-            return assistantAssignments
+            return assistantAssignments, True
 
         if self.user.permission.__contains__('3'):
             assistantAssignments = []
@@ -563,7 +588,7 @@ class Terminal(object):
             try:
                 instructorCourses = I_LIST.objects.filter(id=self.user.databaseID)
             except:
-                return "You are not assigned to any courses"
+                return "You are not assigned to any courses", False
 
             courses = []
             for entry in instructorCourses:
@@ -578,9 +603,9 @@ class Terminal(object):
                     pass
 
             if len(assistantAssignments) == 0:
-                return "You do not have any Assistants"
+                return "You do not have any Assistants", False
 
-            return assistantAssignments
+            return assistantAssignments, True
 
 
 
@@ -589,26 +614,16 @@ class Terminal(object):
         # Return the contact info of the user.
         # pull the user data from table by the id
         if self.user is None:
-            return "You must be logged in"
+            return "You must be logged in", False
 
         try:
             user = USER.objects.all()
         except user.DoesNotExist:
-            return "User does not exist"
+            return "User does not exist", False
         # Assign the data to local variables
-        publicInfo = []
-        for entry in user:
-            fname = entry.firstName
-            lname = entry.lastName
-            email = entry.email
-            phone = entry.contactPhone
-            ext = entry.extension
-            publicInfo.append(fname + " " + " " + lname + " " + email + " " + phone + " " + ext)
-            publicInfo.append("")
+        allUsers = USER.objects.all()
 
-
-
-        return publicInfo
+        return allUsers, True
 
     def help(self):
         helpManual = ["","Possible Commands:", "", "",
@@ -637,7 +652,7 @@ class Terminal(object):
     def editContactInfo(self, email, contactPhone, officePhone, extension):
 
         if self.user is None:
-            "You must be logged in"
+            "You must be logged in", False
 
         if email != '~':
             self.user.email = email
@@ -649,7 +664,7 @@ class Terminal(object):
             self.user.officePhone = officePhone
 
         if extension != '~':
-            self.user.extenstion = extension
+            self.user.extension = extension
 
         userEntry = USER.objects.get(id=self.user.databaseID)
 
@@ -659,7 +674,7 @@ class Terminal(object):
         userEntry.extension = self.user.extension
         userEntry.save()
 
-        return "Contact information updated"
+        return "Contact information updated", True
 
     def me(self):
 

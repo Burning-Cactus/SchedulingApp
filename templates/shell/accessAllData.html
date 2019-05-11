@@ -1,0 +1,115 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data</title>
+    <style>{% include 'shell/staticfiles/style.css' %}</style>
+</head>
+<body>
+    <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+    <br><h1>Data:</h1><br>
+
+    <label>User:<br></label>
+    <table align="center" style="width:100%" id="customers">
+        <tr>
+            <th>ID</th>
+            <th>Permission</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Contact Phone</th>
+            <th>Office Phone</th>
+            <th>Extension</th>
+        </tr>
+        {% for i in allUsers %}
+            <tr>
+                <td>{{ i.id}}</td>
+                <td>{{ i.permission}}</td>
+                <td>{{ i.username}}</td>
+                <td>{{ i.password}}</td>
+                <td>{{ i.firstName}}</td>
+                <td>{{ i.lastName}}</td>
+                <td>{{ i.email}}</td>
+                <td>{{ i.contactPhone}}</td>
+                <td>{{ i.officePhone}}</td>
+                <td>{{ i.extension}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <label>Courses:<br></label>
+    <table align="center" style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for i in allCourses %}
+            <tr>
+                <td>{{ i.id}}</td>
+                <td>{{ i.name}}</td>
+                <td>{{ i.courseNumber}}</td>
+                <td>{{ i.classNumber}}</td>
+                <td>{{ i.time}}</td>
+                <td>{{ i.location}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <label>Labs:<br></label>
+    <table align="center" style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Lab Number</th>
+            <th>Course ID</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for i in allLabs %}
+            <tr>
+                <td>{{ i.id}}</td>
+                <td>{{ i.name}}</td>
+                <td>{{ i.labNumber}}</td>
+                <td>{{ i.courseID}}</td>
+                <td>{{ i.time}}</td>
+                <td>{{ i.location}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <label>Assistant Assignments:<br></label>
+    <table align="center" style="width:100%">
+        <tr>
+            <th>Assistant ID</th>
+            <th>Lab ID</th>
+        </tr>
+        {% for i in assistantAssignments %}
+            <tr>
+                <td>{{ i.assistantID}}</td>
+                <td>{{ i.labID}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <label>Instructor Assignments:<br></label>
+    <table align="center" style="width:100%">
+        <tr>
+            <th>Instructor ID</th>
+            <th>Course ID</th>
+        </tr>
+        {% for i in instructorAssignments %}
+            <tr>
+                <td>{{ i.instructorID}}</td>
+                <td>{{ i.courseID}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Contact Info</title>
+    <style>{% include 'shell/staticfiles/style.css' %}</style>
+</head>
+<body>
+<button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+
+    <div>
+        <label>Edit Contact Info</label>
+    <form method="post" action="/editContactInfo/">
+        {% csrf_token %}
+        Email:<br><input type="email" name="email"></br>
+        Contact Phone:<br><input type="tel" name="contactPhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></br>
+        Office Phone:<br><input type="tel" name="officePhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></br>
+        Extension:<br><input type="number" name="extension"></br>
+        <input type="submit" value="Create">
+    </form>
+    </div>
+</body>
+</html>

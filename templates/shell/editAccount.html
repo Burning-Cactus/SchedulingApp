@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User Data</title>
+    <style>{% include 'shell/staticfiles/style.css' %}</style>
+</head>
+<body>
+<button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+<br>
+<div>
+    <label>Edit Account</label>
+    <form method="post" action="http://127.0.0.1:8000/editAccount/">
+        {% csrf_token %}
+
+        UserName: {{ editID.userName }}<br><input type="text" name="UserName"><br>
+        Permission: {{ editID.permission }}<br><input type="number" name="Permission"><br>
+        Email: {{ editID.email }}<br><input type="email" name="Email"><br>
+        First Name: {{ editID.firstName }}<br><input type="text" name="FirstName"><br>
+        Last Name: {{ editID.lastName }}<br><input type="text" name="LastName"><br>
+        Contact Phone: {{ editID.contactPhone }}<br><input type="tel" name="ContactPhone"><br>
+        Office Phone: {{ editID.officePhone }}<br><input type="tel" name="OfficePhone"><br>
+        Extension: {{ editID.extention }}<br><input type="number" name="Extension"><br>
+        <input value="Submit" type="submit">
+    </form>
+</div>
+</body>
+</html>

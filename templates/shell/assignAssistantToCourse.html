@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Assistant To Course</title>
+    <style>{% include 'shell/staticfiles/style.css' %}</style>
+</head>
+<body>
+<button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+        <br><label>Assistants:</label>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+            </tr>
+            {% for assistant in assistants %}
+                <tr>
+                    <td>{{ assistant.0 }}</td>
+                    <td>{{ assistant.1 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <label>Course:</label>
+        <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for course in courses %}
+            <tr>
+                <td>{{ course.0 }}</td>
+                <td>{{ course.1 }}</td>
+                <td>{{ course.2 }}</td>
+                <td>{{ course.3 }}</td>
+                <td>{{ course.4 }}</td>
+                <td>{{ course.5 }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
+        <label>Assistant Assignments:</label>
+        <table>
+        <tr>
+            <th>User ID</th>
+            <th>Course ID</th>
+        </tr>
+        {% for entry in associations %}
+            <tr>
+                <td>{{ entry.0 }}</td>
+                <td>{{ entry.1 }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
+
+        <div>
+            <label>Assign Assistant</label>
+            <form method="post" action="/assignAssistantToCourse/">
+                {% csrf_token %}
+                Course Id:<br><input type="number" name="CourseId"></br>
+                Assistant Id:<br><input type="number" name="AssistantId"></br>
+                <input type="submit" value="Assign Assistant">
+            </form>
+        </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Assistant To Course</title>
+    <style>{% include 'shell/staticfiles/style.css' %}</style>
+</head>
+<body>
+<button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+        <br><label>Assistant</label>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+            {% for assistant in assistantList %}
+                <tr>
+                    <td>{{ assistant.0 }}</td>
+                    <td>{{ assistant.1 }}</td>
+                    <td>{{ assistant.2 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <label>Course</label>
+        <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for course in courseList %}
+            <tr>
+                <td>{{ course.0 }}</td>
+                <td>{{ course.1 }}</td>
+                <td>{{ course.2 }}</td>
+                <td>{{ course.3 }}</td>
+                <td>{{ course.4 }}</td>
+                <td>{{ course.5 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <label>Lab</label>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course ID</th>
+            <th>Lab Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for lab in labList %}
+            <tr>
+                <td>{{ lab.0 }}</td>
+                <td>{{ lab.1 }}</td>
+                <td>{{ lab.2 }}</td>
+                <td>{{ lab.3 }}</td>
+                <td>{{ lab.4 }}</td>
+                <td>{{ lab.5 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <label>Assistant Assignments</label>
+    <table>
+            <tr>
+                <th>Assistant ID</th>
+                <th>Lab ID</th>
+            </tr>
+            {% for assignment in assistantAssignments %}
+                <tr>
+                    <td>{{ assignment.0 }}</td>
+                    <td>{{ assignment.1 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    <div>
+        <label>Assign Assistant To Lab</label>
+        <form method="post" action="/instructorAssignAssistant/">
+        {% csrf_token %}
+        Lab Id:<br><input type="number" name="labID"></br>
+        Assistant Id:<br><input type="number" name="assistantID"></br>
+        <input type="submit" value="Assign Assistant">
+        </form>
+        </div>
+</body>
+</html>
