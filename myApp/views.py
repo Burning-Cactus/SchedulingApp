@@ -256,7 +256,7 @@ class assignInstructorToCourse(View):
         terminalInstance.login(user.username, user.password)
         ret, success = terminalInstance.assignInstructorToCourse(int(request.POST['courseID']), int(request.POST['instructorID']))
         if success == True:
-            return render(request, 'shell/commands.html')
+            redirect('/commands.html')
         if success == False:
             return render(request, 'shell/error.html/', {"message": ret})
 
