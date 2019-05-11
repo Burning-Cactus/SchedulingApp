@@ -436,3 +436,28 @@ class editLab(View):
 
         return redirect('/commands/')
 
+
+class deleteAccount(View):
+    def get(self, request):
+        users = USER.objects.all()
+        accountList = []
+
+        for user in users:
+            accountList.append([user.id, user.username])
+
+        return render(request, 'shell/deleteAccount.html', {"accountList": accountList})
+
+    def post(self, request):
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
+        ret, success = terminalInstance.deleteAccount(request.POST['accountID'])
+
+        if success is False:
+            return render(request, 'shell/error.html', {"message": ret})
+
+        return redirect('/commands/')
+
+
+

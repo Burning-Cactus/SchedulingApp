@@ -1,14 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Delete Account?</title>
-    </head>
-    <body>
-        <form method="post" action="http://127.0.0.1:8000/deleteAccount/">
-            {% csrf_token %}
-            Execute account?
-            <input value="Submit" type="submit"/>
-        </form>
-    </body>
+<html>
+
+    <title>Delete Account</title>
+
+    <head></head>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>UserName</th>
+        </tr>
+        {% for account in accountList %}
+            <tr>
+                <td>{{ account.0 }}</td>
+                <td>{{ account.1 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <form method="post" action="/deleteAccount/">
+        {% csrf_token %}
+        <input type="text" name="accountID">Account ID<br><br>
+        <input type="submit" value="Delete">
+    </form>
 </html>
