@@ -483,6 +483,28 @@ class deleteCourse(View):
 
         return redirect('/commands/')
 
+class deleteLab(View):
+    def get(self, request):
+        labs = LAB_SECTION.objects.all()
+        labList = []
+
+        for lab in labs:
+            labList.append([lab.id, lab.name, lab.courseID, lab.labNumber, lab.time, lab.location])
+
+        return render(request, 'shell/deleteLab.html', {"labs": labList})
+
+    def post(self, request):
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
+        ret, success = terminalInstance.deleteLab(int(request.POST['labID']))
+
+        if success is False:
+            return render(request, 'shell/error.html', {"message": ret})
+
+        return redirect('/commands/')
+
 
 
 
