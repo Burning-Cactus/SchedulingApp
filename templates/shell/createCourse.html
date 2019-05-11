@@ -2,7 +2,9 @@
 
     <title>Create Course</title>
 
-    <head></head>
+    <head>
+        <style>{% include 'shell/staticfiles/style.css' %}</style>
+    </head>
 <a href="/commands/">Home</a>
     <form method="post" action="/createCourse/">
         {% csrf_token %}
