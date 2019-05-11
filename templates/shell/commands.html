@@ -76,7 +76,7 @@
         </ul>
         {% for line in nav %}
                 {% if line == "Switch Permission" %}
-                    <button class="button button2"><a href="/switchPermission/">{{ line }}</a></button>
+                    <button class="button button2" onclick="window.location.href='/switchPermission/'">{{ line }}</button>
                 {% endif %}
         {% endfor %}
     </body>
