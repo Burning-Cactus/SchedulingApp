@@ -31,5 +31,6 @@ urlpatterns = [
     path('assignAssistantToCourse/', views.assignAssistantToCourse.as_view()),
     path('editCourse/', views.EditCourse.as_view()),
     path('switchPermission/', views.switchPermission.as_view()),
+    path('assignInstructorToCourse/', views.assignInstructorToCourse.as_view()),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

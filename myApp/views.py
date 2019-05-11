@@ -241,20 +241,21 @@ class assignInstructorToCourse(View):
         id = request.session['userid']
         user = USER.objects.get(id=id)
         terminalInstance.login(user.username, user.password)
-        ret, bool = terminalInstance.accessData()
-        if (bool == False):
+        ret, success = terminalInstance.accessData()
+        if (success == False):
             render(request, 'shell/error.html')
 
         allUsers = ret[0]
         allCourses = ret[1]
         instructorAssignments = ret[4]
-        return render(request, 'shell/assignInstructor.html', {'allUsers': allUsers, 'allCourses': allCourses,
-                                                               'instructorAssignments': instructorAssignments})
+        return render(request, 'shell/assignInstructorToCourse.html', {'allUsers': allUsers, 'allCourses': allCourses,
+                                                                       'instructorAssignments': instructorAssignments})
     def post(self, request):
-        ret, bool = Terminal().assignInstructorToCourse(request.POST['courseID'], request.POST['instructorID'])
-        if bool == True:
+        terminalInstance = Terminal()
+        ret, success = terminalInstance.assignInstructorToCourse(request.POST['courseID'], request.POST['instructorID'])
+        if success == True:
             return render(request, 'shell/commands.html')
-        if bool == False:
+        if success == False:
             return render(request, 'shell/assignInstructorError.html')
 
 class assignInstructorError(View):

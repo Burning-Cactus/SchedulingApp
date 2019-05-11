@@ -21,7 +21,7 @@ class assignInstuctorToCourseHttpTests(TestCase):
         session.save()
 
     def testGetWithUserRedirect(self):
-        with self.assertTemplateUsed('assignInstructor.html'):
+        with self.assertTemplateUsed('assignInstructorToCourse.html'):
             self.c.get('/assignInstructor/', follow=True)
 
     def testAssignInstructorToCourseTable(self):
