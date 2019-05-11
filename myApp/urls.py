@@ -7,6 +7,7 @@ from django.contrib import admin
 
 urlpatterns = [
     path("", views.Login.as_view()),
+    path('viewCourses/', views.viewCourses.as_view()),
     path('deleteLab/', views.deleteLab.as_view()),
     path('deleteCourse/', views.deleteCourse.as_view()),
     path('deleteAccount/', views.deleteAccount.as_view()),

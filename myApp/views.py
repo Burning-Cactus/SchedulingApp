@@ -506,6 +506,18 @@ class deleteLab(View):
         return redirect('/commands/')
 
 
+class viewCourses(View):
+    def get(self, request):
+        courses = COURSE.objects.all()
+        courseList = []
+
+        for course in courses:
+            courseList.append([course.id, course.name, course.courseNumber, course.classNumber, course.time,
+                              course.location])
+
+        return render(request, 'shell/viewCourses.html', {"courseList": courseList})
+
+
 
 
 
