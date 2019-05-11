@@ -60,16 +60,6 @@
                 margin-bottom:  40px;
               }
 
-            a.discrete {
-                color:  rgba(0,0,0, .4);
-                font-size:  14px;
-                border-bottom:  solid 1px rgba(0,0,0, .0);
-                padding-bottom:  4px;
-                margin-left:  auto;
-                font-weight:  300;
-                transition:  all .3s ease;
-                margin-top:  40px;
-              }
             button {
               -webkit-appearance:  none;
               width:  auto;
@@ -101,11 +91,6 @@
               font-weight:  400;
               -webkit-appearance:  none;
             }
-            .floating-label {
-                position: relative;
-                margin-bottom: 10px;
-                width: 100%;
-            }
               label {
                 position:  absolute;
                 top: calc(50% - 7px);
@@ -119,25 +104,6 @@
                 margin-left:  auto;
                 display:  flex;
               }
-              .icon {
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  height: 56px;
-                  width: 44px;
-                  display: flex;
-              }
-                svg {
-                    height: 30px;
-                    width: 30px;
-                    margin: auto;
-                    opacity: .15;
-                    transition: all .3s ease;
-                }
-                  path {
-                    transition:  all .3s ease;
-                  }
-
 
               input:not(:placeholder-shown) {
                 padding:  28px 0px 12px 0px;
@@ -154,39 +120,30 @@
                     fill:  rgb(182,157,230);
                   }
 
-
               input:not(:valid):not(:focus) + label + .icon {
                 animation-name: shake-shake;
                 animation-duration: .3s;
               }
 
             @keyframes shake-shake {
-              0% { transform: translateX(-3px);}
-              20% { transform: translateX(3px);}
-              40% { transform: translateX(-3px);}
-              60% { transform: translateX(3px);}
-              80% { transform: translateX(-3px);}
-              100% { transform: translateX(0px);}
-            }
-            .session {
-              display:  flex;
-              flex-direction:  row;
-              width:  auto;
-              height:  auto;
-              margin:  auto auto;
-              background:  #ffffff;
-              border-radius:  4px;
-              box-shadow:  0px 2px 6px -1px rgba(0,0,0,.12);
-            }
-            .left {
-                width: 220px;
-                height: auto;
-                min-height: 100%;
-                position: relative;
-                background-image: url("https://images.pexels.com/photos/114979/pexels-photo-114979.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
-                background-size: cover;
-                border-top-left-radius: 4px;
-                border-bottom-left-radius: 4px;
+                0% {
+                    transform: translateX(-3px);
+                }
+                20% {
+                    transform: translateX(3px);
+                }
+                40% {
+                    transform: translateX(-3px);
+                }
+                60% {
+                    transform: translateX(3px);
+                }
+                80% {
+                    transform: translateX(-3px);
+                }
+                100% {
+                    transform: translateX(0px);
+                }
             }
               svg {
                 height:  40px;
