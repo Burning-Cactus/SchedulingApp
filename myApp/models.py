@@ -502,17 +502,17 @@ class Terminal(object):
             return "You do not have permissions to use this function.", False
 
         try:
-            COURSE.objects.get(id=courseid)
+            COURSE.objects.get(id=int(courseid))
         except:
             return "Course does not exist", False
 
         try:
-            instructor = USER.objects.get(id=instructorid)
+            instructor = USER.objects.get(id=int(instructorid))
         except:
             return "User does not exist", False
 
         try:
-            if I_LIST.objects.get(courseID=courseid, instructorID=instructorid):
+            if I_LIST.objects.get(courseID=int(courseid), instructorID=int(instructorid)):
                 return None, False
         except I_LIST.DoesNotExist:
             pass
