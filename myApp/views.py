@@ -594,6 +594,12 @@ class viewAssistants(View):
 
         return render(request, 'shell/viewAssistants.html', {"assistants": assistants, "assignments": assignments, "courses": courses, "labs": labs})
 
+class instructorAssignAssistant(View):
+    def get(self):
+        pass
+    def post(self):
+        pass
+
 
 class viewContactInfo(View):
     def get(self, request):
