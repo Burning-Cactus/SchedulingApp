@@ -139,6 +139,8 @@ class Login(View):
         username = request.POST['UserName']
         password = request.POST['Password']
         response = terminalInstance.login(username, password)
+        if response.__eq__("Invalid username or password"):
+            return render(request, 'shell/loginError.html', {'res': response})
         if not response.__eq__("Logged in as: " + username):
             return render(request, 'shell/loginError.html', {'res': response})
         else:
