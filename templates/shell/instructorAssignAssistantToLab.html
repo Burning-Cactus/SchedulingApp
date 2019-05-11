@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Assign Assistant To Lab</title>
+    <title>Assign Assistant To Course</title>
 </head>
 <body>
-<form method="post" action="/assignAssistantToLab/">
-         <table>
+<form method="post" action="/instructorAssignAssistantToLab/">
+
+        <table>
             <tr>
                 <th>ID</th>
                 <th>Username</th>
@@ -20,6 +21,27 @@
         </table>
 
         <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for course in courses %}
+            <tr>
+                <td>{{ course.0 }}</td>
+                <td>{{ course.1 }}</td>
+                <td>{{ course.2 }}</td>
+                <td>{{ course.3 }}</td>
+                <td>{{ course.4 }}</td>
+                <td>{{ course.5 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <table>
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -38,24 +60,27 @@
                 <td>{{ lab.5 }}</td>
             </tr>
         {% endfor %}
+    </table>
+
+    <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Lab ID</th>
+            </tr>
+            {% for assignment in assignments %}
+                <tr>
+                    <td>{{ assignment.0 }}</td>
+                    <td>{{ assignment.1 }}</td>
+                    <td>{{ assignment.2 }}</td>
+                </tr>
+            {% endfor %}
         </table>
 
-        <table>
-        <tr>
-            <th>Assistant ID</th>
-            <th>Lab ID</th>
-        </tr>
-        {% for entry in associations %}
-            <tr>
-                <td>{{ entry.0 }}</td>
-                <td>{{ entry.1 }}</td>
-            </tr>
-        {% endfor %}
-        </table>
         {% csrf_token %}
-        Lab Id:<br><input type="number" name="LabId"></br>
+        Course Id:<br><input type="number" name="CourseId"></br>
         Assistant Id:<br><input type="number" name="AssistantId"></br>
         <input type="submit" value="Assign Assistant">
 </form>
 </body>
-</html>
+</html

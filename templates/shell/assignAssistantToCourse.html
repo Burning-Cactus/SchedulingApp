@@ -6,6 +6,54 @@
 </head>
 <body>
 <form method="post" action="/assignAssistantToCourse/">
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+            </tr>
+            {% for assistant in assistants %}
+                <tr>
+                    <td>{{ assistant.0 }}</td>
+                    <td>{{ assistant.1 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for course in courses %}
+            <tr>
+                <td>{{ course.0 }}</td>
+                <td>{{ course.1 }}</td>
+                <td>{{ course.2 }}</td>
+                <td>{{ course.3 }}</td>
+                <td>{{ course.4 }}</td>
+                <td>{{ course.5 }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
+        <table>
+        <tr>
+            <th>User ID</th>
+            <th>Course ID</th>
+        </tr>
+        {% for entry in associations %}
+            <tr>
+                <td>{{ entry.0 }}</td>
+                <td>{{ entry.1 }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
         {% csrf_token %}
         Course Id:<br><input type="number" name="CourseId"></br>
         Assistant Id:<br><input type="number" name="AssistantId"></br>

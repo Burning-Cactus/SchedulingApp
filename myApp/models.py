@@ -565,7 +565,7 @@ class Terminal(object):
         try:
             lab = LAB_SECTION.objects.get(id=int(labid))
         except:
-            return "Course does not exist", False
+            return "Lab does not exist", False
 
         try:
             assistant = USER.objects.get(id=int(assistantid))
