@@ -7,3 +7,7 @@ table {
     border-width: 5px;
     background-color: lightgray;
 }
+
+light {
+    color: lightblue;
+}
