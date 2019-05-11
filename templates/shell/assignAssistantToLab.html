@@ -7,6 +7,52 @@
 <body>
 <a href="/commands/">Home</a>
 <form method="post" action="/assignAssistantToLab/">
+         <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+            </tr>
+            {% for assistant in assistants %}
+                <tr>
+                    <td>{{ assistant.0 }}</td>
+                    <td>{{ assistant.1 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course ID</th>
+            <th>Lab Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for lab in labs %}
+            <tr>
+                <td>{{ lab.0 }}</td>
+                <td>{{ lab.1 }}</td>
+                <td>{{ lab.2 }}</td>
+                <td>{{ lab.3 }}</td>
+                <td>{{ lab.4 }}</td>
+                <td>{{ lab.5 }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
+        <table>
+        <tr>
+            <th>Assistant ID</th>
+            <th>Lab ID</th>
+        </tr>
+        {% for entry in associations %}
+            <tr>
+                <td>{{ entry.0 }}</td>
+                <td>{{ entry.1 }}</td>
+            </tr>
+        {% endfor %}
+        </table>
         {% csrf_token %}
         Lab Id:<br><input type="number" name="LabId"></br>
         Assistant Id:<br><input type="number" name="AssistantId"></br>

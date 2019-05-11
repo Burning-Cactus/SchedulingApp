@@ -79,13 +79,13 @@ class NavBar:
                             'Logout']
             else:
                 navHtml = ['Assign Assistant',
-                            'View Courses',
-                            'View Assistants',
-                            'View Contacts',
-                            'Edit Contact Info',
-                            'Email',
-                            'Switch Permission',
-                            'Logout']
+                           'View Courses',
+                           'View Assistants',
+                           'View Contacts',
+                           'Edit Contact Info',
+                           'Email',
+                           'Switch Permission',
+                           'Logout']
 
         if activePermission.__eq__("4"):
             if len(permissions) == 1:

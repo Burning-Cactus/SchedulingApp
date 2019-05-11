@@ -213,27 +213,76 @@ class Email(View):
 
 class assignAssistantToLab(View):
     def get(self, request):
-        return render(request, 'shell/assignAssistantToLab.html')
+        users = USER.objects.all()
+        assistants = []
+        for user in users:
+            if user.permission.__contains__('4'):
+                assistants.append([user.id, user.username])
+
+        labQuery = LAB_SECTION.objects.all()
+        labs = []
+        for lab in labQuery:
+            labs.append([lab.id, lab.name, lab.courseID, lab.labNumber, lab.time,
+                         lab.location])
+
+        query = A_LIST.objects.all()
+        associations = []
+        for entry in query:
+            associations.append([entry.assistantID, entry.labID])
+
+        return render(request, 'shell/assignAssistantToLab.html', {"assistants": assistants, "labs": labs,
+                                                                   "associations": associations})
 
     def post(self, request):
         terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
         labid = request.POST['LabId']
         assistantid = request.POST['AssistantId']
-        terminalInstance.assignAssistantToLab(labid,assistantid)
-        return render(request, 'shell/commands.html')
+        ret, success = terminalInstance.assignAssistantToLab(int(labid), int(assistantid))
+
+        if success is False:
+            return render(request, 'shell/error.html', {"message": ret})
+
+        return redirect('/commands/')
 
 
 class assignAssistantToCourse(View):
     def get(self, request):
-        return render(request, 'shell/assignAssistantToCourse.html')
+        users = USER.objects.all()
+        assistants = []
+        for user in users:
+            if user.permission.__contains__('4'):
+                assistants.append([user.id, user.username])
+
+        courseQuery = COURSE.objects.all()
+        courses = []
+        for course in courseQuery:
+            courses.append([course.id, course.name, course.courseNumber, course.classNumber, course.time,
+                           course.location])
+
+        query = I_LIST.objects.all()
+        associations = []
+        for entry in query:
+            associations.append([entry.instructorID, entry.courseID])
+
+        return render(request, 'shell/assignAssistantToCourse.html', {"assistants": assistants, "courses": courses,
+                                                                      "associations": associations})
 
     def post(self, request):
         terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
         Courseid = request.POST['CourseId']
         assistantid = request.POST['AssistantId']
-        terminalInstance.assignAssistantToCourse(Courseid, assistantid)
+        ret, success = terminalInstance.assignAssistantToCourse(int(Courseid), int(assistantid))
 
-        return render(request, 'shell/commands.html')
+        if success is False:
+            return render(request, 'shell/error.html', {"message": ret})
+
+        return redirect('/commands/')
 
 class assignInstructorToCourse(View):
     def get(self, request):
@@ -295,15 +344,6 @@ class editContactInfo(View):
             return redirect('/commands/')
         else:
             return redirect('shell/createAccountError.html')
-
-
-class viewAssistantAssignments(View):
-    def get(self, request):
-        aid = request.session['userid']
-        self.user = USER.objects.get(id=aid)
-        self.user.databaseID = aid
-        assistantAssignments = Terminal.viewAssistantAssignments(self)
-        return render(request, 'shell/viewAssistantAssignments.html', {"assignments": assistantAssignments})
 
 class EditCourse(View):
     def get(self, request):
@@ -507,6 +547,52 @@ class viewCourses(View):
                                course.location])
 
         return render(request, 'shell/viewCourses.html', {"courseList": courseList})
+
+
+class viewAssistants(View):
+    def get(self, request):
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
+        courseAssociations = I_LIST.objects.all()
+        labAssociations = A_LIST.objects.all()
+        instructorCourses = []
+        assistantAssociations = []
+
+        for entry in courseAssociations:
+            if int(entry.instructorID) is user.id:
+                instructorCourses.append(int(entry.courseID))
+
+        for entry in courseAssociations:
+            if instructorCourses.__contains__(entry.courseID):
+                assistantAssociations.append(int(entry.instructorID))
+
+        assistants = []
+        assignments = []
+        allUsers = USER.objects.all()
+        for user in allUsers:
+            if assistantAssociations.__contains__(user.id):
+                assistants.append([user.id, user.username])
+                for entry in labAssociations:
+                    if entry.assistantID is user.id:
+                        assignments.append([user.id, user.username, entry.labID])
+
+        courses = []
+        labs = []
+        for courseID in instructorCourses:
+            course = COURSE.objects.get(id=courseID)
+            courses.append([course.id, course.name, course.courseNumber, course.classNumber, course.time,
+                           course.location])
+
+            try:
+                labQuery = LAB_SECTION.objects.filter(courseID=courseID)
+                for lab in labQuery:
+                    labs.append([lab.id, lab.name, lab.courseID, lab.labNumber, lab.time, lab.location])
+            except LAB_SECTION.DoesNotExist:
+                pass
+
+        return render(request, 'shell/viewAssistants.html', {"assistants": assistants, "assignments": assignments, "courses": courses, "labs": labs})
 
 
 

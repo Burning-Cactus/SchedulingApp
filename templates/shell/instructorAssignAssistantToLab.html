@@ -5,8 +5,7 @@
     <title>Assign Assistant To Course</title>
 </head>
 <body>
-<a href="/commands/">Home</a>
-<form method="post" action="/assignAssistantToCourse/">
+<form method="post" action="/instructorAssignAssistantToLab/">
 
         <table>
             <tr>
@@ -40,19 +39,42 @@
                 <td>{{ course.5 }}</td>
             </tr>
         {% endfor %}
-        </table>
+    </table>
 
-        <table>
+    <table>
         <tr>
-            <th>User ID</th>
+            <th>ID</th>
+            <th>Name</th>
             <th>Course ID</th>
+            <th>Lab Number</th>
+            <th>Time</th>
+            <th>Location</th>
         </tr>
-        {% for entry in associations %}
+        {% for lab in labs %}
             <tr>
-                <td>{{ entry.0 }}</td>
-                <td>{{ entry.1 }}</td>
+                <td>{{ lab.0 }}</td>
+                <td>{{ lab.1 }}</td>
+                <td>{{ lab.2 }}</td>
+                <td>{{ lab.3 }}</td>
+                <td>{{ lab.4 }}</td>
+                <td>{{ lab.5 }}</td>
             </tr>
         {% endfor %}
+    </table>
+
+    <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Lab ID</th>
+            </tr>
+            {% for assignment in assignments %}
+                <tr>
+                    <td>{{ assignment.0 }}</td>
+                    <td>{{ assignment.1 }}</td>
+                    <td>{{ assignment.2 }}</td>
+                </tr>
+            {% endfor %}
         </table>
 
         {% csrf_token %}
@@ -61,4 +83,4 @@
         <input type="submit" value="Assign Assistant">
 </form>
 </body>
-</html>
+</html
