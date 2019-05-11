@@ -22,6 +22,7 @@ urlpatterns = [
     path('commands/', views.commands.as_view()),
     path('admin/', admin.site.urls),
     path('editAccount/', views.editAccount.as_view()),
+    path('editContactInfo/', views.editContactInfo.as_view()),
     path('editSelect/', views.editSelect.as_view()),
     path('deleteAccount/', views.deleteAccount.as_view()),
     path('deleteSelect/', views.deleteSelect.as_view()),

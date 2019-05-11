@@ -728,7 +728,7 @@ class Terminal(object):
             self.user.officePhone = officePhone
 
         if extension != '~':
-            self.user.extenstion = extension
+            self.user.extension = extension
 
         userEntry = USER.objects.get(id=self.user.databaseID)
 

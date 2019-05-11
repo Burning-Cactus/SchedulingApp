@@ -294,7 +294,13 @@ class assignInstructorToCourse(View):
         if (success == False):
             render(request, 'shell/error.html')
 
-        allUsers = ret[0]
+        #allUsers=[]
+
+        #for i in ret[0]:
+        #    if i.permission.__contains__('3'):
+        #        allUsers = allUsers + i
+
+        allUsers = USER.objects.filter(permission='3')
         allCourses = ret[1]
         instructorAssignments = ret[4]
         return render(request, 'shell/assignInstructorToCourse.html', {'allUsers': allUsers, 'allCourses': allCourses,
@@ -312,7 +318,15 @@ class assignInstructorToCourse(View):
 class editContactInfo(View):
 
   def get(self, request):
-    return render(request, 'shell/editContactInfo.html')
+      terminalInstance = Terminal()
+      id = request.session['userid']
+      user = USER.objects.get(id=id)
+      terminalInstance.login(user.username, user.password)
+      ret, bool = terminalInstance.accessData()
+      if (bool == False):
+          render(request, 'shell/error.html')
+
+      return render(request, 'shell/editContactInfo.html')
 
   def post(self, request):
 
@@ -324,10 +338,10 @@ class editContactInfo(View):
         id = request.session['userid']
         user = USER.objects.get(id=id)
         terminalInstance.login(user.username, user.password)
-        response = terminalInstance.editContactInfo(email, contactPhone, officePhone, extension)
-        if response.__eq__("Contact information updated"):
+        response, boole = terminalInstance.editContactInfo(email, contactPhone, officePhone, extension)
+        if boole:
             request.method = 'get'
-            return render(request, 'shell/commands.html')
+            return redirect('/commands/')
         else:
             return redirect('shell/createAccountError.html')
 
