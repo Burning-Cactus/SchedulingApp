@@ -256,15 +256,9 @@ class assignInstructorToCourse(View):
         terminalInstance.login(user.username, user.password)
         ret, success = terminalInstance.assignInstructorToCourse(int(request.POST['courseID']), int(request.POST['instructorID']))
         if success == True:
-            redirect('/commands.html')
+            return redirect('/commands/')
         if success == False:
             return render(request, 'shell/error.html/', {"message": ret})
-
-class assignInstructorError(View):
-    def get(self, request):
-        return render(request, 'shell/assignInstructorError.html')
-    def post(self, request):
-        return render(request, 'shell/assignInstructorError.html')
 
 class editContactInfo(View):
 
