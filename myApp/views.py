@@ -124,7 +124,17 @@ class commands(View):
         permissions = request.session['permissions']
         navBar = NavBar()
         nav = navBar.getNavBar(activePermission, permissions)
-        return render(request, 'shell/commands.html', {"nav": nav})
+        userTitle = ""
+
+        if int(activePermission) is 1:
+            userTitle = "Supervisor"
+        if int(activePermission) is 2:
+            userTitle = "Administrator"
+        if int(activePermission) is 3:
+            userTitle = "Instructor"
+        if int(activePermission) is 4:
+            userTitle = "Assistant"
+        return render(request, 'shell/commands.html', {"nav": nav, "userTitle": userTitle})
 
     def post(self, request):
       return render(request, 'shell/commands.html')
