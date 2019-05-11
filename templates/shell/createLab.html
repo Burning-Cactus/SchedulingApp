@@ -4,7 +4,7 @@
     <title>Create Lab</title>
         <style>{% include 'shell/staticfiles/style.css' %}</style>
     </head>
-<a href="/commands/">Home</a>
+<button class="button button2" onclick="window.location.href='/commands/'">Home</button>
     <form method="post" action="/createLab/">
         {% csrf_token %}
         <input type="text" name="name"> Lab Name<br><br>
