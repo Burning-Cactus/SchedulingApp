@@ -51,12 +51,12 @@ class createAccount(View):
         id = request.session['userid']
         user = USER.objects.get(id=id)
         terminalInstance.login(user.username, user.password)
-        response = terminalInstance.createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
-        if response.__eq__("New user created"):
+        ret, success = terminalInstance.createAccount(permission, username, password, email, firstName, lastName, contactPhone, officePhone, extension)
+        if success is True:
             request.method = 'get'
-            return render(request, 'shell/commands.html')
+            return redirect('/commands/')
         else:
-            return redirect('shell/createAccountError.html')
+            return render(request, '/error/', {"message": ret})
 
 
 class createAccountError(View):
@@ -320,16 +320,27 @@ class viewAssistantAssignments(View):
 
 class EditCourse(View):
     def get(self, request):
+        terminalInstance = Terminal()
+        id = request.session['userid']
+        user = USER.objects.get(id=id)
+        terminalInstance.login(user.username, user.password)
+        ret, bool = terminalInstance.accessData()
+        if(bool == True):
+            allCourses = ret[1]
+            return render(request, 'shell/editCourse.html', {"allCourses": allCourses})
         return render(request, 'shell/editCourse.html')
     def post(self, request):
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
         id = request.POST['courseid']
         name = request.POST['coursename']
         coursenumber = request.POST['coursenumber']
         classnumber = request.POST['classnumber']
         classtime = request.POST['time']
         location = request.POST['location']
-        Terminal().editCourse(id, name, coursenumber, classnumber, classtime, location)
-        return render(request, 'shell/commands.html')
+        terminalInstance.editCourse(id, name, coursenumber, classnumber, classtime, location)
+        return redirect('/commands/')
 
 class switchPermission(View):
     def get(self, request):

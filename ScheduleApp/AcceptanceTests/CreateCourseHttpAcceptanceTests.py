@@ -22,7 +22,7 @@ class CreateCourseTest(TestCase):
 
     def testFormMethodAction(self):
         ret = self.c.get('/createCourse/')
-        self.assertTrue(ret.content.__contains__(b'<form method="post", action="/createCourse/">'))
+        self.assertTrue(ret.content.__contains__(b'<form method="post" action="/createCourse/">'))
 
     def testFormFields1(self):
         ret = self.c.get('/createCourse/')
@@ -45,29 +45,29 @@ class CreateCourseTest(TestCase):
                                              'location': 'townhall'})
 
         self.assertEqual(ret.status_code, 302)
-        self.assertTrue(ret.conent.__contains__(b'<title>Course Created</title>'))
-        self.assertTrue(ret.conent.__contains__(b'href="http://127.0.0.1:8000/home/"'))
+        self.assertTrue(ret.content.__contains__(b'<title>Course Created</title>'))
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/home/"'))
 
     def testCreateCoursePostError1(self):
         ret = self.c.post('/createCourse/', {'name': '', 'classNumber': '102', 'time': '3:00am-4:00am',
                                              'location': 'townhall'})
-        self.assertTrue(ret.conent.__contains__(b'<title>Create Course Error</title>'))
-        self.assertTrue(ret.conent.__contains__(b'href="http://127.0.0.1:8000/createCourse/"'))
+        self.assertTrue(ret.content.__contains__(b'<title>Create Course Error</title>'))
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createCourse/"'))
 
     def testCreateCoursePostError2(self):
         ret = self.c.post('/createCourse/', {'name': 'physics', 'classNumber': '', 'time': '3:00am-4:00am',
                                              'location': 'townhall'})
-        self.assertTrue(ret.conent.__contains__(b'<title>Create Course Error</title>'))
-        self.assertTrue(ret.conent.__contains__(b'href="http://127.0.0.1:8000/createCourse/"'))
+        self.assertTrue(ret.content.__contains__(b'<title>Create Course Error</title>'))
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createCourse/"'))
 
     def testCreateCoursePostError3(self):
         ret = self.c.post('/createCourse/', {'name': 'physics', 'classNumber': '102', 'time': '',
                                              'location': 'townhall'})
-        self.assertTrue(ret.conent.__contains__(b'<title>Create Course Error</title>'))
-        self.assertTrue(ret.conent.__contains__(b'href="http://127.0.0.1:8000/createCourse/"'))
+        self.assertTrue(ret.content.__contains__(b'<title>Create Course Error</title>'))
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createCourse/"'))
 
     def testCreateCoursePostError4(self):
         ret = self.c.post('/createCourse/', {'name': 'physics', 'classNumber': '102', 'time': '3:00am-4:00am',
                                              'location': ''})
-        self.assertTrue(ret.conent.__contains__(b'<title>Create Course Error</title>'))
-        self.assertTrue(ret.conent.__contains__(b'href="http://127.0.0.1:8000/createCourse/"'))
+        self.assertTrue(ret.content.__contains__(b'<title>Create Course Error</title>'))
+        self.assertTrue(ret.content.__contains__(b'href="http://127.0.0.1:8000/createCourse/"'))

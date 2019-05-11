@@ -8,7 +8,7 @@
     <form method="post" action="http://127.0.0.1:8000/editCourse/">
         {% csrf_token %}
 
-        courseid<input type="number" name="courseid"></br>
+        Course ID<input type="number" name="courseid"></br>
         Course Name<input type="text" name="coursename"></br>
         Course Number<input type="number" name="coursenumber"></br>
         Class Number<input type="number" name="classnumber"></br>
@@ -16,5 +16,26 @@
         Class Location<input type="text" name="location"></br>
         <input value="Apply" type="submit">
     </form>
+    Courses:<br>
+    <table align="center" style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for i in allCourses %}
+            <tr>
+                <td>{{ i.id}}</td>
+                <td>{{ i.name}}</td>
+                <td>{{ i.courseNumber}}</td>
+                <td>{{ i.classNumber}}</td>
+                <td>{{ i.time}}</td>
+                <td>{{ i.location}}</td>
+            </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
