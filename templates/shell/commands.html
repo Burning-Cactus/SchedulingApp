@@ -51,9 +51,6 @@
             {% if line == "Email" %}
                 <li><a href="/email/">{{ line }}</a></li>
             {% endif %}
-            {% if line == "Switch Permission" %}
-                <li><a href="/switchPermission/">{{ line }}</a></li>
-            {% endif %}
             {% if line == "Logout" %}
                 <li><a href="/logout/">{{ line }}</a></li>
             {% endif %}
@@ -75,6 +72,11 @@
             {% if line == "View Other Assistants" %}
                 <li><a href="/viewOtherAssistants/">{{ line }}</a></li>
             {% endif %}
+        {% endfor %}
+        {% for line in nav %}
+                {% if line == "Switch Permission" %}
+                    <button><a href="/switchPermission/">{{ line }}</a></button>
+                {% endif %}
         {% endfor %}
         </ul>
     </body>
