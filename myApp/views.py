@@ -488,13 +488,13 @@ class viewCourses(View):
         terminalInstance = Terminal()
         user = USER.objects.get(id=request.session['userid'])
         terminalInstance.login(user.username, user.password)
-        courseAssosiations = I_LIST.objects.all()
+        courseAssociations = I_LIST.objects.filter(instructorID=user.id)
         courseList = []
-        for entry in courseAssosiations:
-            pass
-        for course in courseList:
+
+        for entry in courseAssociations:
+            course = COURSE.objects.get(id=entry.courseID)
             courseList.append([course.id, course.name, course.courseNumber, course.classNumber, course.time,
-                              course.location])
+                               course.location])
 
         return render(request, 'shell/viewCourses.html', {"courseList": courseList})
 
