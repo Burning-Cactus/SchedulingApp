@@ -139,7 +139,7 @@ class Login(View):
         username = request.POST['UserName']
         password = request.POST['Password']
         response = terminalInstance.login(username, password)
-        if not response.__eq__("Logged in as: " + username):
+        if  response.__contains__(False):
             return render(request, 'shell/loginError.html', {'res': response})
         else:
             user = USER.objects.get(username=username)
