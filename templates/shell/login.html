@@ -32,7 +32,7 @@
               font-weight:  400;
             }
             form {
-                padding: 40px 30px;
+                padding: 40px 40px;
                 background: #fefefe;
                 display: flex;
                 flex-direction: column;
@@ -124,41 +124,19 @@
                 animation-name: shake-shake;
                 animation-duration: .3s;
               }
-
-            @keyframes shake-shake {
-                0% {
-                    transform: translateX(-3px);
-                }
-                20% {
-                    transform: translateX(3px);
-                }
-                40% {
-                    transform: translateX(-3px);
-                }
-                60% {
-                    transform: translateX(3px);
-                }
-                80% {
-                    transform: translateX(-3px);
-                }
-                100% {
-                    transform: translateX(0px);
-                }
-            }
               svg {
                 height:  40px;
                 width:  auto;
-                margin:  20px;
+                margin:  0px;
               }
 
     </style>
 </head>
-<body>
-    <img src="https://i.imgur.com/FSxaaO1.png" alt="Desire 4 Learn">
-    <br>
+<body style="background-color:#333333;">
 
-    <div>
+    <div style="margin: 0 auto;">
     <form method="post" action="">
+        <img src="https://i.imgur.com/FSxaaO1.png" alt="Desire 4 Learn" style="alignment: top"/>
         {% csrf_token %}
         User Name:<br><input type="text" name="UserName"></br>
         Password:<br><input type="password" name="Password"></br>
