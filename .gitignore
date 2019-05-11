@@ -1,3 +1,4 @@
 .idea
 dir_to_ignore/venv
 __pycache__
+db.sqlite3
