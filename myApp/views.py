@@ -200,30 +200,6 @@ class deleteSelect(View):
         # else go home
         return render(request, "/commands/")
 
-
-class deleteAccount(View):
-    def get(self, request):
-        terminalInstance = Terminal()
-        response = terminalInstance.login(username, password)
-        userid = request.GET["userid"]  # is this a thing?
-        # call model.py's deleteAccount method
-        Terminal.deleteAccount(response, userid)
-        return render(request, "/commands/")
-
-class deleteCourse(View):
-    def post(self, request):
-        courseid = request.POST["courseid"]
-        terminalInstance = Terminal()
-        response = terminalInstance.login(username, password)
-
-        # if the UserID exists
-        if USER.objects.filter(databaseID=courseid).count() == 1:
-            Terminal.deleteAccount(response, courseid)
-            return render(request, "/commands/")
-
-        # else go home
-        return render(request, "/commands/")
-
 class Email(View):
     def get(self, request):
         return render(request, 'shell/email.html')
@@ -508,10 +484,14 @@ class deleteLab(View):
 
 class viewCourses(View):
     def get(self, request):
-        courses = COURSE.objects.all()
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+        courseAssosiations = I_LIST.objects.all()
         courseList = []
-
-        for course in courses:
+        for entry in courseAssosiations:
+            pass
+        for course in courseList:
             courseList.append([course.id, course.name, course.courseNumber, course.classNumber, course.time,
                               course.location])
 
