@@ -1,4 +1,4 @@
-table {
+    table {
       font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
       border-collapse: collapse;
       width: 100%;
@@ -19,4 +19,13 @@ table {
       text-align: left;
       background-color: #4CAF50;
       color: white;
+    }
+
+    label {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    li {
+        font-size:99999px;
     }
