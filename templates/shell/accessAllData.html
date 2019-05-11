@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Data</title>
-    <link rel="stylesheet" href="style.css">
+    <style>{% include 'shell/staticfiles/style.css' %}</style>
 </head>
 <body>
     <a href="/commands/">Home</a>
     <h1>Data:</h1><br>
 
     User:<br>
-    <table align="center" style="width:100%">
+    <table align="center" style="width:100%" id="customers">
         <tr>
             <th>ID</th>
             <th>Permission</th>
