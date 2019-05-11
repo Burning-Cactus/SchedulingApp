@@ -1,14 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Delete a Course</title>
-    </head>
-    <body>
-        <form method="post" action="http://127.0.0.1:8000/commands/">
-            {% csrf_token %}
-            Input Course ID: <input type="text" name="courseid"></br>
-            <input value="Submit" type="submit"/>
-        </form>
-    </body>
+<html>
+
+    <title>Delete Course</title>
+
+    <head></head>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for course in courseList %}
+            <tr>
+                <td>{{ course.0 }}</td>
+                <td>{{ course.1 }}</td>
+                <td>{{ course.2 }}</td>
+                <td>{{ course.3 }}</td>
+                <td>{{ course.4 }}</td>
+                <td>{{ course.5 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <form method="post" action="/deleteCourse/">
+        {% csrf_token %}
+        <input type="text" name="courseID">Course ID<br><br>
+        <input type="submit" value="Delete">
+    </form>
 </html>

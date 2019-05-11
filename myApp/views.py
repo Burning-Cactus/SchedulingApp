@@ -460,4 +460,30 @@ class deleteAccount(View):
         return redirect('/commands/')
 
 
+class deleteCourse(View):
+    def get(self, request):
+        courses = COURSE.objects.all()
+        courseList = []
+
+        for course in courses:
+            courseList.append([course.id, course.name, course.courseNumber, course.classNumber, course.time,
+                              course.location])
+
+        return render(request, 'shell/deleteCourse.html', {"courseList": courseList})
+
+    def post(self, request):
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
+        ret, success = terminalInstance.deleteCourse(request.POST['courseID'])
+
+        if success is False:
+            return render(request, 'shell/error.html', {"message": ret})
+
+        return redirect('/commands/')
+
+
+
+
 
