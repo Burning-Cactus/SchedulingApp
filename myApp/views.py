@@ -245,7 +245,13 @@ class assignInstructorToCourse(View):
         if (success == False):
             render(request, 'shell/error.html')
 
-        allUsers = ret[0]
+        #allUsers=[]
+
+        #for i in ret[0]:
+        #    if i.permission.__contains__('3'):
+        #        allUsers = allUsers + i
+
+        allUsers = USER.objects.filter(permission='3')
         allCourses = ret[1]
         instructorAssignments = ret[4]
         return render(request, 'shell/assignInstructorToCourse.html', {'allUsers': allUsers, 'allCourses': allCourses,
