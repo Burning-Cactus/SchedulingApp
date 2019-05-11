@@ -139,8 +139,6 @@ class Login(View):
         username = request.POST['UserName']
         password = request.POST['Password']
         response = terminalInstance.login(username, password)
-        if response.__eq__("Invalid username or password"):
-            return render(request, 'shell/loginError.html', {'res': response})
         if not response.__eq__("Logged in as: " + username):
             return render(request, 'shell/loginError.html', {'res': response})
         else:
@@ -596,6 +594,12 @@ class viewAssistants(View):
 
         return render(request, 'shell/viewAssistants.html', {"assistants": assistants, "assignments": assignments, "courses": courses, "labs": labs})
 
+class instructorAssignAssistant(View):
+    def get(self):
+        pass
+    def post(self):
+        pass
+
 
 class viewContactInfo(View):
     def get(self, request):
@@ -603,17 +607,8 @@ class viewContactInfo(View):
         id = request.session['userid']
         user = USER.objects.get(id=id)
         terminalInstance.login(user.username, user.password)
-        ret, bool = terminalInstance.viewContactInfo()
+        allUsers, bool = terminalInstance.viewContactInfo()
         if (bool == False):
             render(request, 'shell/error.html')
 
-        allUsers = ret[0]
-        allCourses = ret[1]
-        allLabs = ret[2]
-        assistantAssignments = ret[3]
-        instructorAssignments = ret[4]
-        return render(request, 'shell/viewContactInfo.html',
-                      {"allUsers": allUsers, "allCourses": allCourses, "allLabs": allLabs,
-                       "assistantAssignments": assistantAssignments, "instructorAssignments": instructorAssignments})
-
-
+        return render(request, 'shell/viewContactInfo.html', {"allUsers": allUsers})
