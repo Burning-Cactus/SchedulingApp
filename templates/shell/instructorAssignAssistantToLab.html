@@ -11,12 +11,14 @@
         <table>
             <tr>
                 <th>ID</th>
-                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
             </tr>
-            {% for assistant in assistants %}
+            {% for assistant in assistantList %}
                 <tr>
                     <td>{{ assistant.0 }}</td>
                     <td>{{ assistant.1 }}</td>
+                    <td>{{ assistant.2 }}</td>
                 </tr>
             {% endfor %}
         </table>
@@ -30,7 +32,7 @@
             <th>Time</th>
             <th>Location</th>
         </tr>
-        {% for course in courses %}
+        {% for course in courseList %}
             <tr>
                 <td>{{ course.0 }}</td>
                 <td>{{ course.1 }}</td>
@@ -51,7 +53,7 @@
             <th>Time</th>
             <th>Location</th>
         </tr>
-        {% for lab in labs %}
+        {% for lab in labList %}
             <tr>
                 <td>{{ lab.0 }}</td>
                 <td>{{ lab.1 }}</td>
@@ -65,15 +67,13 @@
 
     <table>
             <tr>
-                <th>ID</th>
-                <th>Username</th>
+                <th>Assistant ID</th>
                 <th>Lab ID</th>
             </tr>
-            {% for assignment in assignments %}
+            {% for assignment in assistantAssignments %}
                 <tr>
                     <td>{{ assignment.0 }}</td>
                     <td>{{ assignment.1 }}</td>
-                    <td>{{ assignment.2 }}</td>
                 </tr>
             {% endfor %}
         </table>

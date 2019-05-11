@@ -605,9 +605,54 @@ class viewAssistants(View):
         return render(request, 'shell/viewAssistants.html', {"assistants": assistants, "assignments": assignments, "courses": courses, "labs": labs})
 
 class instructorAssignAssistant(View):
-    def get(self):
-        pass
-    def post(self):
+    def get(self, request):
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
+        aList = A_LIST.objects.all()
+        iList = I_LIST.objects.all()
+
+        instructorCourses = []
+        for entry in iList:
+            if entry.instructorID is user.id:
+                instructorCourses.append(entry.courseID)
+
+        instructorAssistants = []
+        for entry in iList:
+            if instructorCourses.__contains__(entry.instructorID) and entry.instructorID != user.id:
+                instructorAssistants.append(entry.instructorID)
+
+        assistantAssignments = []
+        for entry in aList:
+            if instructorAssistants.__contains__(entry.assistantID):
+                assistantAssignments.append([entry.assistantID, entry.labID])
+
+        allCourses = COURSE.objects.all()
+        courseList = []
+        for course in allCourses:
+            if instructorCourses.__contains__(course.id):
+                courseList.append([course.id, course.name, course.courseNumber, course.classNumber, course.time,
+                                  course.location])
+
+        allLabs = LAB_SECTION.objects.all()
+        labList = []
+        for lab in allLabs:
+            if instructorCourses.__contains__(int(lab.courseID)):
+                labList.append([lab.id, lab.name, lab.courseID, lab.labNumber, lab.time, lab.location])
+
+        allUsers = USER.objects.all()
+        assistantList = []
+        for entry in allUsers:
+            if instructorAssistants.__contains__(entry.id):
+                assistantList.append([entry.id, entry.firstName, entry.lastName])
+
+        return render(request, 'shell/instructorAssignAssistantToLab.html/', {"courseList": courseList,
+                                                                              "labList": labList,
+                                                                              "assistants": assistantList,
+                                                                              "assistantAssignments": assistantAssignments})
+
+    def post(self, request):
         pass
 
 
