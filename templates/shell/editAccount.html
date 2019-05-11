@@ -8,15 +8,15 @@
     <form method="post" action="http://127.0.0.1:8000/editAccount/">
         {% csrf_token %}
 
-        request.session['editID'].userName<input type="text" name="UserName"></br>
-        Password<input type="password" name="Password"></br>
-        Permission<input type="number" name="Permission"></br>
-        Email<input type="email" name="Email"></br>
-        First Name<input type="text" name="FirstName"></br>
-        Last Name<input type="text" name="LastName"></br>
-        Contact Phone<input type="tel" name="ContactPhone"></br>
-        Office Phone<input type="tel" name="OfficePhone"></br>
-        Extension<input type="number" name="Extension"></br>
+        UserName: {{ editID.userName }}<input type="text" name="UserName"></br>
+        Password: {{ editID.password }}<input type="password" name="Password"></br>
+        Permission: {{ editID.permission }}<input type="number" name="Permission"></br>
+        Email: {{ editID.email }}<input type="email" name="Email"></br>
+        First Name: {{ editID.firstName }}<input type="text" name="FirstName"></br>
+        Last Name: {{ editID.lastName }}<input type="text" name="LastName"></br>
+        Contact Phone: {{ editID.contactPhone }}<input type="tel" name="ContactPhone"></br>
+        Office Phone: {{ editID.officePhone }}<input type="tel" name="OfficePhone"></br>
+        Extension: {{ editID.extention }}<input type="number" name="Extension"></br>
         <input value="Submit" type="submit">
     </form>
 </body>

@@ -1,8 +1,9 @@
 <html>
 
-    <title>Create Course</title>
-
-    <head></head>
+    <head>
+    <title>Create Lab</title>
+        Create Lab
+    </head>
 
     <form method="post" action="/createLab/">
         {% csrf_token %}
@@ -13,4 +14,25 @@
         <input type="text" name="location">Location<br><br>
         <input type="submit" value="Create">
     </form>
+    Courses:<br>
+    <table align="center" style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course Number</th>
+            <th>Class Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for i in allCourses %}
+            <tr>
+                <td>{{ i.id}}</td>
+                <td>{{ i.name}}</td>
+                <td>{{ i.courseNumber}}</td>
+                <td>{{ i.classNumber}}</td>
+                <td>{{ i.time}}</td>
+                <td>{{ i.location}}</td>
+            </tr>
+        {% endfor %}
+    </table>
 </html>

@@ -70,24 +70,24 @@ class createAccountError(View):
 class editAccount(View):
 
   def get(self, request):
-    return render(request, 'shell/editAccount.html')
+    editid = request.session['editID']
+    return render(request, 'shell/editAccount.html', {'editID': editid})
 
   def post(self, request):
     terminalInstance = Terminal()
-    id = request.session['editID']
-    user = USER.objects.get(id=id)
+    editid = request.session['editID']
+    user = USER.objects.get(id=editid)
     terminalInstance.login(user.username, user.password)
-    response = terminalInstance.editAccount(id, request.POST['Permission'], request.POST['UserName'],
-                                            request.POST['Password'], request.POST['Email'], request.POST['FirstName'],
-                                            request.POST['LastName'], request.POST['ContactPhone'], request.POST['OfficePhone'],
-                                            request.POST['Extension'])
-    if response == "User account updated":
+    response, success = terminalInstance.editAccount(editid, request.POST['Permission'], request.POST['UserName'],
+                                                     request.POST['Password'], request.POST['Email'],
+                                                     request.POST['FirstName'],
+                                                     request.POST['LastName'], request.POST['ContactPhone'],
+                                                     request.POST['OfficePhone'],
+                                                     request.POST['Extension'])
+    if success is True:
         request.session.pop("editID", None)
         return render(request, ['shell/commands.html'])
-    if response == "User does not exist":
-        request.session.pop("editID", None)
-        return render(request, ['shell/editAccountError.html'])
-    else:
+    if success is False:
         request.session.pop("editID", None)
         return render(request, ['shell/editAccountError.html'])
 
@@ -95,7 +95,16 @@ class editAccount(View):
 class editSelect(View):
 
   def get(self, request):
-      return render(request, 'shell/editSelect.html')
+      terminalInstance = Terminal()
+      id = request.session['userid']
+      user = USER.objects.get(id=id)
+      terminalInstance.login(user.username, user.password)
+      ret, bool = terminalInstance.accessData()
+      if (bool == False):
+          render(request, 'shell/error.html')
+
+      allUsers = ret[0]
+      return render(request, 'shell/editSelect.html', {'allUsers': allUsers})
 
   def post(self, request):
       #terminalInstance = Terminal()
@@ -230,7 +239,7 @@ class assignAssistantToLab(View):
     def get(self, request):
         return render(request, 'shell/assignAssistantToLab.html')
 
-    def post(self,request):
+    def post(self, request):
         terminalInstance = Terminal()
         labid = request.POST['LabId']
         assistantid = request.POST['AssistantId']
@@ -246,15 +255,38 @@ class assignAssistantToCourse(View):
         terminalInstance = Terminal()
         Courseid = request.POST['CourseId']
         assistantid = request.POST['AssistantId']
-        terminalInstance.assignAssistantToCourse(Courseid,assistantid)
+        terminalInstance.assignAssistantToCourse(Courseid, assistantid)
 
         return render(request, 'shell/commands.html')
 
 class assignInstructorToCourse(View):
     def get(self, request):
-        return render(request, 'shell/assignInstructor.html')
+        terminalInstance = Terminal()
+        id = request.session['userid']
+        user = USER.objects.get(id=id)
+        terminalInstance.login(user.username, user.password)
+        ret, bool = terminalInstance.accessData()
+        if (bool == False):
+            render(request, 'shell/error.html')
+
+        allUsers = ret[0]
+        allCourses = ret[1]
+        instructorAssignments = ret[4]
+        return render(request, 'shell/assignInstructor.html', {'allUsers': allUsers, 'allCourses': allCourses,
+                                                               'instructorAssignments': instructorAssignments})
     def post(self, request):
-        Terminal().assignInstructorToCourse(request.POST['courseID'], request.POST['instructorID'])
+        ret, bool = Terminal().assignInstructorToCourse(request.POST['courseID'], request.POST['instructorID'])
+        if bool == True:
+            return render(request, 'shell/commands.html')
+        if bool == False:
+            return render(request, 'shell/assignInstructorError.html')
+
+class assignInstructorError(View):
+    def get(self, request):
+        return render(request, 'shell/assignInstructorError.html')
+    def post(self, request):
+        return render(request, 'shell/assignInstructorError.html')
+
 class editContactInfo(View):
 
   def get(self, request):
@@ -270,7 +302,7 @@ class editContactInfo(View):
         id = request.session['userid']
         user = USER.objects.get(id=id)
         terminalInstance.login(user.username, user.password)
-        response = terminalInstance.editContactInfo(email,contactPhone, officePhone, extension)
+        response = terminalInstance.editContactInfo(email, contactPhone, officePhone, extension)
         if response.__eq__("Contact information updated"):
             request.method = 'get'
             return render(request, 'shell/commands.html')
@@ -343,7 +375,16 @@ class createCourse(View):
 
 class createLab(View):
     def get(self, request):
-        return render(request, 'shell/createLab.html')
+        terminalInstance = Terminal()
+        id = request.session['userid']
+        user = USER.objects.get(id=id)
+        terminalInstance.login(user.username, user.password)
+        ret, bool = terminalInstance.accessData()
+        if (bool == False):
+            render(request, 'shell/error.html')
+
+        allCourses = ret[1]
+        return render(request, 'shell/createLab.html', {'allCourses': allCourses})
 
     def post(self, request):
         terminalInstance = Terminal()
