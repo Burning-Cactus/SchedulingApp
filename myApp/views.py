@@ -595,6 +595,23 @@ class viewAssistants(View):
         return render(request, 'shell/viewAssistants.html', {"assistants": assistants, "assignments": assignments, "courses": courses, "labs": labs})
 
 
+class viewContactInfo(View):
+    def get(self, request):
+        terminalInstance = Terminal()
+        id = request.session['userid']
+        user = USER.objects.get(id=id)
+        terminalInstance.login(user.username, user.password)
+        ret, bool = terminalInstance.viewContactInfo()
+        if (bool == False):
+            render(request, 'shell/error.html')
 
+        allUsers = ret[0]
+        allCourses = ret[1]
+        allLabs = ret[2]
+        assistantAssignments = ret[3]
+        instructorAssignments = ret[4]
+        return render(request, 'shell/viewContactInfo.html',
+                      {"allUsers": allUsers, "allCourses": allCourses, "allLabs": allLabs,
+                       "assistantAssignments": assistantAssignments, "instructorAssignments": instructorAssignments})
 
 
