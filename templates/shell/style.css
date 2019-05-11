@@ -1,0 +1,9 @@
+body {
+    background-color: aliceblue;
+}
+
+table {
+    border-color: black;
+    border-width: 5px;
+    background-color: lightgray;
+}
