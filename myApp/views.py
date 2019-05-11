@@ -3,7 +3,7 @@ from django.views import View
 from myApp.models import Terminal
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from .forms import InputForm, LoginForm
-from .models import USER
+from .models import USER, LAB_SECTION, A_LIST, I_LIST, COURSE
 from django.core.mail import send_mail
 from myApp.NavBar import *
 
@@ -364,6 +364,31 @@ class createLab(View):
         ret, success = terminalInstance.createLab(request.POST['name'], int(request.POST['courseID']),
                                                   request.POST['labNumber'], request.POST['time'],
                                                   request.POST['location'])
+
+        if success is False:
+            return render(request, 'shell/error.html', {"message": ret})
+
+        return redirect('/commands/')
+
+
+class editLab(View):
+    def get(self, request):
+        labs = LAB_SECTION.objects.all()
+        labList = []
+
+        for lab in labs:
+            labList.append([lab.id, lab.name, lab.courseID, lab.labNumber, lab.time, lab.location])
+
+        return render(request, 'shell/editLab.html', {"labs": labList})
+
+    def post(self, request):
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
+        ret, success = terminalInstance.editLab(int(request.POST['labID']), request.POST['name'], "",
+                                                request.POST['labNumber'], request.POST['time'],
+                                                request.POST['location'])
 
         if success is False:
             return render(request, 'shell/error.html', {"message": ret})

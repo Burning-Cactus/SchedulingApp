@@ -1,0 +1,37 @@
+<html>
+
+    <title>Create Course</title>
+
+    <head></head>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course ID</th>
+            <th>Lab Number</th>
+            <th>Time</th>
+            <th>Location</th>
+        </tr>
+        {% for lab in labs %}
+            <tr>
+                <td>{{ lab.0 }}</td>
+                <td>{{ lab.1 }}</td>
+                <td>{{ lab.2 }}</td>
+                <td>{{ lab.3 }}</td>
+                <td>{{ lab.4 }}</td>
+                <td>{{ lab.5 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <form method="post" action="/editLab/">
+        {% csrf_token %}
+        <input type="text" name="labID">Lab ID<br><br>
+        <input type="text" name="name">Lab Name<br><br>
+        <input type="text" name="labNumber">Lab Number<br><br>
+        <input type="text" name="time">Time<br><br>
+        <input type="text" name="location">Location<br><br>
+        <input type="submit" value="Create">
+    </form>
+</html>
