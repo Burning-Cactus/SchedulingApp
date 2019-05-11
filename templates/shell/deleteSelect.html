@@ -7,9 +7,10 @@
     </head>
     <body>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+<br>
         <form method="post" action="http://127.0.0.1:8000/deleteAccount/">
             {% csrf_token %}
-            Input User's ID: <input type="text" name="userid"></br>
+            Input User's ID:<br><input type="text" name="userid"></br>
             <input value="Submit" type="submit"/>
         </form>
     </body>

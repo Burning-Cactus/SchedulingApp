@@ -6,6 +6,7 @@
         <style>{% include 'shell/staticfiles/style.css' %}</style>
     </head>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+    <br><label>Lab:</label>
     <table>
         <tr>
             <th>ID</th>
@@ -27,13 +28,16 @@
         {% endfor %}
     </table>
 
+    <div>
+        <label>Edit Lab</label>
     <form method="post" action="/editLab/">
         {% csrf_token %}
-        <input type="text" name="labID">Lab ID<br><br>
-        <input type="text" name="name">Lab Name<br><br>
-        <input type="text" name="labNumber">Lab Number<br><br>
-        <input type="text" name="time">Time<br><br>
-        <input type="text" name="location">Location<br><br>
+        Lab ID:<br><input type="text" name="labID"><br><br>
+        Lab Name:<br><input type="text" name="name"><br><br>
+        Lab Number:<br><input type="text" name="labNumber"><br><br>
+        Time:<br><input type="text" name="time"><br><br>
+        Location:<br><input type="text" name="location"><br><br>
         <input type="submit" value="Edit">
     </form>
+        </div>
 </html>

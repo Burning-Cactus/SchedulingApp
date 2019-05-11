@@ -7,18 +7,22 @@
 </head>
 <body>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
-    <form method="post" action="/createAccount/">
-        {% csrf_token %}
-        User Name:<br><input type="text" name="username"></br>
-        Password:<br><input type="password" name="password"></br>
-        Permission:<br><input type="number" name="permission"></br>
-        Email:<br><input type="email" name="email"></br>
-        First Name:<br><input type="text" name="firstName"></br>
-        Last Name:<br><input type="text" name="lastName"></br>
-        Contact Phone:<br><input type="tel" name="contactPhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></br>
-        Office Phone:<br><input type="tel" name="officePhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></br>
-        Extension:<br><input type="number" name="extension"></br>
-        <input type="submit" value="Create">
-    </form>
+
+    <div>
+        <label>Create Account</label>
+            <form method="post" action="/createAccount/">
+            {% csrf_token %}
+            User Name:<br><input type="text" name="username"></br>
+            Password:<br><input type="password" name="password"></br>
+             Permission:<br><input type="number" name="permission"></br>
+             Email:<br><input type="email" name="email"></br>
+             First Name:<br><input type="text" name="firstName"></br>
+             Last Name:<br><input type="text" name="lastName"></br>
+             Contact Phone:<br><input type="tel" name="contactPhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></br>
+             Office Phone:<br><input type="tel" name="officePhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></br>
+             Extension:<br><input type="number" name="extension"></br>
+            <input type="submit" value="Create">
+            </form>
+    </div>
 </body>
 </html>

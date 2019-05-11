@@ -7,9 +7,7 @@
 </head>
 <body>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
-    <form method="post" action="http://127.0.0.1:8000/editSelect/">
-        {% csrf_token %}
-        User:<br>
+        <br>User:<br>
     <table align="center" style="width:100%">
         <tr>
             <th>ID</th>
@@ -38,8 +36,14 @@
             </tr>
         {% endfor %}
     </table>
-        Input User's ID<input type="text" name="userid"></br>
+
+<div>
+    <label>Edit Account</label>
+    <form method="post" action="http://127.0.0.1:8000/editSelect/">
+        {% csrf_token %}
+        Input User's ID:<br><input type="text" name="userid"></br>
         <input value="Submit" type="submit">
     </form>
+    </div>
 </body>
 </html>

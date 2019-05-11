@@ -6,6 +6,8 @@
         <style>{% include 'shell/staticfiles/style.css' %}</style>
     </head>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+
+    <br><label>Account:</label>
     <table>
         <tr>
             <th>ID</th>
@@ -19,9 +21,12 @@
         {% endfor %}
     </table>
 
+    <div>
+        <label>Delete Account</label>
     <form method="post" action="/deleteAccount/">
         {% csrf_token %}
-        <input type="text" name="accountID">Account ID<br><br>
+        Account ID:<br><input type="text" name="accountID"><br><br>
         <input type="submit" value="Delete">
     </form>
+        </div>
 </html>

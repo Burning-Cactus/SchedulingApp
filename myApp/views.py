@@ -653,7 +653,16 @@ class instructorAssignAssistant(View):
                                                                               "assistantAssignments": assistantAssignments})
 
     def post(self, request):
-        pass
+        terminalInstance = Terminal()
+        user = USER.objects.get(id=request.session['userid'])
+        terminalInstance.login(user.username, user.password)
+
+        ret, success = terminalInstance.assignAssistantToLab(request.POST['labID'], request.POST['assistantID'])
+
+        if success is False:
+            return render(request, 'shell/error.html', {"message": ret})
+
+        return redirect('/commands/')
 
 
 class viewContactInfo(View):

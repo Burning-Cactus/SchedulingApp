@@ -7,6 +7,9 @@
 </head>
 <body>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+
+    <div>
+        <label>Edit Contact Info</label>
     <form method="post" action="/editContactInfo/">
         {% csrf_token %}
         Email:<br><input type="email" name="email"></br>
@@ -15,5 +18,6 @@
         Extension:<br><input type="number" name="extension"></br>
         <input type="submit" value="Create">
     </form>
+    </div>
 </body>
 </html>

@@ -6,6 +6,7 @@
         <style>{% include 'shell/staticfiles/style.css' %}</style>
     </head>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+    <br><label>Course:</label>
     <table>
         <tr>
             <th>ID</th>
@@ -27,9 +28,12 @@
         {% endfor %}
     </table>
 
+    <div>
+        <label>Delete Course</label>
     <form method="post" action="/deleteCourse/">
         {% csrf_token %}
-        <input type="text" name="courseID">Course ID<br><br>
+        Course ID:<br><input type="text" name="courseID"><br><br>
         <input type="submit" value="Delete">
     </form>
+    </div>
 </html>

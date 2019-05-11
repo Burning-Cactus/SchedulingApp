@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Assign Instructor to Course</title>
-    Assign Instructor to Course
     <style>{% include 'shell/staticfiles/style.css' %}</style>
 </head>
 <body>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
-    <form method="post" action="http://127.0.0.1:8000/assignInstructorToCourse/">
-        {% csrf_token %}
-    User:<br>
+    <br><label>User:</label>
     <table align="center" style="width:100%">
         <tr>
             <th>ID</th>
@@ -40,8 +37,8 @@
             </tr>
         {% endfor %}
     </table>
-        ID of Instructor <input type="number" name="instructorID"></br>
-    Courses:<br>
+
+    <label>Course:</label>
     <table align="center" style="width:100%">
         <tr>
             <th>ID</th>
@@ -62,10 +59,7 @@
             </tr>
         {% endfor %}
     </table>
-        ID of Course <input type="number" name="courseID"></br>
-        <input value="Assign Instructor to Course" type="submit"></br>
-
-    Instructor Assignments:<br>
+    <label>Instructor Assignments:</label>
     <table align="center" style="width:100%">
         <tr>
             <th>Instructor ID</th>
@@ -78,6 +72,15 @@
             </tr>
         {% endfor %}
     </table>
-    </form>
+
+        <div>
+            <label>Assign Instructor</label>
+            <form method="post" action="http://127.0.0.1:8000/assignInstructorToCourse/">
+                {% csrf_token %}
+                ID of Instructor:<br><input type="number" name="instructorID"></br>
+                ID of Course:<br><input type="number" name="courseID"></br>
+                <input value="Assign Instructor to Course" type="submit"></br>
+            </form>
+        </div>
 </body>
 </html>

@@ -6,8 +6,8 @@
     <style>{% include 'shell/staticfiles/style.css' %}</style>
 </head>
 <body>
-<form method="post" action="/instructorAssignAssistantToLab/">
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+        <br><label>Assistant</label>
         <table>
             <tr>
                 <th>ID</th>
@@ -23,6 +23,7 @@
             {% endfor %}
         </table>
 
+        <label>Course</label>
         <table>
         <tr>
             <th>ID</th>
@@ -44,6 +45,7 @@
         {% endfor %}
     </table>
 
+    <label>Lab</label>
     <table>
         <tr>
             <th>ID</th>
@@ -65,6 +67,7 @@
         {% endfor %}
     </table>
 
+    <label>Assistant Assignments</label>
     <table>
             <tr>
                 <th>Assistant ID</th>
@@ -78,10 +81,14 @@
             {% endfor %}
         </table>
 
+    <div>
+        <label>Assign Assistant To Lab</label>
+        <form method="post" action="/instructorAssignAssistant/">
         {% csrf_token %}
-        Course Id:<br><input type="number" name="CourseId"></br>
-        Assistant Id:<br><input type="number" name="AssistantId"></br>
+        Lab Id:<br><input type="number" name="labID"></br>
+        Assistant Id:<br><input type="number" name="assistantID"></br>
         <input type="submit" value="Assign Assistant">
-</form>
+        </form>
+        </div>
 </body>
-</html
+</html>

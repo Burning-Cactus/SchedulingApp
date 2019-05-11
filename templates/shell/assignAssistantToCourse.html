@@ -7,8 +7,7 @@
 </head>
 <body>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
-<form method="post" action="/assignAssistantToCourse/">
-
+        <br><label>Assistants:</label>
         <table>
             <tr>
                 <th>ID</th>
@@ -22,6 +21,7 @@
             {% endfor %}
         </table>
 
+        <label>Course:</label>
         <table>
         <tr>
             <th>ID</th>
@@ -43,6 +43,7 @@
         {% endfor %}
         </table>
 
+        <label>Assistant Assignments:</label>
         <table>
         <tr>
             <th>User ID</th>
@@ -56,10 +57,15 @@
         {% endfor %}
         </table>
 
-        {% csrf_token %}
-        Course Id:<br><input type="number" name="CourseId"></br>
-        Assistant Id:<br><input type="number" name="AssistantId"></br>
-        <input type="submit" value="Assign Assistant">
-</form>
+
+        <div>
+            <label>Assign Assistant</label>
+            <form method="post" action="/assignAssistantToCourse/">
+                {% csrf_token %}
+                Course Id:<br><input type="number" name="CourseId"></br>
+                Assistant Id:<br><input type="number" name="AssistantId"></br>
+                <input type="submit" value="Assign Assistant">
+            </form>
+        </div>
 </body>
 </html>

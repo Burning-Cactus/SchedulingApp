@@ -6,13 +6,16 @@
         <style>{% include 'shell/staticfiles/style.css' %}</style>
     </head>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+    <div>
+        <label>Create Course</label>
     <form method="post" action="/createCourse/">
         {% csrf_token %}
-        <input type="text" name="name"> Course Name<br><br>
-        <input type="text" name="courseNumber">Course Number<br><br>
-        <input type="text" name="classNumber">Class Number<br><br>
-        <input type="text" name="time">Time<br><br>
-        <input type="text" name="location">Location<br><br>
+        Course Name:<br><input type="text" name="name"><br><br>
+        Course Number:<br><input type="text" name="courseNumber"><br><br>
+        Class Number:<br><input type="text" name="classNumber"><br><br>
+        Time:<br><input type="text" name="time"><br><br>
+        Location:<br><input type="text" name="location"><br><br>
         <input type="submit" value="Create">
     </form>
+    </div>
 </html>

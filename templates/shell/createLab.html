@@ -5,15 +5,18 @@
         <style>{% include 'shell/staticfiles/style.css' %}</style>
     </head>
 <button class="button button2" onclick="window.location.href='/commands/'">Home</button>
+    <div>
+        <label>Create Lab</label>
     <form method="post" action="/createLab/">
         {% csrf_token %}
-        <input type="text" name="name"> Lab Name<br><br>
-        <input type="text" name="courseID">Course ID<br><br>
-        <input type="text" name="labNumber">Lab Number<br><br>
-        <input type="text" name="time">Time<br><br>
-        <input type="text" name="location">Location<br><br>
+        Lab Name:<br><input type="text" name="name"><br><br>
+        Course ID:<br><input type="text" name="courseID"><br><br>
+        Lab Number:<br><input type="text" name="labNumber"><br><br>
+        Time:<br><input type="text" name="time"><br><br>
+        Location:<br><input type="text" name="location"><br><br>
         <input type="submit" value="Create">
     </form>
+    </div>
     Courses:<br>
     <table align="center" style="width:100%">
         <tr>
