@@ -125,7 +125,7 @@ class Terminal(object):
 
         try:
             if LAB_SECTION.objects.get(labNumber=labnr):
-                return None, False
+                return 'Lab Number Already Used', False
         except LAB_SECTION.DoesNotExist:
             pass
 
